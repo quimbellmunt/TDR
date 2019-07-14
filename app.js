@@ -32,11 +32,11 @@ mongoose.connect('mongodb://localhost:27017/TdR');
 
 app.use(passport.initialize());
 app.use(passport.session());
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 
 const User = require('./models/user');
+const Tasques = require('./models/tasques');
 
 
 passport.use(new LocalStrategy(User.authenticate()));
@@ -48,45 +48,62 @@ passport.deserializeUser(User.deserializeUser());
 
 
 app.get('/', function (req, res) {
-      res.render('index', { user : req.user });
+  res.render('index', { user : req.user });
+});
+
+app.get('/register', function(req, res) {
+    res.render('index', { });
+});
+
+app.post('/register', function(req, res) {
+
+  User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
+      if (err) {
+          return res.render('index', { user : user });
+      }
+
+      passport.authenticate('local')(req, res, function () {
+        res.render('home');
+      });
   });
+});
 
-  app.get('/register', function(req, res) {
-      res.render('index', { });
-  });
+app.get('/login', function(req, res) {
+    res.render('index', { user : req.user });
+});
 
-  app.post('/register', function(req, res) {
+app.post('/login', passport.authenticate('local'), function(req, res) {
+    console.log()
+    res.render('home');
+});
 
-    User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
+app.post('/tasques', function(req, res) {
+    Tasques.create(new Tasques({Nom : req.body.Nom,Descripcio: req.body.Descripcio,Preu: req.body.Preu,Temps: req.body.Temps}),function(err, Tasca) {
         if (err) {
-            return res.render('index', { user : user });
-        }
-
-        passport.authenticate('local')(req, res, function () {
+          console.log(err)
           res.render('home');
-        });
-    });
-  });
+          }
+        res.render('home');
+      });    
+});
 
-  app.get('/login', function(req, res) {
 
-      res.render('index', { user : req.user });
-  });
 
-  app.post('/login', passport.authenticate('local'), function(req, res) {
-      res.render('home');
-  });
 
-  
 
-  app.post('/logout', function(req, res) {
-      req.logout();
-      res.render('index');
-  });
+app.post('/logout', function(req, res) {
+    req.logout();
+    res.render('index');
+});
 
-  app.get('/home', function(req, res){
-      res.render('home');
-  });
+app.get('/tasques', function(req, res){
+    Tasques.find({},function(err, tasks){
+      console.log(tasks)
+      if(err) console.log(err)
+      res.render('tasques',{tasks:tasks}); 
+    })
+    
+});
 
 
 app.listen(app.get('port'), function(){

@@ -8,10 +8,22 @@
 </head>
 <body>
 <p>Bienvenido!!</p>
-
+<%= console.log('test') %>
 <form action="/logout" method="POST" >
     <button>Logout</button>
 </form>
+
+<p><%= JSON.stringify(tasks) %></p>
+
+<form action="/tasques" method="POST">
+   <input type="text" name="Nom" placeholder="Nom de la tasca">
+   <input type="text" name="Descripcio" placeholder="descr">
+   <input type="text" name="Preu" placeholder="password">
+   <input type="text" name="Temps" placeholder="password">
+   <button>Submit</button>
+</form> 
+
+
 
 </body>
 </html>
