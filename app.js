@@ -105,14 +105,16 @@ app.post('/register', function(req, res) {
       // console.log(user)
     console.log('aqui2')
       passport.authenticate('local')(req, res, function () {
-        Usuari.create(new Usuari({username:req.body.username}),function(err, Usuari) {
-          console.log(Usuari)
+        Usuari.create(new Usuari({username:req.body.username, diners: 20}),function(err, userCreated) {
+          console.log(userCreated)
           console.log('aqui3')
           if (err) {
             console.log(err)
             res.render('index');
             }
-          res.render('home', {user: req.body.username, tasks:null});
+          user['username'] = userCreated.username
+          user['diners'] = userCreated.diners
+          res.render('home', {user: user, tasks : []});
         });   
       });
     }
@@ -159,16 +161,16 @@ app.post('/modificaUsuari', function(req, res){
   Usuari.findOneAndUpdate({username:req.body.username}, {username:req.body.username,
     nom:req.body.nom,
     cognoms:req.body.cognoms,
-    diners: req.body.diners,
     mail:req.body.mail}, 
     function(err, user){
       if(err) {
         console.log(err)
       } else {
+
         Trans.find ({Receptor: user.id}, function(err, tasks){
             console.log(user)
             console.log(tasks)
-            res.render('home', {user, user, tasks:tasks});
+            res.render('home', {user, tasks : tasks});
         });     
       }
     })
@@ -201,19 +203,42 @@ app.get('/tasques', function(req, res){
     
 });
 
-app.post('/CreacioTasca', function(req, res){
+app.get('/transaccio', function(req, res){
+    Usuari.find({}, 
+    function(err, users){
+      if(err) {
+        console.log(err)
+      } else {
+        Tasques.find ({}, 
+          function(err, tasks){
+            console.log(user)
+            console.log(tasks)
+            res.render('trans', {user: users, tasks:tasks});
+        });     
+      }
+    })
+    
+});
+
+app.post('/creacioTasca', function(req, res){
     // Model Tasca
     // Afegir a transaccions
     
 });
 
-app.post('/CreacioTrans', function(req, res){
+app.post('/creacioTrans', function(req, res){
     // afegir trans
     // notificar usuari
     // 
 });
 
-app.post('/CumplimentTasca', function(req, res){
+app.post('/cumplimentTasca', function(req, res){
+    // afegir trans amb el nou estat
+    // notificar usuari
+    // 
+});
+
+app.post('/CacceptacioTasca', function(req, res){
     // afegir trans amb el nou estat
     // notificar usuari
     // 

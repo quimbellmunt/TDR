@@ -9,6 +9,7 @@
 <body>
 <p>Bienvenido!!</p>
 
+
 <form action="/modificaUsuari" method="POST">
 <table>
 <tr>
@@ -23,7 +24,7 @@
 	<td><input type="text" name="nom" value="<%=user.nom%>"></td>
 	<td><input type="text" name="cognoms" value="<%=user.cognoms%>"></td>
 	<td><input type="text" name="mail" value="<%=user.mail%>"></td>
-	<td><input type="text" name="diners" value="<%user.diners%>" readonly></td>
+	<td><input type="text" name="diners" value="<%=user.diners%>" readonly></td>
 </tr>
 </table>
 <button>Envia</button>
