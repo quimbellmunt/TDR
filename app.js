@@ -17,7 +17,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var app = express();
-app.set('port', process.env.PORT || 1337);
+app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.set('view options', { layout: false });
@@ -109,6 +109,8 @@ app.get('/tasques', function(req, res){
 app.listen(app.get('port'), function(){
   console.log(("Express server listening on port " + app.get('port')))
 });
+
+
 
 
 
