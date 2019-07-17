@@ -1,4 +1,5 @@
 var express = require("express");
+var session = require('express-session');
 var app = express();
 var mongoose = require("mongoose");
 var passport = require("passport");
@@ -26,6 +27,7 @@ app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(express.static('public'))
+app.use(session({secret: 'TdR',saveUninitialized: true,resave: true}));
 
 // var connection = mongoose.createConnection("mongodb://localhost:27017/TdR");
 mongoose.connect('mongodb://localhost:27017/TdR');
@@ -55,8 +57,19 @@ app.get('/', function (req, res) {
 });
 
 app.get('/home', function (req, res) {
-  console.log(req.user)
-  res.render('home', { user : req.user });
+  console.log(req.session)
+  Usuari.find({username:req.session.passport.user},function(err, user) {
+    console.log(user) //→ aqui extreus tota la info del usuari inclòs el seu ID
+    if (err) {
+      console.log(err)
+      res.render('login');
+    }
+    else {
+        Trans.find ({Receptor: user.id}, function(err, tasks){
+        res.render('home', {user:user[0], tasks:tasks});
+      });     
+    }     
+  });   
 });
 
 app.get('/register', function(req, res) {
