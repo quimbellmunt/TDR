@@ -221,9 +221,23 @@ app.get('/transaccio', function(req, res){
 });
 
 app.post('/creacioTasca', function(req, res){
-    // Model Tasca
-    // Afegir a transaccions
-    
+    Tasques.create(new Tasques(
+      {
+        username:req.body.username, 
+        preu: req.body.preu,
+        temps: req.body.temps,
+        descripcio: req.body.descripcio,
+        titol: req.body.titol
+      }), function(err, tascaCreada){
+      if(err) {
+        console.log(err)
+      } else {
+        Tasques.find({},function(err, tasks){
+          if(err) console.log(err)
+          res.render('tasques',{tasks:tasks}); 
+        })
+      }
+    })
 });
 
 app.post('/creacioTrans', function(req, res){
@@ -238,7 +252,7 @@ app.post('/cumplimentTasca', function(req, res){
     // 
 });
 
-app.post('/CacceptacioTasca', function(req, res){
+app.post('/acceptacioTasca', function(req, res){
     // afegir trans amb el nou estat
     // notificar usuari
     // 
