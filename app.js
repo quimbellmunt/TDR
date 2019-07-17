@@ -53,7 +53,24 @@ passport.deserializeUser(User.deserializeUser());
 
 
 app.get('/', function (req, res) {
-  res.render('index', { user : req.user });
+  console.log(req.session)
+  if('passport' in req.session){
+    Usuari.find({username:req.session.passport.user},function(err, user) {
+      console.log(user) //→ aqui extreus tota la info del usuari inclòs el seu ID
+      if (err) {
+        console.log(err)
+        res.render('login');
+      }
+      else {
+          Trans.find ({Receptor: user.id}, function(err, tasks){
+          res.render('home', {user:user[0], tasks:tasks});
+        });     
+      }     
+    });
+  }
+  else {
+    res.render('index', { user : req.user });
+  }
 });
 
 app.get('/home', function (req, res) {
@@ -76,18 +93,6 @@ app.get('/register', function(req, res) {
     res.render('index', { });
 });
 
-// app.post('/register', function(req, res) {
-
-//   User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
-//       if (err) {
-//           return res.render('index', { user : user });
-//       }
-
-//       passport.authenticate('local')(req, res, function () {
-//         res.render('home');
-//       });
-//   });
-// });
 
 app.post('/register', function(req, res) {
   console.log('as')
@@ -115,10 +120,6 @@ app.post('/register', function(req, res) {
 });
 
 
-// app.get('/login', function(req, res) {
-//     res.render('index', { user : req.user });
-// });
-
 app.get('/login', function(req, res) {
   Usuari.find({username:req.user},function(err, user) {
     console.log(user[0]) //→ aqui extreus tota la info del usuari inclòs el seu ID
@@ -135,10 +136,6 @@ app.get('/login', function(req, res) {
   });   
 });
 
-// app.post('/login', passport.authenticate('local'), function(req, res) {
-//     console.log()
-//     res.render('home');
-// });
 
 app.post('/login', passport.authenticate('local'), function(req, res) {
   Usuari.find({username:req.body.username},function(err, user) {
@@ -193,6 +190,33 @@ app.post('/tasques', function(req, res) {
 app.post('/logout', function(req, res) {
     req.logout();
     res.render('index');
+});
+
+app.get('/tasques', function(req, res){
+    Tasques.find({},function(err, tasks){
+      console.log(tasks)
+      if(err) console.log(err)
+      res.render('tasques',{tasks:tasks}); 
+    })
+    
+});
+
+app.post('/CreacioTasca', function(req, res){
+    // Model Tasca
+    // Afegir a transaccions
+    
+});
+
+app.post('/CreacioTrans', function(req, res){
+    // afegir trans
+    // notificar usuari
+    // 
+});
+
+app.post('/CumplimentTasca', function(req, res){
+    // afegir trans amb el nou estat
+    // notificar usuari
+    // 
 });
 
 app.get('/tasques', function(req, res){
