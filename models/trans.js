@@ -11,8 +11,8 @@ emisor:Number, //(Nom o Id del usuari que crea transacció)
 receptor: Number, //(Nom o Id del usuari que rep transacció)
 tasca:Number, //(Nom o Id del usuari que rep transacció)
 preu: Number,
-estat: Boolean  //(True → Done, False → To be Done)
-
+acceptada: Boolean,  //(True → Done, False → To be Done)
+acabada: Boolean
 });
 
 //Trans.plugin(passportLocalMongoose);
