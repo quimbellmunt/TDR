@@ -8,21 +8,41 @@
 </head>
 <body>
 <p>Bienvenido!!</p>
-<%= console.log('test') %>
+
+<form action="/modificaUsuari" method="POST">
+<table>
+<tr>
+	<td><%= user.username%></td>
+	<td><%=user.nom%></td>
+	<td><%=user.cognoms%></td>
+	<td><%=user.mail%></td>
+	<td><%=user.diners%></td>
+</tr>
+<tr>
+	<td><input type="text" name="username" value="<%=user.username%>" readonly></td>
+	<td><input type="text" name="nom" value="<%=user.nom%>"></td>
+	<td><input type="text" name="cognoms" value="<%=user.cognoms%>"></td>
+	<td><input type="text" name="mail" value="<%=user.mail%>"></td>
+	<td><input type="text" name="diners" value="<%user.diners%>" readonly></td>
+</tr>
+</table>
+<button>Envia</button>
+</form>
+
+<% if (tasks.length >1) { %>
+<ul>
+  <% tasks.forEach(task => { %>
+  <li><%= task.tasca %></li>
+  <li><%= task.emisor %></li>
+  <li><%= task.preu %></li>
+  <li><%= task.estat %></li>
+  <% }); %>
+<ul>
+<% } %>
+
 <form action="/logout" method="POST" >
     <button>Logout</button>
 </form>
-
-<p><%= JSON.stringify(tasks) %></p>
-
-<form action="/tasques" method="POST">
-   <input type="text" name="Nom" placeholder="Nom de la tasca">
-   <input type="text" name="Descripcio" placeholder="descr">
-   <input type="text" name="Preu" placeholder="password">
-   <input type="text" name="Temps" placeholder="password">
-   <button>Submit</button>
-</form> 
-
 
 
 </body>

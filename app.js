@@ -54,6 +54,11 @@ app.get('/', function (req, res) {
   res.render('index', { user : req.user });
 });
 
+app.get('/home', function (req, res) {
+  console.log(req.user)
+  res.render('home', { user : req.user });
+});
+
 app.get('/register', function(req, res) {
     res.render('index', { });
 });
@@ -103,14 +108,15 @@ app.post('/register', function(req, res) {
 
 app.get('/login', function(req, res) {
   Usuari.find({username:req.user},function(err, user) {
-    console.log(user) //→ aqui extreus tota la info del usuari inclòs el seu ID
+    console.log(user[0]) //→ aqui extreus tota la info del usuari inclòs el seu ID
     if (err) {
       console.log(err)
       res.render('login');
     }
     else {
+        user = user[0]
         Trans.find ({Receptor: user.id}, function(err, tasks){
-        res.render('home', {user, user, tasks:tasks});
+        res.render('home', {user:user[0], tasks:tasks});
       });     
     }     
   });   
@@ -130,16 +136,19 @@ app.post('/login', passport.authenticate('local'), function(req, res) {
     }
     else {
         Trans.find ({Receptor: user.id}, function(err, tasks){
-        res.render('home', {user, user, tasks:tasks});
+        res.render('home', {user:user[0], tasks:tasks});
       });     
     }     
   });   
 });
 
 app.post('/modificaUsuari', function(req, res){
+  console.log('Aqui')
+  console.log(req.body)
+
   Usuari.findOneAndUpdate({username:req.body.username}, {username:req.body.username,
     nom:req.body.nom,
-    cognoms:req.body.cognom,
+    cognoms:req.body.cognoms,
     diners: req.body.diners,
     mail:req.body.mail}, 
     function(err, user){
@@ -147,6 +156,8 @@ app.post('/modificaUsuari', function(req, res){
         console.log(err)
       } else {
         Trans.find ({Receptor: user.id}, function(err, tasks){
+            console.log(user)
+            console.log(tasks)
             res.render('home', {user, user, tasks:tasks});
         });     
       }
