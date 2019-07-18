@@ -9,24 +9,55 @@
 <body>
 <p>Tasques</p>
 
-<form action="/tasques" method="POST">
-   <input type="text" name="Nom" placeholder="Nom de la tasca">
-   <input type="text" name="Descripcio" placeholder="descr">
-   <input type="text" name="Preu" placeholder="password">
-   <input type="text" name="Temps" placeholder="password">
-   <button>Submit</button>
-</form> 
-
-<% if (tasks.length >1) { %>
-<ul>
-  <% tasks.forEach(task => { %>
-  <li><%= task.tasca %></li>
-  <li><%= task.emisor %></li>
-  <li><%= task.preu %></li>
-  <li><%= task.estat %></li>
-  <% }); %>
-<ul>
+<% if (message) { %>
+<p> <%= message %> </p>
 <% } %>
+
+<form action="/creacioTrans" method="POST">
+   <fieldset>
+      <legend>Emisor</legend>
+      <p>
+        <label>Tu</label>
+        <select id = "emisor">
+          <option name="emisor" value = "<%= emisor %>"><%= emisor %></option>
+         </select>
+      </p>
+   </fieldset>
+   <fieldset>
+      <legend>Receptor</legend>
+      <p>
+        <label>Llistat de usuaris</label>
+        <select id = "receptor">
+        <% if (users) { %>
+          <ul>
+            <% users.forEach(user => { %>
+            <option name="receptor" value = "<%= user.nom %>"><%= user.nom %></option>
+            <% }); %>
+          <ul>
+          <% } %>
+         </select>
+      </p>
+   </fieldset>
+    <%= JSON.stringify(tasks) %>
+   <fieldset>
+      <legend>Tasques</legend>
+      <p>
+        <label>Llistat de tasques</label>
+        <select id = "tasques">
+        <% if (tasks) { %>
+          <ul>
+            <% tasks.forEach(task => { %>
+            <option  name="tasca" value = "<%= task.titol %>"><%= task.titol %></option>
+            <% }); %>
+          <ul>
+          <% } %>
+         </select>
+      </p>
+   </fieldset>
+   <button>Envia</button>
+</form>
+
+
 
 
 

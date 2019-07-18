@@ -136,9 +136,9 @@ app.get('/transaccio', function(req, res){
       } else {
         Tasques.find ({}, 
           function(err, tasks){
-            console.log(user)
+            console.log(users)
             console.log(tasks)
-            res.render('trans', {user: users, tasks:tasks});
+            res.render('trans', {message: null, emisor:req.session.passport.user, users: users, tasks:tasks});
         });     
       }
     })
@@ -255,9 +255,34 @@ app.post('/creacioTasca', function(req, res){
 });
 
 app.post('/creacioTrans', function(req, res){
-    // afegir trans
-    // notificar usuari
-    // 
+    if('passport' in req.session){
+    Usuari.find({}, 
+    function(err, users){
+      if(err) {
+        console.log(err)
+      } else {
+        Tasques.find ({}, 
+          function(err, tasks){
+            console.log(users)
+            console.log(tasks)
+            res.render('trans', {message: 'tasca creada', emisor:req.session.passport.user, users: users, tasks:tasks});
+        });     
+      }
+    })
+  } else {
+    Usuari.find({username:req.session.passport.user},function(err, user) {
+      console.log(user) //→ aqui extreus tota la info del usuari inclòs el seu ID
+      if (err) {
+        console.log(err)
+        res.render('login');
+      }
+      else {
+          Trans.find ({Receptor: user.id}, function(err, tasks){
+          res.render('home', {user:user[0], tasks:tasks});
+        });     
+      }     
+    });
+  }
 });
 
 app.post('/cumplimentTasca', function(req, res){
