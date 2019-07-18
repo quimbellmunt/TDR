@@ -255,7 +255,10 @@ app.post('/creacioTasca', function(req, res){
 });
 
 app.post('/creacioTrans', function(req, res){
-    if('passport' in req.session){
+  console.log(req.body)
+  Trans.create(new Trans({}), 
+    function(err, trans){
+      if('passport' in req.session){
     Usuari.find({}, 
     function(err, users){
       if(err) {
@@ -263,8 +266,6 @@ app.post('/creacioTrans', function(req, res){
       } else {
         Tasques.find ({}, 
           function(err, tasks){
-            console.log(users)
-            console.log(tasks)
             res.render('trans', {message: 'tasca creada', emisor:req.session.passport.user, users: users, tasks:tasks});
         });     
       }
@@ -283,6 +284,9 @@ app.post('/creacioTrans', function(req, res){
       }     
     });
   }
+  })
+
+    
 });
 
 app.post('/cumplimentTasca', function(req, res){
