@@ -1,29 +1,48 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MY APP</title>
+  <title>inici</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<p>Bienvenido!!</p>
-<%= console.log('test') %>
+
+	<h2>Benvinguts/des a la meva pàgina web</h2>
+<form action="/transaccio" method="POST">
+	<button>Acceptar la transferència</button>
+</form>
 <form action="/logout" method="POST" >
     <button>Logout</button>
 </form>
 
-<p><%= JSON.stringify(tasks) %></p>
-
-<form action="/tasques" method="POST">
-   <input type="text" name="Nom" placeholder="Nom de la tasca">
-   <input type="text" name="Descripcio" placeholder="descr">
-   <input type="text" name="Preu" placeholder="password">
-   <input type="text" name="Temps" placeholder="password">
-   <button>Submit</button>
-</form> 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h4><center>Instruccions per a fer un bon ús de l'aplicació:</center></h4>
+	<p>1. Creeu una tasca (pressioneu el títol "Creació de la tasca" a l'esquerra).</p>
+	<p>2. Comproveu que teniu la última versió descarregada ("Actualització" a l'esquerra).</p>
+	<p>3. Torneu a la pàgina d'inici.</p>
+	<p>4. Seleccioneu un usuari per enviar la tasca que han de fer, juntament amb el pagament.</p>
+	<p>5. Confieu que facin la tasca.</p>
 </body>
 </html>
