@@ -27,13 +27,16 @@
 
 	<h3>modificació de la tasca</h3>
 		<p>Seleccionar la tasca:</p>
-		<p><%= tasques[0]['nom']</p>
+		<p><%= tasques[0]['nom']</p>   
+
+			Per molt que ho hagi utilitzat no m'enrecordo si això era perquè et sorti el nom de la tasca 0 o com? En el cas de que sigui així, com faig perquè surtin el nombre de tasques exactes que hi ha?
+
 		<p><%= tasques[1]['nom']</p>
 		<p><%= tasques[2]['nom']</p>
 		<p><%= tasques[3]['nom']</p>
 		
 	<form action="/modificaciot" method="POST">
-			<p>Dades de la teva tasca seleccionada:</p>
+			<p>Dades de la teva tasca seleccionada:</p> No en tinc ni idea de com fer perquè tota la informació surti de la tasca seleccionada. Entenc que és una cosa que s'ha de fer a app.js amb el botó, però no sé com. 
 				<p>Nom:</p>
 					<p><%= tasques[0]['nom']</p> <input type="text" name="nom">
 				<p>Valor monetari:</p>
