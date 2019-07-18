@@ -101,7 +101,7 @@ app.post('/create', function(req, res) {
   });
 });
 
-app.post('/modificaciou', function(req,res) {
+app.post('/modificacio', function(req,res) {
   usuari.findOneAndUpdate({nom:req.body.nom, cognoms:req.body.cognoms, username:req.body.username, mail:req.body.mail}, 
     function(err,user) {
       if(err) {
@@ -115,12 +115,12 @@ app.post('/modificaciou', function(req,res) {
     })
 });
 
-app.tasques('/cancelar', function(res) {
+app.post('/cancelarTasques', function(res) {
   res.render('home')
 });
   
 
-app.delete('/delete', function(req,res) {
+app.post('/deleteTasques', function(req,res) {
   req.delete();
   res.render('home');
 });
