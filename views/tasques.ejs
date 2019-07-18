@@ -3,23 +3,67 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MY APP</title>
+  <title>tasca</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<p>Bienvenido!!</p>
-<%= console.log('test') %>
-<form action="/logout" method="POST" >
-    <button>Logout</button>
-</form>
+<h5><center>APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</center></h5>
+	
 
-<%= tasks %>
-<p><%= tasks[0]['Nom'] %></p>
-<p><%= tasks[1]['Preu'] %></p>
-<p><%= tasks[2]['Temps'] %></p>
+	<h3>creació de la tasca</h3>
+
+	<form action="/create" method="POST"> 
+		<p>Nom de la tasca:</p>
+			<input type="text" name="Nom de la tasca" placeholder="nom de la tasca">
+		<p>Valor monetari:</p>
+			<input type="text" name="Preu" placeholder="valor monetari">
+		<p>Temps requerit:</p>
+			<input type="text" name="Temps" placeholder="temps requerit">
+		<p>Descripció de la tasca:</p>
+			<input type="text" name="Descripcio" placeholder="descripció de la tasca">
+		<button>Crear</button>
+	</form>
 
 
+	<h3>modificació de la tasca</h3>
+		<p>Seleccionar la tasca:</p>
+		<p><%= tasques[0]['nom']</p>
+		<p><%= tasques[1]['nom']</p>
+		<p><%= tasques[2]['nom']</p>
+		<p><%= tasques[3]['nom']</p>
+		
+	<form action="/modificaciot" method="POST">
+			<p>Dades de la teva tasca seleccionada:</p>
+				<p>Nom:</p>
+					<p><%= tasques[0]['nom']</p> <input type="text" name="nom">
+				<p>Valor monetari:</p>
+					<p><%= tasques[0]['preu']</p> <input type="text" name="preu">
+				<p>Temps requerit:</p>
+					<p><%= tasques[0]['temps']</p> <input type="text" name="temps">
+				<p>Descripció de la tasca:</p>
+					<p><%= tasques[0]['descripcio']</p> <input type="text" name="descripcio">
+		<button>Canviar</button>
+	</form>
 
+
+	<h3>eliminació de la tasca</h3>
+		<p>Seleccionar la tasca:</p>
+		<p><%= tasques[0]['nom']</p>
+		<p><%= tasques[1]['nom']</p>
+		<p><%= tasques[2]['nom']</p>
+		<p><%= tasques[3]['nom']</p>
+
+	<form action="/delete" method="delete">
+		<BUTTON>SÍ</BUTTON>
+	</form>
+	<form action="/cancelar">
+		<button>NO</button>
+	</form>
+		
+
+	<form action="/logout" method="POST" >
+    	<button>Logout</button>
+	</form>
 
 </body>
 </html>

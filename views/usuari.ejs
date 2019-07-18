@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="en">        
+  <head>
+    <h5><center>APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</center></h5>
+    	<h6>modificació de l'usuari</h6>
+        <form action="/modificaciou" method="POST"> 
+    		<p>Aquestes són les teves dades actuals:</p>
+    		<p>Nom:</p> <p><%= users[0]['Nom']></p> <input type="text" name="Nom">
+    		<p>Cognoms:</p> <p><%= users[0]['Cognoms']></p> <input type="text" name="Cognoms">
+    		<p>Nom d'usuari</p><p><%= users[0]['Username']></p> <input type="text" name="Username">
+    		<p>Correu electrònic</p><p><%= users[0]['Mail']></p> <input type="text" name="Mail">
+            <input type="password" name="contrasenya">
+
+
+
+    	<button>Canviar</button>
+    </form>
+
+
+
+
+
+
+
+
+
+</head>
+
+<script src="main.js"></script>
+
+</body>
+</html>

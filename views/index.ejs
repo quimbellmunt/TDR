@@ -1,25 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>MY APP</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <h1> Login </h1>
-  <form action="/login" method="POST">
-   <input type="text" name="username" placeholder="username">
-   <input type="password" name="password" placeholder="password">
-   <button>Login</button>
-  </form>
-  <h1> Register </h1>
-  <form action="/register" method="POST">
-   <input type="text" name="username" placeholder="username">
-   <input type="password" name="password" placeholder="password">
-   <button>Submit</button>
-  </form>  
+<html lang="en">        
+  <head>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 
-  <script src="main.js"></script>
+    <title> TDR Andrea</title>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+
+      body, html {
+        height: 100%;
+        margin: 0;
+        }
+
+        .bg { background-image: url(http://www.nationalcompass.net/wp-content/uploads/2017/06/Integrated-Circuit.jpg );
+
+          height: 100%;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          }
+
+
+    </style>
+  </head>
+<body>
+   
+
+<div class="texto-encima">
+  <table>
+    <h2>
+      <center>
+        <br>
+        APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES
+      </center>
+    </h2>
+    <h3>
+      <center>Andrea Bellmunt Fuentes</center>
+    </h3>
+     <img src="http://www.nationalcompass.net/wp-content/uploads/2017/06/Integrated-Circuit.jpg" alt="Snow" style="width:50%; opacity:0.4; height: :10px">
+ 
+    <h2>Usuaris enregistrats</h2>
+<form action="/login" method="POST">
+  <h5>Nom d'usuari</h5>
+    <input type="text" name="Usuari" placeholder="usuari">
+  <h5>Contrasenya</h5>
+    <input type="password" name="Contrasenya" placeholder="contrasenya">
+  <button>Accedir</button>
+</form> 
+   <h2> Registre </h2>
+<form action="/register" method="POST">
+  <h5>Nom</h5>
+    <input type="text" name="Nom" placeholder="nom">
+  <h5>Cognoms</h5>
+    <input type="text" name="Cognoms" placeholder="cognoms">
+  <h5>Nom d'usuari</h5>
+    <input type="text" name="Nom d'usuari" placeholder="usuari">
+  <h5>Correu electrònic</h5>
+    <input type="text" name="Correu electrònic" placeholder="correu electrònic">
+  <h5>Contrasenya</h5>
+    <input type="password" name="Contrasenya" placeholder="contrasenya">
+  <button>Registrar</button>
+</form> 
+</div>
+
+
+
+
+
+
+
+
+
+<script src="main.js"></script>
 
 </body>
 </html>
