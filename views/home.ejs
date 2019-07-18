@@ -7,17 +7,17 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<p>Bienvenido!!</p>
+<p>Benvingut/da <%= user.nom%> </p>
 
 
 <form action="/modificaUsuari" method="POST">
 <table>
 <tr>
-	<td><%= user.username%></td>
-	<td><%=user.nom%></td>
-	<td><%=user.cognoms%></td>
-	<td><%=user.mail%></td>
-	<td><%=user.diners%></td>
+	<td>Username: <%= user.username%></td>
+	<td>Nom: <%=user.nom%></td>
+	<td>Cognoms: <%=user.cognoms%></td>
+	<td>Mail: <%=user.mail%></td>
+	<td>Cartera: <%=user.diners%></td>
 </tr>
 <tr>
 	<td><input type="text" name="username" value="<%=user.username%>" readonly></td>
@@ -29,17 +29,27 @@
 </table>
 <button>Envia</button>
 </form>
+<!-- <%= JSON.stringify(tasks) %> -->
+<p>Tasques Assignades</p>
 
-<% if (tasks.length >1) { %>
-<ul>
-  <% tasks.forEach(task => { %>
-  <li><%= task.tasca %></li>
-  <li><%= task.emisor %></li>
-  <li><%= task.preu %></li>
-  <li><%= task.estat %></li>
-  <% }); %>
-<ul>
-<% } %>
+<table>
+	<tr>
+			<td>Titol</td>
+			<td>Descripcio</td>
+			<td>Preu</td>
+			<td>Temps</td>
+		</tr>
+		<tr>
+		<% if (tasks.length >0) { %>
+		  	<% tasks.forEach(task => { %>
+		  	<td><%= task.titol %></li>
+		  	<td><%= task.descripcio %></li>
+		  	<td><%= task.preu %></li>
+		  	<td><%= task.temps %></li>
+	  		<% }); %>
+		<% } %>
+	</tr>
+</table>
 
 
 
