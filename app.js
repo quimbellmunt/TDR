@@ -73,6 +73,26 @@ app.get('/', function (req, res) {
   }
 });
 
+app.get('/login', function(req, res) {
+  Usuari.find({username:req.user},function(err, user) {
+    console.log(user[0]) //→ aqui extreus tota la info del usuari inclòs el seu ID
+    if (err) {
+      console.log(err)
+      res.render('login');
+    }
+    else {
+        user = user[0]
+        Trans.find ({Receptor: user.id}, function(err, tasks){
+        res.render('home', {user:user[0], tasks:tasks});
+      });     
+    }     
+  });   
+});
+
+app.get('/register', function(req, res) {
+    res.render('index', { });
+});
+
 app.get('/home', function (req, res) {
   console.log(req.session)
   Usuari.find({username:req.session.passport.user},function(err, user) {
@@ -89,8 +109,40 @@ app.get('/home', function (req, res) {
   });   
 });
 
-app.get('/register', function(req, res) {
-    res.render('index', { });
+
+app.get('/tasques', function(req, res){
+    Tasques.find({},function(err, tasks){
+      console.log(tasks)
+      if(err) console.log(err)
+      res.render('tasques',{tasks:tasks}); 
+    })
+    
+});
+
+// app.get('/tasques', function(req, res){
+//     Tasques.find({},function(err, tasks){
+//       console.log(tasks)
+//       if(err) console.log(err)
+//       res.render('tasques',{tasks:tasks}); 
+//     })
+    
+// });
+
+app.get('/transaccio', function(req, res){
+    Usuari.find({}, 
+    function(err, users){
+      if(err) {
+        console.log(err)
+      } else {
+        Tasques.find ({}, 
+          function(err, tasks){
+            console.log(user)
+            console.log(tasks)
+            res.render('trans', {user: users, tasks:tasks});
+        });     
+      }
+    })
+    
 });
 
 
@@ -122,21 +174,7 @@ app.post('/register', function(req, res) {
 });
 
 
-app.get('/login', function(req, res) {
-  Usuari.find({username:req.user},function(err, user) {
-    console.log(user[0]) //→ aqui extreus tota la info del usuari inclòs el seu ID
-    if (err) {
-      console.log(err)
-      res.render('login');
-    }
-    else {
-        user = user[0]
-        Trans.find ({Receptor: user.id}, function(err, tasks){
-        res.render('home', {user:user[0], tasks:tasks});
-      });     
-    }     
-  });   
-});
+
 
 
 app.post('/login', passport.authenticate('local'), function(req, res) {
@@ -194,31 +232,7 @@ app.post('/logout', function(req, res) {
     res.render('index');
 });
 
-app.get('/tasques', function(req, res){
-    Tasques.find({},function(err, tasks){
-      console.log(tasks)
-      if(err) console.log(err)
-      res.render('tasques',{tasks:tasks}); 
-    })
-    
-});
 
-app.get('/transaccio', function(req, res){
-    Usuari.find({}, 
-    function(err, users){
-      if(err) {
-        console.log(err)
-      } else {
-        Tasques.find ({}, 
-          function(err, tasks){
-            console.log(user)
-            console.log(tasks)
-            res.render('trans', {user: users, tasks:tasks});
-        });     
-      }
-    })
-    
-});
 
 app.post('/creacioTasca', function(req, res){
     Tasques.create(new Tasques(
@@ -256,15 +270,6 @@ app.post('/acceptacioTasca', function(req, res){
     // afegir trans amb el nou estat
     // notificar usuari
     // 
-});
-
-app.get('/tasques', function(req, res){
-    Tasques.find({},function(err, tasks){
-      console.log(tasks)
-      if(err) console.log(err)
-      res.render('tasques',{tasks:tasks}); 
-    })
-    
 });
 
 
