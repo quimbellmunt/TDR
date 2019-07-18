@@ -4,8 +4,8 @@ var mongoose = require("mongoose");
 var passport = require("passport");//
 var bodyParser = require("body-parser");
 
-
-
+//Quan al llarg de tot aquest codi apareix la paraula "user" i no "users", això és que he d'afegir la s o que és un tema que va més enllà del nom que li hagi posat a la meva variable?
+// Com fer perquè qualsevol d'aquests botons funcioni només si es té la última versió? És possible que hagis de fer get de la última versió i de la que té l'usuari i aleshores ho compares?
 var passportLocalMongoose = require("passport-local-mongoose");
 var autoIncrement   = require('mongoose-auto-increment');
 
@@ -100,6 +100,7 @@ app.post('/create', function(req, res) {
   res.render('tasques')
   });
 });
+//Aquest botó de create està bé? O la part de new tasques no ho està?
 
 app.post('/modificacio', function(req,res) {
   usuari.findOneAndUpdate({nom:req.body.nom, cognoms:req.body.cognoms, username:req.body.username, mail:req.body.mail}, 
@@ -124,6 +125,11 @@ app.post('/deleteTasques', function(req,res) {
   req.delete();
   res.render('home');
 });
+
+app.post('/descarrega', function(req,res) {
+  //En el req no en tinc ni la menor idea de que he de posar exactament. Sé que al final hem dit que s'enviava la tasca per mail i aleshores té a veure amb The Nodemailer module. 
+  res.render('home');
+  });
 
 app.listen(app.get('port'), function(){
   console.log(("Express server listening on port " + app.get('port')))
