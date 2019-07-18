@@ -7,18 +7,16 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<p>Tasques</p>
+<p>Transaccions</p>
 
-<% if (message) { %>
-<p> <%= message %> </p>
-<% } %>
+
 
 <form action="/creacioTrans" method="POST">
    <fieldset>
       <legend>Emisor</legend>
       <p>
         <label>Tu</label>
-        <select id = "emisor">
+        <select name="emisor" id = "emisor">
           <option name="emisor" value = "<%= emisor %>"><%= emisor %></option>
          </select>
       </p>
@@ -27,7 +25,7 @@
       <legend>Receptor</legend>
       <p>
         <label>Llistat de usuaris</label>
-        <select id = "receptor">
+        <select name="receptor" id = "receptor">
         <% if (users) { %>
           <ul>
             <% users.forEach(user => { %>
@@ -38,12 +36,11 @@
          </select>
       </p>
    </fieldset>
-    <%= JSON.stringify(tasks) %>
    <fieldset>
       <legend>Tasques</legend>
       <p>
         <label>Llistat de tasques</label>
-        <select id = "tasques">
+        <select name="tasca" id = "tasca">
         <% if (tasks) { %>
           <ul>
             <% tasks.forEach(task => { %>
