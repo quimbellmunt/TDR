@@ -6,7 +6,8 @@ const Users = new mongoose.Schema({
 	cognoms: String,
 	username: String,
 	mail: String, 
-	password: String
+	password: String, 
+	cartera: Number // Aqui et falta la pasta que té cada usuari
 
 });
 

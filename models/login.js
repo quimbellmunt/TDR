@@ -7,8 +7,8 @@ const Login = new mongoose.Schema({
  password: String,
 });
 
-User.plugin(passportLocalMongoose);
-
+// User.plugin(passportLocalMongoose); 
+Login.plugin(passportLocalMongoose); // si li canvies el nom al model també l'has de canviar aquí
 
 
 module.exports = mongoose.model('Login', Login);
