@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>tasca</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h5><center>APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</center></h5>
+	
+
+	<h3>creació de la tasca</h3>
+
+	<form action="/create" method="POST"> 
+		<p>Nom de la tasca:</p>
+			<input type="text" name="Nom de la tasca" placeholder="nom de la tasca">
+		<p>Valor monetari:</p>
+			<input type="text" name="Preu" placeholder="valor monetari">
+		<p>Temps requerit:</p>
+			<input type="text" name="Temps" placeholder="temps requerit">
+		<p>Descripció de la tasca:</p>
+			<input type="text" name="Descripcio" placeholder="descripció de la tasca">
+		<button>Crear</button>
+	</form>
+	<table>
+		<tr>
+		<td>Titol</td>
+		<td>Descripcio</td>
+		<td>Preu</td>
+		<td>Temps</td>
+		</tr>
+
+	<% if (tasques.length >0) { %>
+	  <% tasques.forEach(tasca => { %>
+	  <tr>
+	  <td><%= tasca.nom %></td>
+	  <td><%= tasca.descripcio %></td>
+	  <td><%= tasca.preu %></td>
+	  <td><%= tasca.temps %></td>
+	  </tr>
+	  <form action="/modificacio" method="POST">
+			<!-- p>Dades de la teva tasca seleccionada:</p> No en tinc ni idea de com fer perquè tota la informació surti de la tasca seleccionada. Entenc que és una cosa que s'ha de fer a app.js amb el botó, però no sé com.  -->
+				<td><p>Nom:</p>
+					<p><%= tasques['nom']%></p> <input type="text" name="nom">
+				<td><p>Valor monetari:</p></td>
+					<p><%= tasques['preu']%></p> <input type="text" name="preu"></td>
+				<td><p>Temps requerit:</p>
+					<p><%= tasques['temps']%></p> <input type="text" name="temps"></td>
+				<td><p>Descripció de la tasca:</p>
+					<p><%= tasques['descripcio']%></p> <input type="text" name="descripcio"></td>
+		<button>Canviar</button>
+	</form>
+  	<% }); %>
+
+	<!-- </table>
+	<h3>modificació de la tasca</h3>
+		<p>Seleccionar la tasca:</p>
+		<p><%= tasques[0]['nom']</p>   
+
+			Per molt que ho hagi utilitzat no m'enrecordo si això era perquè et sorti el nom de la tasca 0 o com? En el cas de que sigui així, com faig perquè surtin el nombre de tasques exactes que hi ha?
+
+		<p><%= tasca['nom']%></p>
+		<p><%= tasca['nom']</p>
+		<p><%= tasques[3]['nom']</p>
+		
+	<form action="/modificacio" method="POST">
+			<p>Dades de la teva tasca seleccionada:</p> No en tinc ni idea de com fer perquè tota la informació surti de la tasca seleccionada. Entenc que és una cosa que s'ha de fer a app.js amb el botó, però no sé com. 
+				<p>Nom:</p>
+					<p><%= tasques['nom']=></p> <input type="text" name="nom">
+				<p>Valor monetari:</p>
+					<p><%= tasques['preu']=></p> <input type="text" name="preu">
+				<p>Temps requerit:</p>
+					<p><%= tasques['temps']=></p> <input type="text" name="temps">
+				<p>Descripció de la tasca:</p>
+					<p><%= tasques['descripcio']=></p> <input type="text" name="descripcio">
+		<button>Canviar</button>
+	</form> -->
+
+
+	<!-- <h3>eliminació de la tasca</h3>
+		<p>Seleccionar la tasca:</p>
+		<p><%= tasques[0]['nom']</p>
+		<p><%= tasques[1]['nom']</p>
+		<p><%= tasques[2]['nom']</p>
+		<p><%= tasques[3]['nom']</p> -->
+
+	<!-- <form action="/delete" method="delete">
+		<BUTTON>SÍ</BUTTON>
+	</form>
+	<form action="/cancelar">
+		<button>NO</button>
+	</form> -->
+		
+
+	<form action="/logout" method="POST" >
+    	<button>Logout</button>
+	</form>
+
+</body>
+</html>

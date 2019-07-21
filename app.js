@@ -102,7 +102,7 @@ app.get('/home', function (req, res) {
       res.render('login');
     }
     else {
-        Trans.find ({Receptor: user.id}, function(err, tasks){
+        Trans.find({Receptor: user.id}, function(err, tasks){
         res.render('home', {user:user[0], tasks:tasks});
       });     
     }     
@@ -246,6 +246,7 @@ app.post('/creacioTasca', function(req, res){
       if(err) {
         console.log(err)
       } else {
+        ////
         Tasques.find({},function(err, tasks){
           if(err) console.log(err)
           res.render('tasques',{tasks:tasks}); 
@@ -256,9 +257,18 @@ app.post('/creacioTasca', function(req, res){
 
 app.post('/creacioTrans', function(req, res){
   console.log(req.body)
-  Trans.create(new Trans({}), 
+  Tasques.find({nom:req.body.tasca}, function(err, tasca){
+    Trans.create(new Trans({
+    tipus:'transaccio', 
+    emisor:req.body.emisor,
+    receptor:req.body.receptor, 
+    tasca: req.body.tasca, 
+    preu: tasca.preu, 
+    acceptada:false, 
+    acabada:false
+  }), 
     function(err, trans){
-      if('passport' in req.session){
+  
     Usuari.find({}, 
     function(err, users){
       if(err) {
@@ -270,35 +280,61 @@ app.post('/creacioTrans', function(req, res){
         });     
       }
     })
-  } else {
-    Usuari.find({username:req.session.passport.user},function(err, user) {
-      console.log(user) //→ aqui extreus tota la info del usuari inclòs el seu ID
-      if (err) {
-        console.log(err)
-        res.render('login');
-      }
-      else {
-          Trans.find ({Receptor: user.id}, function(err, tasks){
-          res.render('home', {user:user[0], tasks:tasks});
-        });     
-      }     
-    });
-  }
-  })
-
-    
+  })    
 });
 
 app.post('/cumplimentTasca', function(req, res){
-    // afegir trans amb el nou estat
-    // notificar usuari
-    // 
+    Trans.findOneandUpdate({
+    tipus:'transaccio', 
+    emisor:req.body.emisor,
+    receptor:req.body.receptor, 
+    tasca: req.body.tasca, 
+    preu: tasca.preu, 
+    acceptada:false, 
+    acabada:false
+  }, { acceptada:true }, 
+    function(err, trans){
+      if(err)
+        Usuari.find({username:req.session.passport.user},function(err, user) {
+          console.log(user) //→ aqui extreus tota la info del usuari inclòs el seu ID
+          if (err) {
+            console.log(err)
+            res.render('login');
+          }
+          else {
+              Trans.find({Receptor: user.req.session.passport.user}, function(err, tasks){
+              res.render('home', {user:user[0], tasks:tasks});
+            });     
+          }     
+        });   
+    })
 });
 
 app.post('/acceptacioTasca', function(req, res){
-    // afegir trans amb el nou estat
-    // notificar usuari
-    // 
+  Trans.findOneandUpdate({
+    tipus:'transaccio', 
+    emisor:req.body.emisor,
+    receptor:req.body.receptor, 
+    tasca: req.body.tasca, 
+    preu: tasca.preu, 
+    acceptada:true, 
+    acabada:false
+  }, { acabada:true }, 
+    function(err, trans){
+      if(err)
+        Usuari.find({username:req.session.passport.user},function(err, user) {
+    console.log(user) //→ aqui extreus tota la info del usuari inclòs el seu ID
+    if (err) {
+      console.log(err)
+      res.render('login');
+    }
+    else {
+        Trans.find({Receptor: user.req.session.passport.user}, function(err, tasks){
+        res.render('home', {user:user[0], tasks:tasks});
+      });     
+    }     
+  });   
+  })
 });
 
 
