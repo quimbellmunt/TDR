@@ -50,9 +50,6 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
-
-
 app.get('/', function (req, res) {
   if('passport' in req.session){
     Usuari.find({username:req.session.passport.user},function(err, user) {
@@ -146,15 +143,6 @@ app.get('/tasques', function(req, res){
    } 
 });
 
-// app.get('/tasques', function(req, res){
-//     Tasques.find({},function(err, tasks){
-//       console.log(tasks)
-//       if(err) console.log(err)
-//       res.render('tasques',{tasks:tasks}); 
-//     })
-    
-// });
-
 app.get('/transaccio', function(req, res){
   if(!('passport' in req.session)){ 
     res.render('index')
@@ -225,10 +213,6 @@ app.post('/register', function(req, res) {
   }
 });
 
-
-
-
-
 app.post('/login', passport.authenticate('local'), function(req, res) {
   if(!('passport' in req.session)){ 
     res.render('index')
@@ -292,17 +276,10 @@ app.post('/tasques', function(req, res) {
 });
 
 
-
-
-
-
-
 app.post('/logout', function(req, res) {
     req.logout();
     res.render('index');
 });
-
-
 
 app.post('/creacioTasca', function(req, res){
   if(!('passport' in req.session)){ 
@@ -474,7 +451,7 @@ app.post('/cumplimentTasca', function(req, res){
       receptor:req.body.receptor, 
       tasca: req.body.tasca, 
       preu: req.body.preu, 
-      acceptada:false, 
+      acceptada:true, 
       acabada:false
     }, { acceptada:true }, 
       function(err, trans){
@@ -500,7 +477,7 @@ app.post('/cumplimentTasca', function(req, res){
         tasca: req.body.tasca, 
         preu: req.body.preu, 
         acceptada:true, 
-        acabada:false
+        acabada:true
       }),
     function(err, add) {
       if(err){
@@ -509,6 +486,40 @@ app.post('/cumplimentTasca', function(req, res){
         console.log('Transacció afegida al block')
       }
     }); 
+    Usuari.findOne({username:req.body.receptor},
+      function(err, userReceptor) {
+      console.log(user) //→ aqui extreus tota la info del usuari inclòs el seu ID
+      if (err) {
+        console.log(err)
+      }
+      else {
+        Usuari.findOneAndUpdate(userReceptor,{diners:user.diners+req.body.preu},function(err, ok){
+          if(err) {
+            console.log(err)
+          } else {
+            console.log('Diners afegits al receptor')
+          }
+        })
+        
+      }     
+    });
+    Usuari.findOne({username:req.body.emisor},
+      function(err, userEmisor) {
+      console.log(user) //→ aqui extreus tota la info del usuari inclòs el seu ID
+      if (err) {
+        console.log(err)
+      }
+      else {
+        Usuari.findOneAndUpdate(userEmisor,{diners:user.diners-req.body.preu},function(err, ok){
+          if(err) {
+            console.log(err)
+          } else {
+            console.log('Diners retinguts al emisor')
+          }
+        })
+        
+      }     
+    });  
   }
 });
 
@@ -522,9 +533,9 @@ app.post('/acceptacioTasca', function(req, res){
       receptor:req.body.receptor, 
       tasca: req.body.tasca, 
       preu: req.body.preu, 
-      acceptada:true, 
+      acceptada:false, 
       acabada:false
-    }, { acabada:true }, 
+    }, { acceptada:true }, 
     function(err, trans){
       Usuari.find({username:req.session.passport.user},function(err, user) {
         if (err) {
@@ -545,7 +556,7 @@ app.post('/acceptacioTasca', function(req, res){
       tasca: req.body.tasca, 
       preu: req.body.preu, 
       acceptada:true, 
-      acabada:true
+      acabada:false
       }),
     function(err, add) {
       if(err){
