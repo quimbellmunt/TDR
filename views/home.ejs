@@ -8,15 +8,44 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h5>APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</h5> (Aquest títol, juntament amb la taula de l'esquerra que encara no he creat, m'interessaria bloquejar-lo perquè no es mogués. Es pot fer i com?)
+<h5>APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</h5> <!--Aquest títol, juntament amb la taula de l'esquerra que encara no he creat, m'interessaria bloquejar-lo perquè no es mogués. Es pot fer i com?)-->
 
-	<h4>Benvinguts/des a la meva pàgina web</h4>
+	<h4>Benvingut/da a la meva pàgina web</h4>
 
+	<h6>Estàs preparat/da per l'intercanvi?</h6>
+
+	
+
+		<h6>Selecciona un usuari:</h6>
+		<!--Està en els views de quim (trans) però no ho entenc del tot-->
+		<h6>Selecciona una tasca:</h6>
+		<!--Està en els views de quim (trans) però no ho entenc del tot-->
 
 <form action="/transaccio" method="POST">
 	<button>Acceptar la transferència</button>
 </form>
 
+	<h6>TASQUES PENDENTS:</h6>
+		<table>
+			<tr>
+				<td>tasca</td>
+				<td>preu</td>
+				<td>emissor</td>
+				<td>estat</td>
+			</tr>
+			<tr>
+				<% if (Tasques.length >0) { %> 
+				<% Tasques.forEach(Tasques => {%>
+				<% JSONstringify(Tasques) %> <!--Stringify és per fer que la info en JS que es vol passar a la web sigui una String *necessari*-->
+					<td><%= Transaccio.tasca%></li>
+					<td><%= Transaccio.preu %></li>
+					<td><%= Transaccio.usuariOrigen %></li>
+					<td><%= Transaccio.acceptada %></li>
+					<% }); %>
+		<% } %>
+
+			</tr>
+		</table>
 
 
 	<h3>actualització</h3>
@@ -27,20 +56,7 @@
 		<form action="/descarrega" method="POST">
 			<button>Descarregar</button> 
 		</form>
-(Aquest botó ha de'estar lligat a The Nodemailer module. S'ha de fer a app.js tot o també aquí s'ha de posar alguna cosa?)
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!--(Aquest botó ha de'estar lligat a The Nodemailer module. S'ha de fer a app.js tot o també aquí s'ha de posar alguna cosa?)-->
 
 
 
@@ -50,11 +66,46 @@
 	<p>3. Torneu a la pàgina d'inici.</p>
 	<p>4. Seleccioneu un usuari per enviar la tasca que han de fer, juntament amb el pagament.</p>
 	<p>5. Confieu que facin la tasca.</p>
+ 
 
+<form action="/inici" method="GET">
+	<button>inici</button>
+</form>
 
+<form action="/actualitzacio" method="GET">
+	<button>actualització</button>
+</form>
+
+<form action="/informacio" method="GET">
+	<button>informació</button>
+</form>
+
+<form action="/usuari" method="GET">
+	<button>usuari</button>	
+</form>
+
+<form action="/modificacioUsuari" method="GET">
+	<button>modificació de l'usuari</button>
+</form>
+
+<form action="/tasca" method="GET">
+	<button>tasca</button>
+</form>
+
+<form action="/creacioTasca" method="GET">
+	<button>creació de la tasca</button>
+</form>
+
+<form action="/modificacioTasca" method="GET">
+	<button>modificació de la tasca</button>
+</form>
+
+<form action="/eliminacioTasca" method="GET">
+	<button>eliminació de la tasca</button>
+</form>
 
 <form action="/logout" method="POST" >
-    <button>Logout</button>
+    <button>logout</button>
 </form>
 
 </body>

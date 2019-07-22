@@ -37,6 +37,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const Login = require('./models/login'); // aqui estas volent fer servir Login no USER  
 //He modificat el codi perque puguis utilitzar el Login com base de dades de Passport Andrea: okay perfecte
+const Tasques = require('./models/tasques');
+const Transaccio = require('./models/transaccions');
+const Users = require('./models/users');
+
 
 passport.use(new LocalStrategy(Login.authenticate()));
 
@@ -100,7 +104,7 @@ app.get('/home', function(req, res){
 app.post('/create', function(req, res) {
   //Avui has de crear un parell de tasques Andrea: no puc accedir a la pàgina de tasques
   console.log(req.body)
-  tasques.register(new tasques({nom: req.body.nom, preu: req.body.preu, temps: req.body.temps, descripcio: req.body.descripcio}), function(err,tasques)
+  tasques.register(new tasques({nomTasca: req.body.nomTasca, preu: req.body.preu, temps: req.body.temps, descripcio: req.body.descripcio}), function(err,tasques)
   {if (err) 
   console.log(err) 
 
@@ -114,7 +118,7 @@ app.post('/create', function(req, res) {
 app.post('/modificacio', function(req,res) {
   // avui fes la info del usuari 
   console.log(req.body)
-  usuari.findOneAndUpdate({nom:req.body.nom, cognoms:req.body.cognoms, username:req.body.username, mail:req.body.mail}, 
+  usuari.findOneAndUpdate({nomUsuari:req.body.nomUsuari, cognoms:req.body.cognoms, username:req.body.username, mail:req.body.mail}, 
     function(err,user) {
       if(err) {
         console.log(err)
@@ -224,7 +228,45 @@ app.post('/descarrega', function(req,res) {
   res.render('home');
   });
 
+app.get('/inici', function(req,res) {
+      res.render('home')
+    });
 
+app.get('/actualitzacio', function(req,res) {
+      res.render('home') //Tot i així, aquí falta que es pugui connectar amb la meitat de la pàgina de home 
+    });
+
+app.get('/informacio', function(req,res) {
+      res.render('home') //falta també poder accedir a la meitat per trobar-se primer amb informació 
+    });
+
+app.get('/usuari', function(req,res) {
+      res.render('usuari')
+    });
+
+app.get('/modificacioUsuari', function(req,res) {
+      res.render('usuari') 
+    });
+
+app.get('/tasca', function(req,res) {
+      res.render('tasques')
+    });
+
+app.get('/creacioTasca', function(req,res) {
+      res.render('tasques') 
+    });
+
+app.get('/modificacioTasca', function(req,res) {
+      res.render('tasques')  //falta
+    });
+
+app.get('/eliminacioTasca', function(req,res) {
+      res.render('tasques')//falta
+    });
+
+app.get('/tasques', function(req,res) {
+      res.render('tasques')
+    });
 // codi que fa que el servidor s'aixequi
 app.listen(app.get('port'), function(){
   console.log(("Express server listening on port " + app.get('port')))

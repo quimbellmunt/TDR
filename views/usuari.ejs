@@ -2,32 +2,68 @@
 <!DOCTYPE html>
 <html lang="en">        
   <head>
+
+ <meta charset="UTF-8">
+  <title>usuari</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
     <h5><center>APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</center></h5>
-    	<h6>modificació de l'usuari</h6>
+        <h6>modificació de l'usuari</h6>
         <form action="/modificaciou" method="POST"> 
-    		<p>Aquestes són les teves dades actuals:</p>
-    		<p>Nom:</p> <p><%= users[0]['Nom']></p> <input type="text" name="Nom">
-    		<p>Cognoms:</p> <p><%= users[0]['Cognoms']></p> <input type="text" name="Cognoms">
-    		<p>Nom d'usuari</p><p><%= users[0]['Username']></p> <input type="text" name="Username">
-    		<p>Correu electrònic</p><p><%= users[0]['Mail']></p> <input type="text" name="Mail">
+            <p>Aquestes són les teves dades actuals:</p>
+            <p>Nom:</p> <p><%= users[0]['Nom']></p> <input type="text" name="Nom">
+            <p>Cognoms:</p> <p><%= users[0]['Cognoms']></p> <input type="text" name="Cognoms">
+            <p>Nom d'usuari</p><p><%= users[0]['Username']></p> <input type="text" name="Username">
+            <p>Correu electrònic</p><p><%= users[0]['Mail']></p> <input type="text" name="Mail">
             <input type="password" name="contrasenya">
 
 
 
-    	<button>Canviar</button>
+        <button>Canviar</button>
     </form>
 
+<form action="/inici" method="GET">
+    <button>inici</button>
+</form>
 
+<form action="/actualitzacio" method="GET">
+    <button>actualització</button>
+</form>
 
+<form action="/informacio" method="GET">
+    <button>informació</button>
+</form>
 
+<form action="/usuari" method="GET">
+    <button>usuari</button> 
+</form>
 
+<form action="/modificacioUsuari" method="GET">
+    <button>modificació de l'usuari</button>
+</form>
 
+<form action="/tasca" method="GET">
+    <button>tasca</button>
+</form>
 
+<form action="/creacioTasca" method="GET">
+    <button>creació de la tasca</button>
+</form>
 
+<form action="/modificacioTasca" method="GET">
+    <button>modificació de la tasca</button>
+</form>
 
-</head>
+<form action="/eliminacioTasca" method="GET">
+    <button>eliminació de la tasca</button>
+</form>
 
-<script src="main.js"></script>
+<form action="/logout" method="POST" >
+    <button>logout</button>
+</form>
 
 </body>
 </html>

@@ -11,6 +11,7 @@
 	
 
 	<h3>creació de la tasca</h3>
+	<p>____________________________________________________________________________________________________________________________________</p>
 
 	<form action="/create" method="POST"> 
 		<p>Nom de la tasca:</p>
@@ -26,35 +27,58 @@
 
 
 	<h3>modificació de la tasca</h3>
+	<p>____________________________________________________________________________________________________________________________________</p>
 		<p>Seleccionar la tasca:</p>
-		<p><%= tasques[0]['nom']</p>   
+	<table>
+		<tr>
+					<% if (Tasques.length >0) { %> 
+				<% Tasques.forEach(Tasques => {%>
+				<% JSONstringify(Tasques) %> 
+					<td><%= Tasques.nomTasca %></li>
+					<td><%= Tasques.preu %></li>
+					<td><%= Tasques.temps %></li>
+					<td><%= Tasques.descripcio %></li>
+					<% }); %>
+		<% } %>
 
-			Per molt que ho hagi utilitzat no m'enrecordo si això era perquè et sorti el nom de la tasca 0 o com? En el cas de que sigui així, com faig perquè surtin el nombre de tasques exactes que hi ha?
+		</tr>
+	</table>
+	<!-- Fer connexió entre tasca escollida i els següents inputs-->
 
-		<p><%= tasques[1]['nom']</p>
-		<p><%= tasques[2]['nom']</p>
-		<p><%= tasques[3]['nom']</p>
 		
 	<form action="/modificaciot" method="POST">
-			<p>Dades de la teva tasca seleccionada:</p> No en tinc ni idea de com fer perquè tota la informació surti de la tasca seleccionada. Entenc que és una cosa que s'ha de fer a app.js amb el botó, però no sé com. 
+			<p>Dades de la teva tasca seleccionada:</p> <!--No en tinc ni idea de com fer perquè tota la informació surti de la tasca seleccionada. Entenc que és una cosa que s'ha de fer a app.js amb el botó, però no sé com. -->
 				<p>Nom:</p>
-					<p><%= tasques[0]['nom']</p> <input type="text" name="nom">
+					 <input type="text" name="nom">
 				<p>Valor monetari:</p>
-					<p><%= tasques[0]['preu']</p> <input type="text" name="preu">
+					 <input type="text" name="preu">
 				<p>Temps requerit:</p>
-					<p><%= tasques[0]['temps']</p> <input type="text" name="temps">
+					 <input type="text" name="temps">
 				<p>Descripció de la tasca:</p>
-					<p><%= tasques[0]['descripcio']</p> <input type="text" name="descripcio">
+					 <input type="text" name="descripcio">
 		<button>Canviar</button>
 	</form>
 
 
 	<h3>eliminació de la tasca</h3>
+	<p>____________________________________________________________________________________________________________________________________</p>
 		<p>Seleccionar la tasca:</p>
-		<p><%= tasques[0]['nom']</p>
-		<p><%= tasques[1]['nom']</p>
-		<p><%= tasques[2]['nom']</p>
-		<p><%= tasques[3]['nom']</p>
+<table>
+		<tr>
+					<% if (Tasques.length >0) { %> 
+				<% Tasques.forEach(Tasques => {%>
+				<% JSONstringify(Tasques) %> 
+					<td><%= Tasques.nomTasca %></li>
+					<td><%= Tasques.preu %></li>
+					<td><%= Tasques.temps %></li>
+					<td><%= Tasques.descripcio %></li>
+					<% }); %>
+		<% } %>
+
+		</tr>
+	</table>
+
+	<!-- fer que es pugui seleccionar una fila i eliminar aquella-->
 
 	<form action="/delete" method="delete">
 		<BUTTON>SÍ</BUTTON>
@@ -64,9 +88,45 @@
 	</form>
 		
 
-	<form action="/logout" method="POST" >
-    	<button>Logout</button>
-	</form>
+	<form action="/inici" method="GET">
+	<button>inici</button>
+</form>
+
+<form action="/actualitzacio" method="GET">
+	<button>actualització</button>
+</form>
+
+<form action="/informacio" method="GET">
+	<button>informació</button>
+</form>
+
+<form action="/usuari" method="GET">
+	<button>usuari</button>	
+</form>
+
+<form action="/modificacioUsuari" method="GET">
+	<button>modificació de l'usuari</button>
+</form>
+
+<form action="/tasca" method="GET">
+	<button>tasca</button>
+</form>
+
+<form action="/creacioTasca" method="GET">
+	<button>creació de la tasca</button>
+</form>
+
+<form action="/modificacioTasca" method="GET">
+	<button>modificació de la tasca</button>
+</form>
+
+<form action="/eliminacioTasca" method="GET">
+	<button>eliminació de la tasca</button>
+</form>
+
+<form action="/logout" method="POST" >
+    <button>logout</button>
+</form>
 
 </body>
 </html>
