@@ -2,24 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MY APP</title>
+  <title>TdR</title>
   <link rel="stylesheet" href="styles.css">
+  <link href="bootstrap.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <h1> Login </h1>
   <form action="/login" method="POST">
    <input type="text" name="username" placeholder="username">
    <input type="password" name="password" placeholder="password">
-   <button>Login</button>
+   <button type="submit" class="btn btn-dark">Entra</button>
   </form>
   <h1> Register </h1>
   <form action="/register" method="POST">
    <input type="text" name="username" placeholder="username">
    <input type="password" name="password" placeholder="password">
-   <button>Submit</button>
+   <button type="submit" class="btn btn-dark">Registra</button>
   </form>  
 
   <script src="main.js"></script>
-
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="bootstrap.js" type="text/javascript"></script>
+ 
 </body>
 </html>

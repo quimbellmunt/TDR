@@ -3,16 +3,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MY APP</title>
+  <title>TdR</title>
   <link rel="stylesheet" href="styles.css">
+  <link href="bootstrap.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <p>Transaccions</p>
 
 
 
-<form action="/creacioTrans" method="POST">
-   <fieldset>
+<form action="/creacioTrans" method="POST" enctype="multipart/form-data">
+   <fieldset class="scheduler-border">
       <legend>Emisor</legend>
       <p>
         <label>Tu</label>
@@ -21,7 +22,7 @@
          </select>
       </p>
    </fieldset>
-   <fieldset>
+   <fieldset class="scheduler-border">
       <legend>Receptor</legend>
       <p>
         <label>Llistat de usuaris</label>
@@ -36,7 +37,7 @@
          </select>
       </p>
    </fieldset>
-   <fieldset>
+   <fieldset class="scheduler-border">
       <legend>Tasques</legend>
       <p>
         <label>Llistat de tasques</label>
@@ -51,6 +52,7 @@
          </select>
       </p>
    </fieldset>
+   <input type="file" name="fileUploaded" />
    <button>Envia</button>
 </form>
 
@@ -61,14 +63,15 @@
 
 
 <form action="/home" method="GET" >
-    <button>home</button>
+    <button type="submit" class="btn btn-primary">home</button>
 </form>
 
 <form action="/logout" method="POST" >
-    <button>Logout</button>
+    <button type="submit" class="btn btn-primary">Logout</button>
 </form>
 
 
-
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="bootstrap.js" type="text/javascript"></script>
 </body>
 </html>

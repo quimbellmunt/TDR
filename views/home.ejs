@@ -3,21 +3,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MY APP</title>
+  <title>TdR</title>
   <link rel="stylesheet" href="styles.css">
+  <link href="bootstrap.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <p>Benvingut/da <%= user.nom%> </p>
 
 
 <form action="/modificaUsuari" method="POST">
-<table>
+<table class="table">
 <tr>
-	<td>Username: <%= user.username%></td>
-	<td>Nom: <%=user.nom%></td>
-	<td>Cognoms: <%=user.cognoms%></td>
-	<td>Mail: <%=user.mail%></td>
-	<td>Cartera: <%=user.diners%></td>
+	<td>Username: <br/> <%= user.username%></td>
+	<td>Nom: <br/><%=user.nom%></td>
+	<td>Cognoms: <br/><%=user.cognoms%></td>
+	<td>Mail: <br/><%=user.mail%></td>
+	<td>Cartera: <br/><%=user.diners%></td>
 </tr>
 <tr>
 	<td><input type="text" name="username" value="<%=user.username%>" readonly></td>
@@ -27,21 +28,23 @@
 	<td><input type="text" name="diners" value="<%=user.diners%>" readonly></td>
 </tr>
 </table>
-<button>Envia</button>
+<button type="submit" class="btn btn-primary">Envia</button>
 </form>
 <!-- <%= JSON.stringify(tasks) %> -->
 <p>Tasques Assignades</p>
 
-<table>
+<table class="table">
 	<tr>
 			<td>Titol</td>
 			<td>Descripcio</td>
 			<td>Preu</td>
 			<td>Temps</td>
 		</tr>
+
 		<tr>
 		<% if (tasks.length >0) { %>
 		  	<% tasks.forEach(task => { %>
+		  	<% JSON.stringify(task) %>
 		  	<td><%= task.titol %></li>
 		  	<td><%= task.descripcio %></li>
 		  	<td><%= task.preu %></li>
@@ -54,21 +57,22 @@
 
 
 <form action="/tasques" method="GET" >
-    <button>Tasques</button>
+    <button type="submit" class="btn btn-primary">Tasques</button>
 </form>
 
 <form action="/transaccio" method="GET" >
-    <button>Trasnsaccions</button>
+    <button type="submit" class="btn btn-primary">Trasnsaccions</button>
 </form>
 
 <form action="/home" method="GET" >
-    <button>home</button>
+    <button type="submit" class="btn btn-primary">home</button>
 </form>
 
 <form action="/logout" method="POST" >
-    <button>Logout</button>
+    <button type="submit" class="btn btn-warning" >Logout</button>
 </form>
 
-
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="bootstrap.js" type="text/javascript"></script>
 </body>
 </html>
