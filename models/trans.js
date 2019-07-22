@@ -7,9 +7,9 @@ const Trans = new mongoose.Schema({
  
 transId: Number,
 tipus: String, //(transacció, creació de tasca, elimincació de tasca)
-emisor:Number, //(Nom o Id del usuari que crea transacció)
-receptor: Number, //(Nom o Id del usuari que rep transacció)
-tasca:Number, //(Nom o Id del usuari que rep transacció)
+emisor:String, //(Nom o Id del usuari que crea transacció)
+receptor: String, //(Nom o Id del usuari que rep transacció)
+tasca:String, //(Nom o Id del usuari que rep transacció)
 preu: Number,
 acceptada: Boolean,  //(True → Done, False → To be Done)
 acabada: Boolean
