@@ -15,6 +15,7 @@ var path = require('path');
 var express = require('express');
 var http = require('http');
 var LocalStrategy = require('passport-local').Strategy;
+app.use(express.static(__dirname + '/public'));
 
 var app = express();
 app.set('port', process.env.PORT || 1337);
@@ -22,7 +23,6 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.set('view options', { layout: false });
 
-app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(express.static('public'))
@@ -57,7 +57,7 @@ app.get('/', function (req, res) {
 
 // obrir la pagina registre index.ejs
 app.get('/register', function(req, res) {
-    res.render('index', { });
+    res.render('index', {tasques : null});
 });
 
 // Usuari introdeix les dades del registre en la pagina index.ejs
@@ -66,10 +66,10 @@ app.post('/register', function(req, res) {
   Login.register(new Login({ username : req.body.username }), req.body.password, function(err, user) {
       if (err) {
           console.log(err)
-          return res.render('index', { user : user });
+          return res.render('index');
       }
       passport.authenticate('local')(req, res, function () {
-        res.render('home');
+        res.render('home',{tasques : null});
       });
   });
 });
@@ -77,13 +77,13 @@ app.post('/register', function(req, res) {
 //localhost:3000/login es igual a localhost:3000 e igual a localhost:3000/registre
 app.get('/login', function(req, res) {
 
-    res.render('index', { user : req.user });
+    res.render('index', {tasques : []});
 });
 
 
 //Usuari introdueix les dades del seu login a index.ejs   //quan he entrar a home, a dalt posa localhost:3000/login... Això és per culpa del següent o perquè?
 app.post('/login', passport.authenticate('local'), function(req, res) {
-    res.render('home');
+    res.render('home',{tasques : []});
 });
 
 
@@ -95,7 +95,7 @@ app.post('/logout', function(req, res) {
 
 // obrir pagina localhost:3000/home --> home.ejs
 app.get('/home', function(req, res){
-    res.render('home');
+    res.render('home',{tasques:null});
 });
 
 
@@ -105,14 +105,14 @@ app.get('/home', function(req, res){
 app.post('/create', function(req, res) {
   //Avui has de crear un parell de tasques Andrea: no puc accedir a la pàgina de tasques
   console.log(req.body)
-  const createdTask = new Tasques({nomTasca: req.body.nomTasca, preu: req.body.preu, temps: req.body.temps, descripcio: req.body.descripcio});
-  createdTask.save(function(err, createdTask) {
-      if (err) console.log(err) 
-      else {
-        console.log('created task', createdTask)
-        res.redirect('/tasques')
-      }
-  });
+  var createdTask = new Tasques({nomTasca: req.body.nomTasca, preu: req.body.preu, temps: req.body.temps, descripcio: req.body.descripcio});
+  Tasques.create(createdTask, function(err, createdTask){
+    if (err) console.log(err) 
+    else {
+      console.log('created task', createdTask)
+      res.render('tasques', {tasques : createdTask})
+    }
+  })
 });
 //Aquest botó de create està bé? O la part de new tasques no ho està?
 
@@ -136,28 +136,26 @@ app.post('/modificacio', function(req,res) {
 
 
 // La Tasca es eborrada de la base de Dades
-app.post('/tascaEsborrada', function(req,res) {
-  // aqui has mirar les informacions que t'arriben del fron end a req.body.
-  // hauries de rebre algo semblant a req.body.nom
-  // var nomTasca = req.body.nom
-  // aleshores interactues amb el teu model Tasca
-  //https://mongoosejs.com/docs/queries.html
-  // Tasques.findOneAndDelete({nom:nomTasca}, function(err, tascaEliminada){
-    // if(err) {
-    // 
-    //   console.log(err)
-    // } else {
-    // res.render('home');
-    // }
-
-  //})
-  //req.delete();Aixo no fa res
-  //res.render('home'); Aixo ha dánar dintre de la tasca d'esborra la tasca
+app.post('/esborrarTasca', function(req,res) {
+  console.log(req.body)
+  Tasques.findOneAndDelete({nomTasca:req.body.nomTasca}, function(err, tascaEsborrada){
+    if(err) { 
+      console.log(err) 
+    } else {
+      Tasques.find({},function(err, tasques){
+        if(err) console.log(err)
+        res.render('tasques',{tasques : tasques}) 
+      })
+    }
+  })
+  
+      
 });
 
 //Usuari Receptor acaba la Tasca 
 
 app.post('/TascaAcabada', function(res) {
+
   // aqui has mirar les informacions que t'arriben del fron end a req.body.
   // hauries de rebre algo semblant a req.body.emisor, req.body.receptor, req.body.tasca i requ.body.preu
   // var emisorTasca = req.body.emisor
@@ -168,29 +166,29 @@ app.post('/TascaAcabada', function(res) {
   // var preuTasca = req.body.preu
   // aqui interactues amb 3 models, dues vegades amb Usuari i una vegada amb trasaccions
   // Trans.create(new Trans({tipus:'tasca Acabada', usuariOrigen: emisorTasca, }), function(err, tascaEliminada){
-    // if(err) {
-    // 
-    //   console.log(err)
-    // } else {
-    //   console.log('Transacció afegida')
-    // }
+  //   if(err) {
+    
+  //     console.log(err)
+  //   } else {
+  //     console.log('Transacció afegida')
+  //   }
   // }); 
-    // aqui has de sumar la pasta el que ha fet la tasca i restarli el que va encomanar-la
-    // Usuari.findOneAndUpdate({nom:receptorTasca},{},function(err, done){
-    // Users.findOneAndUpdate({nom:emisorTasca}, {cartera:dinersEmisor -  preuTasca}, 
-    //   function(err, update){
-//   console.log(err)
-    // } else {
-    //   console.log('Usuari actualitzat')
-    // }
-    // })
-    // Users.findOneAndUpdate({nom:receptorTasca}, {cartera:dinersReceptor +  preuTasca}, 
-    //   function(err, update){
-//   console.log(err)
-    // } else {
-    //   console.log('Usuari actualitzat')
-    // }
-    // })
+  //   aqui has de sumar la pasta el que ha fet la tasca i restarli el que va encomanar-la
+  //   Usuari.findOneAndUpdate({nom:receptorTasca},{},function(err, done){
+  //   Users.findOneAndUpdate({nom:emisorTasca}, {cartera:dinersEmisor -  preuTasca}, 
+  //     function(err, update){
+  // console.log(err)
+  //   } else {
+  //     console.log('Usuari actualitzat')
+  //   }
+  //   })
+  //   Users.findOneAndUpdate({nom:receptorTasca}, {cartera:dinersReceptor +  preuTasca}, 
+  //     function(err, update){
+  // console.log(err)
+  //   } else {
+  //     console.log('Usuari actualitzat')
+  //   }
+  //   })
 
   //})
   res.render('home')
@@ -252,14 +250,19 @@ app.get('/modificacioUsuari', function(req,res) {
     });
 
 app.get('/tasques', function(req,res) {
-      Tasques.find({}, function(error, tasksToShow) {
-        res.render('tasques', { tasks: tasksToShow})
-      });
-    });
+  Tasques.find({}, function(error, tasksToShow) {
+    console.log(tasksToShow)
+    res.render('tasques', {tasques: tasksToShow})
+  });
+});
 
 app.get('/creacioTasca', function(req,res) {
-      res.render('tasques') 
-    });
+  Tasques.find({},function(err, tasques){
+    if(err) console.log(err)
+    res.render('tasques',{tasques : tasques}) 
+  })
+      
+});
 
 app.get('/modificacioTasca', function(req,res) {
       res.render('tasques')  //falta
