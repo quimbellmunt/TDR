@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TdR</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="bootstrap.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<p>Transaccions</p>
+
+
+
+<form action="/creacioTrans" method="POST" enctype="multipart/form-data">
+   <fieldset class="scheduler-border">
+      <legend>Emisor</legend>
+      <p>
+        <label>Tu</label>
+        <select name="emisor" id = "emisor">
+          <option name="emisor" value = "<%= emisor %>"><%= emisor %></option>
+         </select>
+      </p>
+   </fieldset>
+   <fieldset class="scheduler-border">
+      <legend>Receptor</legend>
+      <p>
+        <label>Llistat de usuaris</label>
+        <select name="receptor" id = "receptor">
+        <% if (users) { %>
+          <ul>
+            <% users.forEach(user => { %>
+            <option name="receptor" value = "<%= user.nom %>"><%= user.nom %></option>
+            <% }); %>
+          <ul>
+          <% } %>
+         </select>
+      </p>
+   </fieldset>
+   <fieldset class="scheduler-border">
+      <legend>Tasques</legend>
+      <p>
+        <label>Llistat de tasques</label>
+        <select name="tasca" id = "tasca">
+        <% if (tasks) { %>
+          <ul>
+            <% tasks.forEach(task => { %>
+            <option  name="tasca" value = "<%= task.titol %>"><%= task.titol %></option>
+            <% }); %>
+          <ul>
+          <% } %>
+         </select>
+      </p>
+   </fieldset>
+   <input type="file" name="fileUploaded" />
+   <button>Envia</button>
+</form>
+
+
+
+
+
+
+
+<form action="/home" method="GET" >
+    <button type="submit" class="btn btn-primary">home</button>
+</form>
+
+<form action="/logout" method="POST" >
+    <button type="submit" class="btn btn-primary">Logout</button>
+</form>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="bootstrap.js" type="text/javascript"></script>
+</body>
+</html>
