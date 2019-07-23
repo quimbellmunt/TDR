@@ -15,13 +15,13 @@
 
 	<form action="/create" method="POST"> 
 		<p>Nom de la tasca:</p>
-			<input type="text" name="Nom de la tasca" placeholder="nom de la tasca">
+			<input type="text" name="nomTasca" placeholder="nom de la tasca">
 		<p>Valor monetari:</p>
-			<input type="text" name="Preu" placeholder="valor monetari">
+			<input type="text" name="preu" placeholder="valor monetari">
 		<p>Temps requerit:</p>
-			<input type="text" name="Temps" placeholder="temps requerit">
+			<input type="text" name="temps" placeholder="temps requerit">
 		<p>Descripció de la tasca:</p>
-			<input type="text" name="Descripcio" placeholder="descripció de la tasca">
+			<input type="text" name="descripcio" placeholder="descripció de la tasca">
 		<button>Crear</button>
 	</form>
 
@@ -29,18 +29,21 @@
 	<h3>modificació de la tasca</h3>
 	<p>____________________________________________________________________________________________________________________________________</p>
 		<p>Seleccionar la tasca:</p>
-	<table>
-		<tr>
-					<% if (tasks.length >0) { %> 
-				<% tasks.forEach(task => {%>
-					<td><%= task.nomTasca %></li>
-					<td><%= task.preu %></li>
-					<td><%= task.temps %></li>
-					<td><%= task.descripcio %></li>
+	<table class="table">
+		
+					<% if (tasques.length >0) { %> 
+					<% tasques.forEach(tasca => {%>
+					<tr>
+					<td><%= tasca.nomTasca %></li>
+					<td><%= tasca.preu %></li>
+					<td><%= tasca.temps %></li>
+					<td><%= tasca.descripcio %></li>
+					
+					</tr>
 					<% }); %>
 		<% } %>
 
-		</tr>
+		
 	</table>
 	<!-- Fer connexió entre tasca escollida i els següents inputs-->
 
@@ -63,17 +66,24 @@
 	<p>____________________________________________________________________________________________________________________________________</p>
 		<p>Seleccionar la tasca:</p>
 <table>
-		<tr>
-					<% if (tasks.length > 0) { %> 
-				<% tasks.forEach(task => {%>
-					<td><%= task.nomTasca %></li>
-					<td><%= task.preu %></li>
-					<td><%= task.temps %></li>
-					<td><%= task.descripcio %></li>
+		
+					<% if (tasques.length > 0) { %> 
+				<% tasques.forEach(tasca => {%>
+				<tr>
+					<td><%= tasca.nomTasca %></td>
+					<td><%= tasca.preu %></td>
+					<td><%= tasca.temps %></td>
+					<td><%= tasca.descripcio %></td>
+					<td>
+						<form action="/esborrarTasca" method="POST">
+							<BUTTON name="nomTasca" value="<%= tasca.nomTasca %>" >Esborrar</BUTTON>
+						</form>
+					</td>
+				</tr>
 					<% }); %>
 		<% } %>
 
-		</tr>
+		
 	</table>
 
 	<!-- fer que es pugui seleccionar una fila i eliminar aquella-->

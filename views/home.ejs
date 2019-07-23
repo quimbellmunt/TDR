@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <title>inici</title>
   <link rel="stylesheet" href="styles.css">
+  <link href="bootstrap.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <h5>APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</h5> <!--Aquest títol, juntament amb la taula de l'esquerra que encara no he creat, m'interessaria bloquejar-lo perquè no es mogués. Es pot fer i com?)-->
@@ -34,13 +35,13 @@
 				<td>estat</td>
 			</tr>
 			<tr>
-				<% if (Tasques.length >0) { %> 
-				<% Tasques.forEach(Tasques => {%>
-				<% JSONstringify(Tasques) %> <!--Stringify és per fer que la info en JS que es vol passar a la web sigui una String *necessari*-->
-					<td><%= Transaccio.tasca%></li>
-					<td><%= Transaccio.preu %></li>
-					<td><%= Transaccio.usuariOrigen %></li>
-					<td><%= Transaccio.acceptada %></li>
+				<% if (tasques.length >0) { %> 
+				<% tasques.forEach(tasca => {%>
+				<% JSONstringify(tasques) %> <!--Stringify és per fer que la info en JS que es vol passar a la web sigui una String *necessari*-->
+					<td><%= tasca.tasca%></li>
+					<td><%= tasca.preu %></li>
+					<td><%= tasca.usuariOrigen %></li>
+					<td><%= tasca.acceptada %></li>
 					<% }); %>
 		<% } %>
 
@@ -108,5 +109,7 @@
     <button>logout</button>
 </form>
 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="bootstrap.js" type="text/javascript"></script>
 </body>
 </html>
