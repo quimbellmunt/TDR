@@ -35,13 +35,13 @@
 				<td>estat</td>
 			</tr>
 			<tr>
-				<% if (tasques.length >0) { %> 
-				<% tasques.forEach(tasca => {%>
-				<% JSONstringify(tasques) %> <!--Stringify és per fer que la info en JS que es vol passar a la web sigui una String *necessari*-->
-					<td><%= tasca.tasca%></li>
-					<td><%= tasca.preu %></li>
-					<td><%= tasca.usuariOrigen %></li>
-					<td><%= tasca.acceptada %></li>
+				<% if (transaccions.length >0) { %> 
+				<% transaccions.forEach(transaccio => {%>
+				<% JSONstringify(transaccions) %> <!--Stringify és per fer que la info en JS que es vol passar a la web sigui una String *necessari*-->
+					<td><%= transaccio.tasca%></li>
+					<td><%= transaccio.preu %></li>
+					<td><%= transaccio.usuariOrigen %></li>
+					<td><%= transaccio.acceptada %></li>
 					<% }); %>
 		<% } %>
 
