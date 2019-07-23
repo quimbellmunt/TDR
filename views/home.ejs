@@ -8,9 +8,49 @@
   <link href="bootstrap.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+
+<div>
+<table class="table" width="100%">
+<tr>
+
+<td>
+<form action="/block" method="GET" >
+<button type="submit" class="btn btn-primary">BlockChain</button>
+</form>
+</td>
+
+<td>
+<form action="/tasques" method="GET" >
+<button type="submit" class="btn btn-primary">Tasques</button>
+</form>
+</td>
+
+<td>
+<form action="/transaccio" method="GET" >
+<button type="submit" class="btn btn-primary">Trasnsaccions</button>
+</form>
+</td>
+
+<td>
+<form action="/home" method="GET" >
+<button type="submit" class="btn btn-primary">home</button>
+</form>
+</td>
+
+<td>
+<form action="/logout" method="POST" >
+<button type="submit" class="btn btn-warning" >Logout</button>
+</form>
+</td>
+
+</tr>
+
+</table>
+</div>
+
 <p>Benvingut/da <%= user.nom%> </p>
 
-
+<div width="100%">
 <form action="/modificaUsuari" method="POST">
 <table class="table">
 <tr>
@@ -30,6 +70,7 @@
 </table>
 <button type="submit" class="btn btn-primary">Envia</button>
 </form>
+</div>
 <!-- <%= JSON.stringify(tasks) %> -->
 <p>Tasques Assignades</p>
 
@@ -54,23 +95,6 @@
 	</tr>
 </table>
 
-
-
-<form action="/tasques" method="GET" >
-    <button type="submit" class="btn btn-primary">Tasques</button>
-</form>
-
-<form action="/transaccio" method="GET" >
-    <button type="submit" class="btn btn-primary">Trasnsaccions</button>
-</form>
-
-<form action="/home" method="GET" >
-    <button type="submit" class="btn btn-primary">home</button>
-</form>
-
-<form action="/logout" method="POST" >
-    <button type="submit" class="btn btn-warning" >Logout</button>
-</form>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="bootstrap.js" type="text/javascript"></script>

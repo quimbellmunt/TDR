@@ -7,7 +7,45 @@
   <link rel="stylesheet" href="styles.css">
   <link href="bootstrap.css" rel="stylesheet" type="text/css">
 </head>
-<body>
+<body><div>
+<table class="table" width="100%">
+<tr>
+
+<td>
+<form action="/block" method="GET" >
+<button type="submit" class="btn btn-primary">BlockChain</button>
+</form>
+</td>
+
+<td>
+<form action="/tasques" method="GET" >
+<button type="submit" class="btn btn-primary">Tasques</button>
+</form>
+</td>
+
+<td>
+<form action="/transaccio" method="GET" >
+<button type="submit" class="btn btn-primary">Trasnsaccions</button>
+</form>
+</td>
+
+<td>
+<form action="/home" method="GET" >
+<button type="submit" class="btn btn-primary">home</button>
+</form>
+</td>
+
+<td>
+<form action="/logout" method="POST" >
+<button type="submit" class="btn btn-warning" >Logout</button>
+</form>
+</td>
+
+</tr>
+
+</table>
+</div>
+
 <p>Tasques</p>
 
 <form action="/creacioTasca" method="POST">
@@ -15,10 +53,10 @@
    	<input type="text" name="descripcio" placeholder="descripció">
    	<input type="text" name="preu" placeholder="preu asignat">
    	<input type="text" name="temps" placeholder="duracio">
-   <button>Submit</button>
+   <button class="btn btn-primary">Crea la Tasca</button>
 </form> 
 <div class="table-responsive">
-<table class="table">
+<table class="table" width="100%">
 	<thead>
 	<tr>
 	<td>Titol</td>
@@ -57,18 +95,6 @@
 </tbody>
 </table>
 </div>
-
-
-
-
-<form action="/home" method="GET" >
-    <button type="submit" class="btn btn-primary">home</button>
-</form>
-
-<form action="/logout" method="POST" >
-    <button type="submit" class="btn btn-primary">Logout</button>
-</form>
-
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

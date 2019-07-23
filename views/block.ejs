@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TdR</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="bootstrap.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<table class="table" width="100%">
+<tr>
+<td>
+<form action="/block" method="GET" >
+<button type="submit" class="btn btn-primary">BlockChain</button>
+</form>
+</td>
+
+<td>
+<form action="/tasques" method="GET" >
+<button type="submit" class="btn btn-primary">Tasques</button>
+</form>
+</td>
+
+<td>
+<form action="/transaccio" method="GET" >
+<button type="submit" class="btn btn-primary">Trasnsaccions</button>
+</form>
+</td>
+
+<td>
+<form action="/home" method="GET" >
+<button type="submit" class="btn btn-primary">home</button>
+</form>
+</td>
+
+<td>
+<form action="/logout" method="POST" >
+<button type="submit" class="btn btn-warning" >Logout</button>
+</form>
+</td>
+
+</tr>
+
+</table>
+</div>
+
+<p> Hey <%= user%>! Aqui tens la cadena de blocks</p>
+
+
+<div>
+<p>BlockChain</p>
+
+<table class="table" width="100%">
+	<tr>
+			<td>transId</td>
+			<td>tipus</td>
+			<td>emisor</td>
+			<td>receptor</td>
+			<td>tasca</td>
+			<td>preu</td>
+			<td>acceptada</td>
+			<td>acabada</td>
+		</tr>
+
+		
+		<% if (blocks.length >0) { %>
+		  	<% blocks.forEach(block => { %>
+		  	<tr>
+		  	<td><%= block.transId %></td>
+		  	<td><%= block.tipus %></td>
+		  	<td><%= block.emisor %></td>
+		  	<td><%= block.receptor %></td>
+		  	<td><%= block.tasca %></td>
+		  	<td><%= block.preu %></td>
+		  	<td><%= block.acceptada %></td>
+		  	<td><%= block.acabada %></td>
+		  	</tr>
+	  		<% }); %>
+		<% } %>
+	
+</table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="bootstrap.js" type="text/javascript"></script>
+</body>
+</html>

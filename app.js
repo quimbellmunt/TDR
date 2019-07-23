@@ -118,6 +118,17 @@ app.get('/home', function (req, res) {
   }  
 });
 
+app.get('/block', function(req, res){
+  if(!('passport' in req.session)){ 
+    res.render('index')
+  }else{
+    Block.find({},function(err, blocks){
+      if(err) console.log(err)
+      res.render('block',{user:req.session.passport.user,blocks:blocks}); 
+    })
+  }
+});
+
 
 app.get('/tasques', function(req, res){
   if(!('passport' in req.session)){ 
