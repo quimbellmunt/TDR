@@ -6,6 +6,7 @@ var passport = require("passport");//
 var bodyParser = require("body-parser");
 
 //Quan al llarg de tot aquest codi apareix la paraula "user" i no "users", això és que he d'afegir la s o que és un tema que va més enllà del nom que li hagi posat a la meva variable?
+///////// depen, de que busques als models. si despres d'un Find tens err, users doncs tindras S si tens err, user no tindras S
 // Com fer perquè qualsevol d'aquests botons funcioni només si es té la última versió? És possible que hagis de fer get de la última versió i de la que té l'usuari i aleshores ho compares?
 var passportLocalMongoose = require("passport-local-mongoose");
 var autoIncrement   = require('mongoose-auto-increment');
