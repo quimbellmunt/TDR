@@ -1,5 +1,5 @@
 var express = require("express");
-
+var session = require('express-session');
 var app = express();
 var mongoose = require("mongoose");
 var passport = require("passport");//
@@ -104,11 +104,13 @@ app.get('/home', function(req, res){
 app.post('/create', function(req, res) {
   //Avui has de crear un parell de tasques Andrea: no puc accedir a la pàgina de tasques
   console.log(req.body)
-  tasques.register(new tasques({nomTasca: req.body.nomTasca, preu: req.body.preu, temps: req.body.temps, descripcio: req.body.descripcio}), function(err,tasques)
-  {if (err) 
-  console.log(err) 
-
-  res.render('tasques')
+  const createdTask = new Tasques({nomTasca: req.body.nomTasca, preu: req.body.preu, temps: req.body.temps, descripcio: req.body.descripcio});
+  createdTask.save(function(err, createdTask) {
+      if (err) console.log(err) 
+      else {
+        console.log('created task', createdTask)
+        res.redirect('/tasques')
+      }
   });
 });
 //Aquest botó de create està bé? O la part de new tasques no ho està?
@@ -248,8 +250,10 @@ app.get('/modificacioUsuari', function(req,res) {
       res.render('usuari') 
     });
 
-app.get('/tasca', function(req,res) {
-      res.render('tasques')
+app.get('/tasques', function(req,res) {
+      Tasques.find({}, function(error, tasksToShow) {
+        res.render('tasques', { tasks: tasksToShow})
+      });
     });
 
 app.get('/creacioTasca', function(req,res) {
@@ -264,9 +268,6 @@ app.get('/eliminacioTasca', function(req,res) {
       res.render('tasques')//falta
     });
 
-app.get('/tasques', function(req,res) {
-      res.render('tasques')
-    });
 // codi que fa que el servidor s'aixequi
 app.listen(app.get('port'), function(){
   console.log(("Express server listening on port " + app.get('port')))
