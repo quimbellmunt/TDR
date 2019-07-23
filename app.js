@@ -99,6 +99,9 @@ app.get('/home', function(req, res){
 });
 
 
+app.post('/modificaciot', function(req,res) {
+  //Primer de tot, fas Tasques.findOneAndUpdate i poses, sempre d'una d'elles, les diferents característiques que poden canviar (ja que no és necessari canviar tot, per tant s'ha de poder aclarir que si no s'ha posat res en l'input del front-end, aleshores vol dir que has de posar per a que et posi la mateixa info que hi havia abans)
+});// Un cop agafat crec que el find one ja s'encarrega d'accedir a la base de dades i el update s'encarrega de canviar-ho a la mateixa base, per tant jo no crec que falti res més a part de fer console.log en el cas de que doni err. 
 
 
 //Usuari crea una nova tasca per la llista
@@ -118,17 +121,17 @@ app.post('/create', function(req, res) {
 
 
 //Ususari modifica la seva informacio personal
-app.post('/modificacio', function(req,res) {
+app.post('/modificaciou', function(req,res) {
   // avui fes la info del usuari 
   console.log(req.body)
-  usuari.findOneAndUpdate({nomUsuari:req.body.nomUsuari, cognoms:req.body.cognoms, username:req.body.username, mail:req.body.mail}, 
-    function(err,user) {
+  Users.findOneAndUpdate({nomUsuari:req.body.nomUsuari, cognoms:req.body.cognoms, username:req.body.username, mail:req.body.mail}, 
+    function(err,users) {
       if(err) {
         console.log(err)
         
       }else{
         Trans.find({Receptor: user.id}, function(err, tasks){
-        res.render('home', {user, user, tasks:tasks});
+        res.render('home', {users:users, tasks:tasks});
         }); 
       }    
     })
