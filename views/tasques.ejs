@@ -31,13 +31,12 @@
 		<p>Seleccionar la tasca:</p>
 	<table>
 		<tr>
-					<% if (Tasques.length >0) { %> 
-				<% Tasques.forEach(Tasques => {%>
-				<% JSONstringify(Tasques) %> 
-					<td><%= Tasques.nomTasca %></li>
-					<td><%= Tasques.preu %></li>
-					<td><%= Tasques.temps %></li>
-					<td><%= Tasques.descripcio %></li>
+					<% if (tasks.length >0) { %> 
+				<% tasks.forEach(task => {%>
+					<td><%= task.nomTasca %></li>
+					<td><%= task.preu %></li>
+					<td><%= task.temps %></li>
+					<td><%= task.descripcio %></li>
 					<% }); %>
 		<% } %>
 
@@ -65,13 +64,12 @@
 		<p>Seleccionar la tasca:</p>
 <table>
 		<tr>
-					<% if (Tasques.length >0) { %> 
-				<% Tasques.forEach(Tasques => {%>
-				<% JSONstringify(Tasques) %> 
-					<td><%= Tasques.nomTasca %></li>
-					<td><%= Tasques.preu %></li>
-					<td><%= Tasques.temps %></li>
-					<td><%= Tasques.descripcio %></li>
+					<% if (tasks.length > 0) { %> 
+				<% tasks.forEach(task => {%>
+					<td><%= task.nomTasca %></li>
+					<td><%= task.preu %></li>
+					<td><%= task.temps %></li>
+					<td><%= task.descripcio %></li>
 					<% }); %>
 		<% } %>
 
