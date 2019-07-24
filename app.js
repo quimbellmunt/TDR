@@ -99,10 +99,28 @@ app.get('/home', function(req, res){
 });
 
 
+
 app.post('/modificaciot', function(req,res) {
-  //Primer de tot, fas Tasques.findOneAndUpdate i poses, sempre d'una d'elles, les diferents característiques que poden canviar (ja que no és necessari canviar tot, per tant s'ha de poder aclarir que si no s'ha posat res en l'input del front-end, aleshores vol dir que has de posar per a que et posi la mateixa info que hi havia abans)
+  //Primer de tot, fas Tasques.findOneAndUpdate i poses, sempre d'una d'elles, 
+  //les diferents característiques que poden canviar (ja que no és necessari canviar tot, per tant s'ha de poder aclarir que si no s'ha posat res en l'input del front-end, aleshores vol dir que has de posar per a que et posi la mateixa info que hi havia abans)
 });// Un cop agafat crec que el find one ja s'encarrega d'accedir a la base de dades i el update s'encarrega de canviar-ho a la mateixa base, per tant jo no crec que falti res més a part de fer console.log en el cas de que doni err. 
 
+app.post('/transaccio', function(req,res) {
+  //(Comentari en ejs) var transaction = new Transaccio ({aquí ha d'agafar tot la info que vol guardar a la base de dades (el usuariOrigen és el mateix que ho realitza)})
+  //Transaccio.create(transaction, function(err,transaction) {
+  // if (err) console.log(err)
+  //else{
+    //console.log('transaction',transaction)
+    //res.render('home')
+    //A la vegada, aquesta transacció quan es crea ha d'apareixer a les tasques pendents (s'hauria de fer que al posar transaccions a tasques pendents, a part de posar length >0, també s'hauria de posar la condició de que tu fossis usuariReceptor) d'una persona i que aquesta ho pugui acceptar o acabar. 
+    //Si s'accepta o s'acaba, és nova informació que es tindrà de la transaccio, però s'haurà de fer com si fos una nova perquè per defecte, a la primera, el tipus hauria de ser enviada. 
+    //(D'aquesta manera es queda registrat tot el que passa) 
+    //Podria també passar-se per mail al usuariReceptor però això ja és valor afegit. 
+    
+
+  }
+  })
+})
 
 //Usuari crea una nova tasca per la llista
 app.post('/create', function(req, res) {
