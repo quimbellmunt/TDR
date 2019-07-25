@@ -95,7 +95,8 @@ app.post('/logout', function(req, res) {
 
 // obrir pagina localhost:3000/home --> home.ejs
 app.get('/home', function(req, res){
-    res.render('home',{tasques:null});
+
+Users.find()
 });
 
 
@@ -116,7 +117,20 @@ app.post('/transaccio', function(req,res) {
     //Si s'accepta o s'acaba, és nova informació que es tindrà de la transaccio, però s'haurà de fer com si fos una nova perquè per defecte, a la primera, el tipus hauria de ser enviada. 
     //(D'aquesta manera es queda registrat tot el que passa) 
     //Podria també passar-se per mail al usuariReceptor però això ja és valor afegit. 
-    
+
+    console.log(req.body)
+
+    Users.find({nomUsuari: req.body.nomUsuari}, function(err, userTrans) { 
+      if (err) console.log(err)
+        else {
+      res.render('home', {usuarios: userTrans});
+    }});
+    Tasques.find({nomTasca: req.body.nomTasca}, function(err, tascaTrans) { 
+      if(err) console.log(err)
+        else {
+          res.render('home', {taskTrans: tascaTrans})
+
+        }});
   });
 
 
@@ -172,9 +186,11 @@ app.post('/esborrarTasca', function(req,res) {
       
 });
 
+
+
 //Usuari Receptor acaba la Tasca 
 
-app.post('/TascaAcabada', function(res) {
+app.post('/tascaAcabada', function(res) {
 
   // aqui has mirar les informacions que t'arriben del fron end a req.body.
   // hauries de rebre algo semblant a req.body.emisor, req.body.receptor, req.body.tasca i requ.body.preu
@@ -217,6 +233,12 @@ app.post('/TascaAcabada', function(res) {
 //tascaCancelada i tascaRebutjada no es el mateix?
 
 app.post('/tascaCancelada', function(res) {
+  //var acceptada = false
+  //var acabada = false 
+  //Has de fer que quan es cancel·la una tasca s'ha d'anar de la llista de tasques pendents de la persona, per tant és com si eliminessis la transacció
+  //Transaccio.findOneAndDelete(identificadorTrans: req.body.identificadorTrans, function (err, tascancelada)
+  //if(err) console.log (err)
+  //});
   res.render('home')
 });
 
@@ -231,6 +253,7 @@ app.post('/TascaRebutjada', function(res) {
 //Usuari accepta la tasca
 
 app.post('/TascaAcceptada', function(res) {
+
   //req.body.emisor
   //var acabada = !false;
   // En el cas de cancelada s'envia mail (The Nodemailer module) a usuariOrigen per dir que s'ha cancelat. 
@@ -238,10 +261,6 @@ app.post('/TascaAcceptada', function(res) {
   res.render('home')
 });
 
-app.get('/ActualitzaFitxer', function(res) {
-  console.log(req.body)
-  //Aquest es el boto a on l'usuari demana el nou fitxer per mail
-});
 
 
 app.post('/descarrega', function(req,res) {
@@ -257,8 +276,12 @@ app.get('/inici', function(req,res) {
     });
 
 app.get('/actualitzacio', function(req,res) {
+   console.log(req.body)
       res.render('home') //Tot i així, aquí falta que es pugui connectar amb la meitat de la pàgina de home 
     });
+  //Aquest es el boto a on l'usuari demana el nou fitxer per mail
+
+
 
 app.get('/informacio', function(req,res) {
       res.render('home') //falta també poder accedir a la meitat per trobar-se primer amb informació 
