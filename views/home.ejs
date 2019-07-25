@@ -15,12 +15,40 @@
 
 	<h6>Estàs preparat/da per l'intercanvi?</h6>
 
-	
 
 		<h6>Selecciona un usuari:</h6>
-		<!--Està en els views de quim (trans) però no ho entenc del tot-->
+<!-- Aquí el que he intentat és fer un desplegable a cada part però crec que no m'ha sortit del tot bé (ho he tret d'internet, el que passa és que combinaben css i per tant crec que serà millor ara fer part d'app.js i després ja ho miraré amb bootstrap) -->
+			<div>
+				<ul>
+					<li><a href="">USUARIS DISPONIBLES</a>
+						<ul>
+							
+								<% if (usuarios.length >0) { %>
+								<% usuarios.forEach(usuario => { %>
+								<li><a href=""><%= usuario.nomUsuari %></a></li>
+							<% }); %>
+		<% } %>
+
+						</ul>
+					</li>
+				</ul>
+			</div>
 		<h6>Selecciona una tasca:</h6>
-		<!--Està en els views de quim (trans) però no ho entenc del tot-->
+			<div>
+				<ul>
+					<li><a href="">TASQUES DISPONIBLES</a>
+						<ul>
+							
+								<% if (tasktrans.length >0) { %>
+								<% tasktrans.forEach(transtask => { %>
+								<li><a href=""><%= transtask.nomTasca %></a></li>
+							<% }); %>
+		<% } %>
+
+						</ul>
+					</li>
+				</ul>
+			</div>
 
 <form action="/transaccio" method="POST">
 	<button>Acceptar la transferència</button>
@@ -43,7 +71,19 @@
 					<td><%= transaccio.usuariOrigen %></li>
 					<td><%= transaccio.acceptada %></li>
 					<% }); %>
-		<% } %>
+			<% } %>
+					<td> 
+						<form action="/tascaAcceptada" method="POST">
+							<button>Acceptar</button>
+						</form>
+						<form action="/tascaAcabada" method="POST">
+							<button>Acabada</button>
+						</form>
+						<form action="/tascaCancelada" method="POST">
+							<button>Cancel·lar</button>
+						</form>
+
+					</td>
 
 			</tr>
 		</table>
@@ -53,6 +93,16 @@
 	<h3>________________________________________________________________________________________________________</h3>
 
 		<p>Si vols continuar intercanviant les tasques de manera segura, descarrega't la última versió:</p>
+
+		<form action="/versio" method="GET">
+			<% if (version.length >0) { %>
+			<% version.forEach (versios => { %>
+			<% JSONstringify (version) %>
+			<%= versios.numeroVer%>
+			<% }); %>
+		<% } %>
+
+		</form>
 
 		<form action="/descarrega" method="POST">
 			<button>Descarregar</button> 
