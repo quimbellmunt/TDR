@@ -118,23 +118,25 @@ app.post('/transaccio', function(req,res) {
     //(D'aquesta manera es queda registrat tot el que passa) 
     //Podria també passar-se per mail al usuariReceptor però això ja és valor afegit. 
 
-    console.log(req.body)
+   // console.log(req.body)
 
-    Users.find({nomUsuari: req.body.nomUsuari}, function(err, userTrans) { 
-      if (err) console.log(err)
-        else {
-      res.render('home', {usuarios: userTrans});
-    }});
-    Tasques.find({nomTasca: req.body.nomTasca}, function(err, tascaTrans) { 
-      if(err) console.log(err)
-        else {
-          res.render('home', {taskTrans: tascaTrans})
-
-        }});
   });
 
+app.get ('/usertrans', function(req,res) {
+  Users.find({nomUsuari: req.body.nomUsuari}, function(err, userTrans) { 
+    if (err) console.log(err)
+      else {
+    res.render('home', {usuarios: userTrans})}
+});
 
 
+app.get('/tasktrans', function(req,res){
+  Tasques.find({nomTasca: req.body.nomTasca}, function(err, tascaTrans) { 
+    if(err) console.log(err)
+      else {
+        res.render('home', {taskTrans: tascaTrans})}
+
+});
 //Usuari crea una nova tasca per la llista
 app.post('/create', function(req, res) {
   //Avui has de crear un parell de tasques Andrea: no puc accedir a la pàgina de tasques
@@ -321,7 +323,9 @@ app.get('/eliminacioTasca', function(req,res) {
 // codi que fa que el servidor s'aixequi
 app.listen(app.get('port'), function(){
   console.log(("Express server listening on port " + app.get('port')))
-});
+}); //no em deixa llençar l'app (per la finestra) perquè diu que aquest tancament és un unexpected token, quan literal que no le tocat en la vida. 
+
+
 
 //Andrea: Aquí hi havia diferents coses que sortien de color rosa:
 // - abans del app descarregar hi havia un <<<<<<<HOME però em posava que no es podia llençar app amb unexpected token <<
