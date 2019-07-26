@@ -22,12 +22,13 @@
 				<ul>
 					<li><a href="">USUARIS DISPONIBLES</a>
 						<ul>
-							
+							<form action="/usertrans" method="GET">
 								<% if (usuarios.length >0) { %>
 								<% usuarios.forEach(usuario => { %>
 								<li><a href=""><%= usuario.nomUsuari %></a></li>
 							<% }); %>
 		<% } %>
+							</form>
 
 						</ul>
 					</li>
@@ -38,13 +39,13 @@
 				<ul>
 					<li><a href="">TASQUES DISPONIBLES</a>
 						<ul>
-							
+							<form action="/tasktrans" method="GET">
 								<% if (tasktrans.length >0) { %>
 								<% tasktrans.forEach(transtask => { %>
 								<li><a href=""><%= transtask.nomTasca %></a></li>
 							<% }); %>
 		<% } %>
-
+							</form>
 						</ul>
 					</li>
 				</ul>
