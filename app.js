@@ -36,8 +36,8 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-const Login = require('./models/login'); // aqui estas volent fer servir Login no USER  
-//He modificat el codi perque puguis utilitzar el Login com base de dades de Passport Andrea: okay perfecte
+const Login = require('./models/login');   
+
 const Tasques = require('./models/tasques');
 const Transaccio = require('./models/transaccions');
 const Users = require('./models/users');
@@ -154,7 +154,7 @@ app.post('/create', function(req, res) {
 
 
 //Ususari modifica la seva informacio personal
-app.post('/modificaciou', function(req,res) {
+app.post('/modificarUsuari', function(req,res) {
   // avui fes la info del usuari 
   console.log(req.body)
   Users.findOneAndUpdate({nomUsuari:req.body.nomUsuari, cognoms:req.body.cognoms, username:req.body.username, mail:req.body.mail}, 
@@ -164,7 +164,7 @@ app.post('/modificaciou', function(req,res) {
         
       }else{
         Trans.find({Receptor: user.id}, function(err, tasks){
-        res.render('home', {users:users, tasks:tasks});
+        res.render('usuari', {users:users, tasks:tasks});
         }); 
       }    
     })
@@ -254,14 +254,6 @@ app.post('/TascaRebutjada', function(res) {
 
 //Usuari accepta la tasca
 
-app.post('/TascaAcceptada', function(res) {
-
-  //req.body.emisor
-  //var acabada = !false;
-  // En el cas de cancelada s'envia mail (The Nodemailer module) a usuariOrigen per dir que s'ha cancelat. 
-  // Quim: aixo es part del controlador
-  res.render('home')
-});
 
 
 
