@@ -73,6 +73,12 @@ app.post('/register', function(req, res) {
       });
   });
 });
+//Aquí crec que s'hauria d'afegir això:
+//Users.register (new Users ({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail}), req.body.password, function(err,userito))
+//if(err) {console.log (err)}
+
+
+
 
 //localhost:3000/login es igual a localhost:3000 e igual a localhost:3000/registre
 app.get('/login', function(req, res) {
