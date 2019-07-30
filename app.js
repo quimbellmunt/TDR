@@ -163,14 +163,14 @@ app.post('/create', function(req, res) {
 app.post('/modificarUsuari', function(req,res) {
   // avui fes la info del usuari 
   console.log(req.body)
-  Users.findOneAndUpdate({nomUsuari:req.body.nomUsuari, cognoms:req.body.cognoms, username:req.body.username, mail:req.body.mail}, 
+  Users.findOneAndUpdate({nomUsuari:req.body.nomUsuari, cognoms:req.body.cognoms, username:req.body.username, mail:req.body.mail, password:req.body.password}, 
     function(err,users) {
       if(err) {
         console.log(err)
         
       }else{
         Trans.find({Receptor: user.id}, function(err, tasks){
-        res.render('usuari', {users:users, tasks:tasks});
+        res.render('usuari', {useritos:users, tasks:tasks});
         }); 
       }    
     })
