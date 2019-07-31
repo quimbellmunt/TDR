@@ -26,7 +26,7 @@ app.set('view options', { layout: false });
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(express.static('public'))
-
+app.use(session({secret: 'TdR',saveUninitialized: true,resave: true}));
 
 mongoose.connect('mongodb://localhost:27017/Treball');
 
@@ -51,13 +51,18 @@ passport.deserializeUser(Login.deserializeUser());
 
 
 // obrir la pagina d'inici index.ejs
-app.get('/', function (req, res) {
-    res.render('index', { user : req.user });
+app.get('/', function (req, res) { //la primera interpretació d'aquestes dues línies és que si encara no s'ha entrat a cap usuari aleshores que vagi a index.
+   console.log(req)
+   if('session' in req) {
+    res.render ('index')
+   } else {
+    res.render('index');
+   }    
 });
 
 // obrir la pagina registre index.ejs
 app.get('/register', function(req, res) {
-    res.render('index', {tasques : null});
+    res.render('index');
 });
 
 // Usuari introdeix les dades del registre en la pagina index.ejs
@@ -93,13 +98,14 @@ app.post('/register', function(req, res) {
 //localhost:3000/login es igual a localhost:3000 e igual a localhost:3000/registre
 app.get('/login', function(req, res) {
 
-    res.render('index', {tasques : []});
+    res.render('index', {usertrans:null, tasques : null});
 });
 
 
 //Usuari introdueix les dades del seu login a index.ejs   //quan he entrar a home, a dalt posa localhost:3000/login... Això és per culpa del següent o perquè?
 app.post('/login', passport.authenticate('local'), function(req, res) {
-    res.render('home',{tasques : []});
+    console.log('aqui')
+    res.redirect('home');
 });
 
 
@@ -111,13 +117,42 @@ app.post('/logout', function(req, res) {
 
 // obrir pagina localhost:3000/home --> home.ejs
 app.get('/home', function(req, res){
+  console.log(req)
+  if('passport' in req.session){
+    Users.find({}, function(err,users){
+      console.log('Aqui1')
+      if(err){ 
+        console.log(err)
+      }else{
+        Tasques.find({}, function(err,tasques){
+          console.log('Aqui2')
+          if(err){
+            console.log(err)
+          } else {
+            Transaccio.find({usuariReceptor:req.session.passport.user}, function(err,transUsuari){
+              console.log('Aqui3')
+              if(err){
+                console.log(err)
+              }else{
+                res.render('home', {usuaris:users, tasques:tasques, transaccions:transUsuari})
+              }
+            })
+          }
+
+        })
+      }
+    })
+  } else {
+    res.redirect('index')
+  }
+  
 
 //Users.find()
 });
 
 
 
-app.post('/modificaciot', function(req,res) {
+app.post('/modificacio', function(req,res) {
   //Primer de tot, fas Tasques.findOneAndUpdate i poses, sempre d'una d'elles, 
   //les diferents característiques que poden canviar (ja que no és necessari canviar tot, per tant s'ha de poder aclarir que si no s'ha posat res en l'input del front-end, aleshores vol dir que has de posar per a que et posi la mateixa info que hi havia abans)
 });// Un cop agafat crec que el find one ja s'encarrega d'accedir a la base de dades i el update s'encarrega de canviar-ho a la mateixa base, per tant jo no crec que falti res més a part de fer console.log en el cas de que doni err. 
@@ -144,27 +179,8 @@ app.post('/transaccio', function(req,res) {
 // un altre cosa perque busques req.body.nomUsuari... aquí no estan enviant informació. la estas recuperant... he déntendre que vols fer aquí perque despres ho envies a home
 // mira la meva branca per que vegis com es fan aquest tipus de crides. Haueras dádaptar el vocabulari perque no ho he fet encara pero agafa ideas...
 // no sembla que estiguis fent recerca per internet de com es fan les coses iu molt mes facil en el mateix repositori... 
-// 
-
-app.get ('/usertrans', function(req,res) {
-  Users.find({nomUsuari: req.body.nomUsuari}, function(err, userTrans) { 
-    if (err) console.log(err)
-      else {
-    res.render('home', {usuarios: userTrans})}
-  }); // no hjavies tancat l;a funció User.Find
-});
 
 
-app.get('/tasktrans', function(req,res){
-  Tasques.find({nomTasca: req.body.nomTasca}, function(err, tascaTrans) { 
-    if(err) {
-      console.log(err)
-    } else {
-      res.render('home', {taskTrans: tascaTrans})
-    }
-  }); // no havies tancat la funció Tasque.Find
-});
-//Usuari crea una nova tasca per la llista
 app.post('/create', function(req, res) {
   //Avui has de crear un parell de tasques Andrea: no puc accedir a la pàgina de tasques
   console.log(req.body)
@@ -296,6 +312,7 @@ app.post('/descarrega', function(req,res) {
 
 app.get('/inici', function(req,res) {
       res.render('home')
+
     });
 
 app.get('/actualitzacio', function(req,res) {
@@ -310,20 +327,31 @@ app.get('/informacio', function(req,res) {
       res.render('home') //falta també poder accedir a la meitat per trobar-se primer amb informació 
     });
 
-app.get('/usuari', function(req,res) {
-      res.render('usuari')
-    });
-
 app.get('/modificacioUsuari', function(req,res) {
-      res.render('usuari') 
-    });
-
-app.get('/tasques', function(req,res) {
-  Tasques.find({}, function(error, tasksToShow) {
-    console.log(tasksToShow)
-    res.render('tasques', {tasques: tasksToShow})
-  });
+  if('passport' in req.session){
+    Users.findOne({username: req.session.passport.username}, function(err,user){
+      if(err){
+        console.log(err)
+      }else{
+        console.log(user)
+        res.render('usuari', {userito:user})
+      }
+    })
+  }else{
+    res.redirect('/') 
+  }
 });
+
+app.get('/tasca', function(req,res) {
+  res.render('tasques')
+})
+
+//app.get('/tasques', function(req,res) {
+  //Tasques.find({}, function(error, tasksToShow) {
+    //console.log(tasksToShow)
+    //res.render('tasques', {tasques: tasksToShow})
+  //});
+//});
 
 app.get('/creacioTasca', function(req,res) {
   Tasques.find({},function(err, tasques){
