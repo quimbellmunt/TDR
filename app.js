@@ -5,9 +5,6 @@ var mongoose = require("mongoose");
 var passport = require("passport");//
 var bodyParser = require("body-parser");
 
-//Quan al llarg de tot aquest codi apareix la paraula "user" i no "users", això és que he d'afegir la s o que és un tema que va més enllà del nom que li hagi posat a la meva variable?
-///////// depen, de que busques als models. si despres d'un Find tens err, users doncs tindras S si tens err, user no tindras S
-// Com fer perquè qualsevol d'aquests botons funcioni només si es té la última versió? És possible que hagis de fer get de la última versió i de la que té l'usuari i aleshores ho compares?
 var passportLocalMongoose = require("passport-local-mongoose");
 var autoIncrement   = require('mongoose-auto-increment');
 
@@ -50,8 +47,8 @@ passport.deserializeUser(Login.deserializeUser());
 
 
 
-// obrir la pagina d'inici index.ejs
-app.get('/', function (req, res) { //la primera interpretació d'aquestes dues línies és que si encara no s'ha entrat a cap usuari aleshores que vagi a index.
+
+app.get('/', function (req, res) { 
    console.log(req)
    if('session' in req) {
     res.render ('index')
@@ -60,62 +57,18 @@ app.get('/', function (req, res) { //la primera interpretació d'aquestes dues l
    }    
 });
 
-// obrir la pagina registre index.ejs
+
 app.get('/register', function(req, res) {
     res.render('index');
 });
 
-// Usuari introdeix les dades del registre en la pagina index.ejs
-app.post('/register', function(req, res) {
-  console.log(req.body)
-  Login.register(new Login({ username : req.body.username }), req.body.password, function(err, user) {
-      if (err) {
-          console.log(err)
-          return res.render('index');
-      }
-      passport.authenticate('local')(req, res, function () {
-        // res.render('home',{tasques : null});
-      });
-      Users.register (new Users ({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail}), 
-        function(err,userito){
-          if (err) console.log(err)
-          else {
-            res.render('home',{tasques : null, usuario:userito});
-          }
-        })
-  });
-});
-//Aquí crec que s'hauria d'afegir això:
-//Users.register (new Users ({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail}), req.body.password, function(err,userito))
-//if(err) {console.log (err)}
-// quasi bé. El password no el vols guardar pertant no l'has de guardar... 
-// Ei! on esta el if(err) de la creació?
-// Ep! ara fas un cosa mes... per tant elm res vé mes tard! 
 
-
-
-
-//localhost:3000/login es igual a localhost:3000 e igual a localhost:3000/registre
 app.get('/login', function(req, res) {
 
     res.render('index', {usertrans:null, tasques : null});
 });
 
 
-//Usuari introdueix les dades del seu login a index.ejs   //quan he entrar a home, a dalt posa localhost:3000/login... Això és per culpa del següent o perquè?
-app.post('/login', passport.authenticate('local'), function(req, res) {
-    console.log('aqui')
-    res.redirect('home');
-});
-
-
-// usuari surt de la plataforma--> aquest controlador es el boto logout de les pagines ejs
-app.post('/logout', function(req, res) {
-    req.logout();
-    res.render('index');
-});
-
-// obrir pagina localhost:3000/home --> home.ejs
 app.get('/home', function(req, res){
   console.log(req)
   if('passport' in req.session){
@@ -150,9 +103,94 @@ app.get('/home', function(req, res){
 //Users.find()
 });
 
+app.get('/inici', function(req,res) {
+      res.render('home')
+
+    });
+
+app.get('/actualitzacio', function(req,res) {
+   console.log(req.body)
+      res.render('home') //Tot i així, aquí falta que es pugui connectar amb la meitat de la pàgina de home 
+    });
+  //Aquest es el boto a on l'usuari demana el nou fitxer per mail
 
 
-app.post('/modificacio', function(req,res) {
+
+app.get('/informacio', function(req,res) {
+      res.render('home') //falta també poder accedir a la meitat per trobar-se primer amb informació 
+    });
+
+app.get('/modificacioUsuari', function(req,res) {
+  if('passport' in req.session){
+    Users.findOne({username: req.session.passport.username}, function(err,user){
+      if(err){
+        console.log(err)
+      }else{
+        console.log(user)
+        res.render('usuari', {userito:user})
+      }
+    })
+  }else{
+    res.redirect('/') 
+  }
+});
+
+app.get('/tasca', function(req,res) {
+  res.render('tasques')
+})
+
+//app.get('/tasques', function(req,res) {
+  //Tasques.find({}, function(error, tasksToShow) {
+    //console.log(tasksToShow)
+    //res.render('tasques', {tasques: tasksToShow})
+  //});
+//});
+
+app.get('/creacioTasca', function(req,res) {
+  Tasques.find({},function(err, tasques){
+    if(err) console.log(err)
+    res.render('tasques',{tasques : tasques}) 
+  })
+      
+});
+
+app.get('/modificacioTasca', function(req,res) {
+      res.render('tasques')  //falta
+    });
+
+app.get('/eliminacioTasca', function(req,res) {
+      res.render('tasques')//falta
+    });
+
+
+
+app.post('/register', function(req, res) {
+  console.log(req.body)
+  Login.register(new Login({ username : req.body.username }), req.body.password, function(err, user) {
+      if (err) {
+          console.log(err)
+          return res.render('index');
+      }
+      passport.authenticate('local')(req, res, function () {
+        // res.render('home',{tasques : null});
+      });
+      Users.register (new Users ({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail}), 
+        function(err,userito){
+          if (err) console.log(err)
+          else {
+            res.render('home',{tasques : null, usuario:userito});
+          }
+        })
+  });
+});
+//Aquí crec que s'hauria d'afegir això:
+//Users.register (new Users ({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail}), req.body.password, function(err,userito))
+//if(err) {console.log (err)}
+// quasi bé. El password no el vols guardar pertant no l'has de guardar... 
+// Ei! on esta el if(err) de la creació?
+// Ep! ara fas un cosa mes... per tant elm res vé mes tard! 
+
+app.post('/modificaciot', function(req,res) {
   //Primer de tot, fas Tasques.findOneAndUpdate i poses, sempre d'una d'elles, 
   //les diferents característiques que poden canviar (ja que no és necessari canviar tot, per tant s'ha de poder aclarir que si no s'ha posat res en l'input del front-end, aleshores vol dir que has de posar per a que et posi la mateixa info que hi havia abans)
 });// Un cop agafat crec que el find one ja s'encarrega d'accedir a la base de dades i el update s'encarrega de canviar-ho a la mateixa base, per tant jo no crec que falti res més a part de fer console.log en el cas de que doni err. 
@@ -172,13 +210,6 @@ app.post('/transaccio', function(req,res) {
    // console.log(req.body)
 
   });
-
-//que estas intentant fer aquúí? que fa aquest get /userTrans i que fa el get /tasktrans
-//el problema es que no pot fer-ho serparadament... ho has de posar en la mateiuxa funciuó Get. 
-// i a mes a mes com ha d'enviar-ho tot junt has de incloure una funció dins de l'altre. 
-// un altre cosa perque busques req.body.nomUsuari... aquí no estan enviant informació. la estas recuperant... he déntendre que vols fer aquí perque despres ho envies a home
-// mira la meva branca per que vegis com es fan aquest tipus de crides. Haueras dádaptar el vocabulari perque no ho he fet encara pero agafa ideas...
-// no sembla que estiguis fent recerca per internet de com es fan les coses iu molt mes facil en el mateix repositori... 
 
 
 app.post('/create', function(req, res) {
@@ -299,7 +330,18 @@ app.post('/TascaRebutjada', function(res) {
 
 //Usuari accepta la tasca
 
+//Usuari introdueix les dades del seu login a index.ejs   //quan he entrar a home, a dalt posa localhost:3000/login... Això és per culpa del següent o perquè?
+app.post('/login', passport.authenticate('local'), function(req, res) {
+    console.log('aqui')
+    res.redirect('home');
+});
 
+
+// usuari surt de la plataforma--> aquest controlador es el boto logout de les pagines ejs
+app.post('/logout', function(req, res) {
+    req.logout();
+    res.render('index');
+});
 
 
 app.post('/descarrega', function(req,res) {
@@ -309,65 +351,6 @@ app.post('/descarrega', function(req,res) {
   //Aleshores aquí, després d'aconseguir posar tota la info en el document, el que s'ha de fer és enviar el mail i per això serveix el The Nodemailer module. 
   //(A més a més, m'he d'enrecordat que a dalt del botó, al front-end he de fer un get pel nom de la última versió).  
   });
-
-app.get('/inici', function(req,res) {
-      res.render('home')
-
-    });
-
-app.get('/actualitzacio', function(req,res) {
-   console.log(req.body)
-      res.render('home') //Tot i així, aquí falta que es pugui connectar amb la meitat de la pàgina de home 
-    });
-  //Aquest es el boto a on l'usuari demana el nou fitxer per mail
-
-
-
-app.get('/informacio', function(req,res) {
-      res.render('home') //falta també poder accedir a la meitat per trobar-se primer amb informació 
-    });
-
-app.get('/modificacioUsuari', function(req,res) {
-  if('passport' in req.session){
-    Users.findOne({username: req.session.passport.username}, function(err,user){
-      if(err){
-        console.log(err)
-      }else{
-        console.log(user)
-        res.render('usuari', {userito:user})
-      }
-    })
-  }else{
-    res.redirect('/') 
-  }
-});
-
-app.get('/tasca', function(req,res) {
-  res.render('tasques')
-})
-
-//app.get('/tasques', function(req,res) {
-  //Tasques.find({}, function(error, tasksToShow) {
-    //console.log(tasksToShow)
-    //res.render('tasques', {tasques: tasksToShow})
-  //});
-//});
-
-app.get('/creacioTasca', function(req,res) {
-  Tasques.find({},function(err, tasques){
-    if(err) console.log(err)
-    res.render('tasques',{tasques : tasques}) 
-  })
-      
-});
-
-app.get('/modificacioTasca', function(req,res) {
-      res.render('tasques')  //falta
-    });
-
-app.get('/eliminacioTasca', function(req,res) {
-      res.render('tasques')//falta
-    });
 
 // codi que fa que el servidor s'aixequi
 app.listen(app.get('port'), function(){
