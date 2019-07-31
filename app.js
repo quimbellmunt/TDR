@@ -137,7 +137,8 @@ app.post('/transaccio', function(req,res) {
    // console.log(req.body)
 
   });
-//que estas inttentant fer aquúí? que fa aquest get /userTrans i que fa el get /tasktrans
+
+//que estas intentant fer aquúí? que fa aquest get /userTrans i que fa el get /tasktrans
 //el problema es que no pot fer-ho serparadament... ho has de posar en la mateiuxa funciuó Get. 
 // i a mes a mes com ha d'enviar-ho tot junt has de incloure una funció dins de l'altre. 
 // un altre cosa perque busques req.body.nomUsuari... aquí no estan enviant informació. la estas recuperant... he déntendre que vols fer aquí perque despres ho envies a home
@@ -145,12 +146,13 @@ app.post('/transaccio', function(req,res) {
 // no sembla que estiguis fent recerca per internet de com es fan les coses iu molt mes facil en el mateix repositori... 
 // 
 
-// app.get ('/usertrans', function(req,res) {
-//   Users.find({nomUsuari: req.body.nomUsuari}, function(err, userTrans) { 
-//     if (err) console.log(err)
-//       else {
-//     res.render('home', {usuarios: userTrans})}
-// });
+app.get ('/usertrans', function(req,res) {
+  Users.find({nomUsuari: req.body.nomUsuari}, function(err, userTrans) { 
+    if (err) console.log(err)
+      else {
+    res.render('home', {usuarios: userTrans})}
+  }); // no hjavies tancat l;a funció User.Find
+});
 
 
 app.get('/tasktrans', function(req,res){
@@ -160,14 +162,13 @@ app.get('/tasktrans', function(req,res){
     } else {
       res.render('home', {taskTrans: tascaTrans})
     }
-  });
-
+  }); // no havies tancat la funció Tasque.Find
 });
 //Usuari crea una nova tasca per la llista
 app.post('/create', function(req, res) {
   //Avui has de crear un parell de tasques Andrea: no puc accedir a la pàgina de tasques
   console.log(req.body)
-  var createdTask = new Tasques({nomTasca: req.body.nomTasca, preu: req.body.preu, temps: req.body.temps, descripcio: req.body.descripcio});
+  //var createdTask = new Tasques({nomTasca: req.body.nomTasca, preu: req.body.preu, temps: req.body.temps, descripcio: req.body.descripcio});
   Tasques.create(createdTask, function(err, createdTask){
     if (err) console.log(err) 
     else {
