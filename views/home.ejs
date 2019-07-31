@@ -29,13 +29,13 @@ Modificar usuari receptor en la posició cartera. usuari.cartera = usuari.carter
 				<ul>
 					<li><a href="">USUARIS DISPONIBLES</a>
 						<ul>
-							<form action="/usertrans" method="GET">
-								<% if (usuarios.length >0) { %>
-								<% usuarios.forEach(usuario => { %>
-								<li><a href=""><%= usuario.nomUsuari %></a></li>
+							
+								<% if (usuaris.length >0) { %>
+								<% usuaris.forEach(usuari => { %>
+								<li><a href=""><%= usuari.nomUsuari %></a></li>
 							<% }); %>
 		<% } %>
-							</form>
+					
 
 						</ul>
 					</li>
@@ -46,13 +46,14 @@ Modificar usuari receptor en la posició cartera. usuari.cartera = usuari.carter
 				<ul>
 					<li><a href="">TASQUES DISPONIBLES</a>
 						<ul>
-							<form action="/tasktrans" method="GET">
-								<% if (tasktrans.length >0) { %>
-								<% tasktrans.forEach(transtask => { %>
-								<li><a href=""><%= transtask.nomTasca %></a></li>
+					
+
+								<% if (tasques.length >0) { %>
+								<% tasques.forEach(tasca => { %>
+								<li><a href=""><%= tasca.nomTasca %></a></li>
 							<% }); %>
 		<% } %>
-							</form>
+						
 						</ul>
 					</li>
 				</ul>
@@ -99,15 +100,8 @@ Modificar usuari receptor en la posició cartera. usuari.cartera = usuari.carter
 
 		<p>Si vols continuar intercanviant les tasques de manera segura, descarrega't la última versió:</p>
 
-		<form action="/versio" method="GET">
-			<% if (version.length >0) { %>
-			<% version.forEach (versios => { %>
-			<% JSONstringify (version) %>
-			<%= versios.numeroVer%>
-			<% }); %>
-		<% } %>
 
-		</form>
+
 
 		<form action="/descarrega" method="POST">
 			<button>Descarregar</button> 
