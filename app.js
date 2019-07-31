@@ -5,8 +5,6 @@ var mongoose = require("mongoose");
 var passport = require("passport");
 var bodyParser = require("body-parser");
 
-
-
 var passportLocalMongoose = require("passport-local-mongoose");
 var autoIncrement   = require('mongoose-auto-increment');
 
@@ -30,9 +28,7 @@ app.use(bodyParser.json())
 app.use(express.static('public'))
 app.use(session({secret: 'TdR',saveUninitialized: true,resave: true}));
 
-// var connection = mongoose.createConnection("mongodb://localhost:27017/TdR");
 mongoose.connect('mongodb://localhost:27017/TdR');
-// autoIncrement.initialize(connection);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -59,10 +55,11 @@ app.get('/', function (req, res) {
         res.render('login');
       }
       else {
-        console.log(user)
-          Trans.find ({Receptor: user[0].nom}, function(err, tasks){
-          res.render('home', {user:user[0], tasks:tasks});
-        });     
+        // console.log(user)
+        //   Trans.find ({Receptor: user[0].nom}, function(err, tasks){
+        //   res.render('home', {user:user[0], tasks:tasks});
+        // }); 
+        res.redirect('/home')    
       }     
     });
   }
@@ -75,21 +72,23 @@ app.get('/login', function(req, res) {
   if(!('passport' in req.session)){ 
     res.render('index')
   }else{
-    Usuari.find({username:req.user},function(err, user) {
-      console.log(user[0]) //→ aqui extreus tota la info del usuari inclòs el seu ID
-      if (err) {
-        console.log(err)
-        res.render('login');
-      }
-      else {
-          console.log(user[0])
-          user = user[0]
-          Trans.find ({Receptor: user[0].nom}, function(err, tasks){
-            console.log(tasks)
-          res.render('home', {user:user[0], tasks:tasks});
-        });     
-      }     
-    }); 
+    res.redirect('/home')   
+    // Usuari.find({username:req.user},function(err, user) {
+    //   console.log(user[0]) //→ aqui extreus tota la info del usuari inclòs el seu ID
+    //   if (err) {
+    //     console.log(err)
+    //     res.render('login');
+    //   }
+    //   else {
+    //       console.log(user[0])
+    //       user = user[0]
+    //       Trans.find ({Receptor: user[0].nom}, function(err, tasks){
+    //         console.log(tasks)
+    //       res.render('home', {user:user[0], tasks:tasks});
+    //     });  
+        
+    //   }     
+    // }); 
   }  
 });
 
@@ -101,17 +100,19 @@ app.get('/home', function (req, res) {
   if(!('passport' in req.session)){ 
     res.render('index')
   }else{
-    Usuari.find({username:req.session.passport.user},function(err, user) {
-      console.log(user) //→ aqui extreus tota la info del usuari inclòs el seu ID
+    Usuari.find({username:req.session.passport.user},function(err, userMatched) {
+      // console.log(user) //→ aqui extreus tota la info del usuari inclòs el seu ID
       if (err) {
         console.log(err)
         res.render('login');
       }
       else {
-        console.log(user)
-          Trans.find({Receptor: user[0].nom}, function(err, tasks){
+        // console.log(user)
+        var user = userMatched[0]
+          Trans.find({receptor:user.username}, function(err, tasks){
             console.log(tasks)
-          res.render('home', {user:user[0], tasks:tasks});
+            // res.json({user:user, tasks:tasks})
+          res.render('home', {user:user, tasks:tasks});
         });     
       }     
     });
@@ -129,29 +130,16 @@ app.get('/block', function(req, res){
   }
 });
 
-
 app.get('/tasques', function(req, res){
   if(!('passport' in req.session)){ 
     res.render('index')
   }else{
     Tasques.find({},function(err, tasks){
-      console.log(tasks)
+      // console.log(tasks)
       if(err) console.log(err)
       res.render('tasques',{tasks:tasks}); 
     })
   }
-});
-
-app.get('/tasques', function(req, res){
-  if(!('passport' in req.session)){ 
-    res.render('index')
-  }else{
-    Tasques.find({},function(err, tasks){
-      console.log(tasks)
-      if(err) console.log(err)
-      res.render('tasques',{tasks:tasks}); 
-    })
-   } 
 });
 
 app.get('/transaccio', function(req, res){
@@ -165,8 +153,8 @@ app.get('/transaccio', function(req, res){
       } else {
         Tasques.find ({}, 
           function(err, tasks){
-            console.log(users)
-            console.log(tasks)
+            // console.log(users)
+            // console.log(tasks)
             res.render('trans', {message: null, emisor:req.session.passport.user, users: users, tasks:tasks});
         });     
       }
@@ -174,74 +162,35 @@ app.get('/transaccio', function(req, res){
   } 
 });
 
-app.get('/creacioTrans', function(req, res){
-  if(!('passport' in req.session)){ 
-    res.render('index')
-  }else{
-    Usuari.find({}, 
-    function(err, users){
-      if(err) {
-        console.log(err)
-      } else {
-        Tasques.find ({}, 
-          function(err, tasks){
-            console.log(users)
-            console.log(tasks)
-            res.render('trans', {message: null, emisor:req.session.passport.user, users: users, tasks:tasks});
-        });     
-      }
-    })
-  }  
-});
-
-
 app.post('/register', function(req, res) {
-  if(!('passport' in req.session)){ 
-    res.render('index')
-  }else{
-    User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
-      console.log('aqui')
-      if (err) {
-          return res.render('index');
-      }
-      else {
-      console.log('aqui2')
-        passport.authenticate('local')(req, res, function () {
-          Usuari.create(new Usuari({username:req.body.username, diners: 20}),function(err, userCreated) {
-            console.log(userCreated)
-            console.log('aqui3')
-            if (err) {
-              console.log(err)
-              res.render('index');
-              }
-            user['username'] = userCreated.username
-            user['diners'] = userCreated.diners
-            res.render('home', {user: user, tasks : []});
-          });   
-        });
-      }
-    });
-  }
+  User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
+    if (err) {
+        res.redirect('/index');
+    }
+    else {
+      passport.authenticate('local')(req, res, function () {
+        Usuari.create(new Usuari({username:req.body.username, diners: 20}),function(err, userCreated) {
+          if (err) {
+            console.log(err)
+            res.redirect('/index');
+          } else {
+            res.redirect('/home')
+          }
+        });   
+      });
+    }
+  });
 });
 
 app.post('/login', passport.authenticate('local'), function(req, res) {
-  if(!('passport' in req.session)){ 
-    res.render('index')
-  }else{
-    Usuari.find({username:req.body.username},function(err, user) {
-      console.log(user) //→ aqui extreus tota la info del usuari inclòs el seu ID
-      if (err) {
-        console.log(err)
-        res.render('login');
-      }
-      else {
-          console.log(user[0])
-          Trans.find ({Receptor: user[0].nom}, function(err, tasks){
-          res.render('home', {user:user[0], tasks:tasks});
-        });     
-      }     
-    }); 
-  }  
+  Usuari.find({username:req.body.username},function(err, user) {
+    if (err) { 
+      res.redirect('/login');
+    }
+    else {
+      res.redirect('/home')  
+    }     
+  }); 
 });
 
 app.post('/modificaUsuari', function(req, res){
@@ -256,36 +205,28 @@ app.post('/modificaUsuari', function(req, res){
       if(err) {
         console.log(err)
       } else {
-        Usuari.find({username:req.body.username}, function(err, userUpdated){
-          if(err){
-            console.log(err)
-          }else{
-            Trans.find({Receptor: user.nom}, function(err, tasks){
-            console.log(userUpdated)
-            console.log(tasks)
-            res.render('home', {userUpdated, tasks : tasks});
-        });    
-          }
-        })
-         
+        res.redirect('/home')
       }
     })
   }
+  Block.create(new Trans(
+    {
+      tipus:'ModificacioUsuari', 
+      emisor:req.session.passport.user,
+      receptor:null, 
+      tasca: 'ModificacioUsuari', 
+      preu: null, 
+      acceptada:false, 
+      acabada:false
+    }),
+  function(err, add) {
+    if(err){
+      console.log(err)
+    }else{
+      console.log('Transacció afegida al block')
+    }
+  }); 
 })
-app.post('/tasques', function(req, res) {
-  if(!('passport' in req.session)){ 
-    res.render('index')
-  }else{
-    Tasques.create(new Tasques({Nom : req.body.Nom,Descripcio: req.body.Descripcio,Preu: req.body.Preu,Temps: req.body.Temps}),function(err, Tasca) {
-      if (err) {
-        console.log(err)
-        res.render('home');
-        }
-      res.render('home');
-    });
-  }    
-});
-
 
 app.post('/logout', function(req, res) {
     req.logout();
@@ -307,11 +248,11 @@ app.post('/creacioTasca', function(req, res){
       if(err) {
         console.log(err)
       } else {
-        console.log('aqui')
-        Tasques.find({},function(err, tasks){
-          if(err) console.log(err)
-          else res.render('tasques',{tasks:tasks}); 
-        })
+        res.redirect('/tasques')
+        // Tasques.find({},function(err, tasks){
+        //   if(err) console.log(err)
+        //   else res.render('tasques',{tasks:tasks}); 
+        // })
       }
     })
     Block.create(new Block(
@@ -334,22 +275,12 @@ app.post('/creacioTasca', function(req, res){
   }
 });
 
-app.get('/modificaTasca', function(req, res){
-  if(!('passport' in req.session)){ 
-    res.render('index')
-  }else{
-    Tasques.find({},function(err, tasks){
-      if(err) console.log(err)
-      else res.render('tasques',{tasks:tasks}); 
-    })
-  }
-});
-
 app.post('/modificaTasca', function(req, res){
   if(!('passport' in req.session)){ 
     res.render('index')
   }else{
-    Tasques.findOneAndReplace(
+    console.log(req.body)
+    Tasques.findOneAndUpdate(
       {
         preu: req.body.preu,
         temps: req.body.temps,
@@ -360,14 +291,11 @@ app.post('/modificaTasca', function(req, res){
         temps: req.body.newTemps,
         descripcio: req.body.newDescripcio,
         titol: req.body.newTitol
-      }, function(err, tascaCreada){
+      }, function(err, tascaModificada){
       if(err) {
         console.log(err)
       } else {
-        Tasques.find({},function(err, tasks){
-          if(err) console.log(err)
-          else res.render('tasques',{tasks:tasks}); 
-        })
+        res.redirect('/tasques')
       }
     })
     Block.create(new Trans(
@@ -375,7 +303,8 @@ app.post('/modificaTasca', function(req, res){
         tipus:'modificaTasca', 
         emisor:req.session.passport.user,
         receptor:null, 
-        tasca: req.body.titol + '-->'+ req.body.newTitol, 
+        // tasca: req.body.titol + '-->'+ req.body.newTitol + ', '+req.body.descripcio + '-->'+ req.body.newDescripcio + ', '+req.body.temps + '-->'+ req.body.newTemps+ ', '+req.body.preu + '-->'+ req.body.newPreu, 
+        tasca: 'modificacioTasca',
         preu: req.body.newPreu, 
         acceptada:false, 
         acabada:false
@@ -413,21 +342,7 @@ app.post('/creacioTrans', function(req, res){
           if (err){
             console.log(err)
           } else {
-            Usuari.find({}, 
-            function(err, users){
-              if(err) {
-                console.log(err)
-              } else {
-                Tasques.find ({}, function(err, tasks){
-                  res.render('trans', {
-                    message: 'tasca creada', 
-                    emisor:req.session.passport.user, 
-                    users: users, 
-                    tasks:tasks}
-                  );
-                });     
-              }
-            })
+            res.redirect('/transaccio')
           }
         })    
       }
@@ -452,51 +367,10 @@ app.post('/creacioTrans', function(req, res){
   }
 });
 
-app.post('/cumplimentTasca', function(req, res){
+app.post('/finlaitzacioTasca', function(req, res){
   if(!('passport' in req.session)){ 
     res.render('index')
   }else{
-    Trans.findOneandUpdate({
-      tipus:'transaccio', 
-      emisor:req.body.emisor,
-      receptor:req.body.receptor, 
-      tasca: req.body.tasca, 
-      preu: req.body.preu, 
-      acceptada:true, 
-      acabada:false
-    }, { acceptada:true }, 
-      function(err, trans){
-        if(err)
-          Usuari.find({username:req.session.passport.user},function(err, user) {
-            console.log(user) //→ aqui extreus tota la info del usuari inclòs el seu ID
-            if (err) {
-              console.log(err)
-              res.render('login');
-            }
-            else {
-                Trans.find({Receptor: user.req.session.passport.user}, function(err, tasks){
-                res.render('home', {user:user[0], tasks:tasks});
-              });     
-            }     
-          });   
-      })
-    Block.create(new Trans(
-      {
-        tipus:'transaccio', 
-        emisor:req.body.emisor,
-        receptor:req.body.receptor, 
-        tasca: req.body.tasca, 
-        preu: req.body.preu, 
-        acceptada:true, 
-        acabada:true
-      }),
-    function(err, add) {
-      if(err){
-        console.log(err)
-      }else{
-        console.log('Transacció afegida al block')
-      }
-    }); 
     Usuari.findOne({username:req.body.receptor},
       function(err, userReceptor) {
       console.log(user) //→ aqui extreus tota la info del usuari inclòs el seu ID
@@ -530,7 +404,41 @@ app.post('/cumplimentTasca', function(req, res){
         })
         
       }     
-    });  
+    }); 
+    Trans.findOneandUpdate({
+      tipus:'transaccio', 
+      emisor:req.body.emisor,
+      receptor:req.body.receptor, 
+      tasca: req.body.tasca, 
+      preu: req.body.preu, 
+      acceptada:true, 
+      acabada:false
+    }, { acceptada:true }, 
+      function(err, trans){
+        if(err){
+          console.log(err)
+        } else {
+            res.redirect('/home')    
+        }        
+    })
+    Block.create(new Trans(
+      {
+        tipus:'transaccio', 
+        emisor:req.body.emisor,
+        receptor:req.body.receptor, 
+        tasca: req.body.tasca, 
+        preu: req.body.preu, 
+        acceptada:true, 
+        acabada:true
+      }),
+    function(err, add) {
+      if(err){
+        console.log(err)
+      }else{
+        console.log('Transacció afegida al block')
+      }
+    }); 
+     
   }
 });
 
@@ -548,16 +456,18 @@ app.post('/acceptacioTasca', function(req, res){
       acabada:false
     }, { acceptada:true }, 
     function(err, trans){
-      Usuari.find({username:req.session.passport.user},function(err, user) {
-        if (err) {
-          console.log(err)
-          res.render('login');
-        } else {
-          Trans.find({Receptor: user.req.session.passport.user}, function(err, tasks){
-            res.render('home', {user:user[0], tasks:tasks});
-          });     
-        }     
-      });   
+      if(err) console.log(err)
+      else res.redirect('/home')
+      // Usuari.find({username:req.session.passport.user},function(err, user) {
+      //   if (err) {
+      //     console.log(err)
+      //     res.render('login');
+      //   } else {
+      //     Trans.find({Receptor: user.req.session.passport.user}, function(err, tasks){
+      //       res.render('home', {user:user[0], tasks:tasks});
+      //     });     
+      //   }     
+      // });   
     })
     Block.create(new Trans(
       {
@@ -567,6 +477,52 @@ app.post('/acceptacioTasca', function(req, res){
       tasca: req.body.tasca, 
       preu: req.body.preu, 
       acceptada:true, 
+      acabada:false
+      }),
+    function(err, add) {
+      if(err){
+        console.log(err)
+      }else{
+        console.log('Transacció afegida al block')
+      }
+    });
+  }
+});
+
+app.post('/rebuigTasca', function(req, res){
+  if(!('passport' in req.session)){ 
+    res.render('index')
+  }else{
+    Trans.findOneAndDelete({
+      tipus:'rebuigTasca', 
+      emisor:req.body.emisor,
+      receptor:req.body.receptor, 
+      tasca: req.body.tasca, 
+      acceptada:false, 
+      acabada:false
+    }, 
+    function(err, trans){
+      if(err) console.log(err)
+      else res.redirect('/home')
+      // Usuari.find({username:req.session.passport.user},function(err, user) {
+      //   if (err) {
+      //     console.log(err)
+      //     res.render('login');
+      //   } else {
+      //     Trans.find({Receptor: user.req.session.passport.user}, function(err, tasks){
+      //       res.render('home', {user:user[0], tasks:tasks});
+      //     });     
+      //   }     
+      // });   
+    })
+    Block.create(new Trans(
+      {
+        tipus:'rebuigTasca', 
+      emisor:req.body.emisor,
+      receptor:req.body.receptor, 
+      tasca: 'rebuigTasca', 
+      preu: null, 
+      acceptada:false, 
       acabada:false
       }),
     function(err, add) {
@@ -591,9 +547,7 @@ app.post('/eliminaTasca', function(req, res){
       if(err){
         console.log(err)
       }else{
-        Tasques.find ({}, function(err, tasks){
-          res.render('Tasques', {tasks:tasks});
-        });
+        res.redirect('/tasques')
       }
     })
     Block.create(new Trans(
@@ -616,6 +570,13 @@ app.post('/eliminaTasca', function(req, res){
   }
 });
 
+app.post('/actualitzaBlock', function(req, res){
+  if(!('passport' in req.session)){ 
+    res.render('index')
+  }else{
+    
+  }
+});
 
 app.listen(app.get('port'), function(){
   console.log(("Express server listening on port " + app.get('port')))

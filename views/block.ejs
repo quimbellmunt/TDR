@@ -9,11 +9,13 @@
 </head>
 
 <body>
+<div>
 <table class="table" width="100%">
 <tr>
+
 <td>
-<form action="/block" method="GET" >
-<button type="submit" class="btn btn-primary">BlockChain</button>
+<form action="/home" method="GET" >
+<button type="submit" class="btn btn-success">Pagina d'usuari</button>
 </form>
 </td>
 
@@ -25,19 +27,20 @@
 
 <td>
 <form action="/transaccio" method="GET" >
-<button type="submit" class="btn btn-primary">Trasnsaccions</button>
+<button type="submit" class="btn btn-secondary">transaccions</button>
 </form>
 </td>
 
 <td>
-<form action="/home" method="GET" >
-<button type="submit" class="btn btn-primary">home</button>
+<form action="/block" method="GET" >
+<button type="submit" class="btn btn-info">BlockChain</button>
 </form>
 </td>
+
 
 <td>
 <form action="/logout" method="POST" >
-<button type="submit" class="btn btn-warning" >Logout</button>
+<button type="submit" class="btn btn-danger" >Logout</button>
 </form>
 </td>
 
@@ -45,6 +48,7 @@
 
 </table>
 </div>
+
 
 <p> Hey <%= user%>! Aqui tens la cadena de blocks</p>
 

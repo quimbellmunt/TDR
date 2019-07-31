@@ -7,13 +7,15 @@
   <link rel="stylesheet" href="styles.css">
   <link href="bootstrap.css" rel="stylesheet" type="text/css">
 </head>
-<body><div>
+<body>
+
+	<div>
 <table class="table" width="100%">
 <tr>
 
 <td>
-<form action="/block" method="GET" >
-<button type="submit" class="btn btn-primary">BlockChain</button>
+<form action="/home" method="GET" >
+<button type="submit" class="btn btn-success">Pagina d'usuari</button>
 </form>
 </td>
 
@@ -25,19 +27,20 @@
 
 <td>
 <form action="/transaccio" method="GET" >
-<button type="submit" class="btn btn-primary">Trasnsaccions</button>
+<button type="submit" class="btn btn-secondary">transaccions</button>
 </form>
 </td>
 
 <td>
-<form action="/home" method="GET" >
-<button type="submit" class="btn btn-primary">home</button>
+<form action="/block" method="GET" >
+<button type="submit" class="btn btn-info">BlockChain</button>
 </form>
 </td>
+
 
 <td>
 <form action="/logout" method="POST" >
-<button type="submit" class="btn btn-warning" >Logout</button>
+<button type="submit" class="btn btn-danger" >Logout</button>
 </form>
 </td>
 
@@ -51,7 +54,7 @@
 <form action="/creacioTasca" method="POST">
 	<input type="text" name="titol" placeholder="titol">
    	<input type="text" name="descripcio" placeholder="descripció">
-   	<input type="text" name="preu" placeholder="preu asignat">
+   	<input type="number" name="preu" placeholder="preu asignat">
    	<input type="text" name="temps" placeholder="duracio">
    <button class="btn btn-primary">Crea la Tasca</button>
 </form> 
@@ -69,26 +72,29 @@
 	<tbody>
 	<% if (tasks.length >0) { %>
 	  <% tasks.forEach(task => { %>
+	  
 	  <tr>
-	  <td><%= task.titol %></td>
-	  <td><%= task.descripcio %></td>
-	  <td><%= task.preu %></td>
-	  <td><%= task.temps %></td>
-	  <td>
-	  	<form action="/eliminaTasca" method="POST">
-	  		<button name="titol" value="<%=task.titol%>">Elimina</button>
-	  	</form> 
-	  </td>
-	</tr>
-	 <tr>
-	 	<form action="/modificaTasca" method="POST">
-			<td><input type="text" name="newTitol" value="<%=task.titol%>" readonly></td>
-			<td><input type="text" name="newDescripcio" value="<%=task.descripcio%>" readonly></td>
-			<td><input type="text" name="newPreu" value="<%=task.preu%>"></td>
-			<td><input type="text" name="newTemps" value="<%=task.temps%>"></td>
-			<td><button>Modifica</button></td>
-		
+		<form action="/modificaTasca" method="POST">
+		<!-- <td><input name="titol" value="<%=task.titol%>" readonly></td>
+		<td><input name="descripcio" value="<%=task.descripcio%>" readonly></td>
+		<td><input name="preu" value="<%=task.preu%>" readonly></td>
+		<td><input name="temps" value="<%=task.temps%>" readonly></td> -->
+
+		<td><input type="text" name="newTitol" value="<%=task.titol%>" readonly></td>
+		<td><input type="text" name="newDescripcio" value="<%=task.descripcio%>"></td>
+		<td><input type="number" name="newPreu" value="<%=task.preu%>"></td>
+		<td><input type="text" name="newTemps" value="<%=task.temps%>"></td>
+		<input name="preu" value="<%=task.preu%>" style="display:none">
+		<input name="titol" value="<%=task.titol%>" style="display:none">
+		<input name="descripcio" value="<%=task.descripcio%>" style="display:none">
+		<input name="temps" value="<%=task.temps%>" style="display:none">
+		<td><button class="btn btn-warning" >Modifica</button></td>
 		</form> 
+		<td>
+	  	<form action="/eliminaTasca" method="POST">
+	  		<button name="titol" value="<%=task.titol%>" class="btn btn-danger" >Elimina</button>
+	  	</form> 
+	  	</td>
 	</tr>
   	<% }); %>
 <% } %>

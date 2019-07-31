@@ -8,13 +8,14 @@
   <link href="bootstrap.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+
 <div>
 <table class="table" width="100%">
 <tr>
 
 <td>
-<form action="/block" method="GET" >
-<button type="submit" class="btn btn-primary">BlockChain</button>
+<form action="/home" method="GET" >
+<button type="submit" class="btn btn-success">Pagina d'usuari</button>
 </form>
 </td>
 
@@ -26,19 +27,20 @@
 
 <td>
 <form action="/transaccio" method="GET" >
-<button type="submit" class="btn btn-primary">Trasnsaccions</button>
+<button type="submit" class="btn btn-secondary">transaccions</button>
 </form>
 </td>
 
 <td>
-<form action="/home" method="GET" >
-<button type="submit" class="btn btn-primary">home</button>
+<form action="/block" method="GET" >
+<button type="submit" class="btn btn-info">BlockChain</button>
 </form>
 </td>
+
 
 <td>
 <form action="/logout" method="POST" >
-<button type="submit" class="btn btn-warning" >Logout</button>
+<button type="submit" class="btn btn-danger" >Logout</button>
 </form>
 </td>
 
@@ -46,6 +48,8 @@
 
 </table>
 </div>
+
+
 <p>Transaccions</p>
 
 
@@ -84,14 +88,19 @@
           <ul>
             <% tasks.forEach(task => { %>
             <option  name="tasca" value = "<%= task.titol %>"><%= task.titol %></option>
-            <insert type="text" name="preu" value = "<%= task.preu %>"></insert>
+            <insert name="preu" value = "<%= task.preu %>"></insert>
             <% }); %>
           <ul>
           <% } %>
          </select>
       </p>
    </fieldset>
-
+   <fieldset>
+      <legend>Hash</legend>
+      <input type="text" name="hash"  placeholder="Indica el teu Hash privat" size="70"></input>
+    </fieldset>
+   
+   <br/>
    <button class="btn btn-primary">Crea La transacció</button>
 </form>
 
