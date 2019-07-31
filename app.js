@@ -69,13 +69,23 @@ app.post('/register', function(req, res) {
           return res.render('index');
       }
       passport.authenticate('local')(req, res, function () {
-        res.render('home',{tasques : null});
+        // res.render('home',{tasques : null});
       });
+      Users.register (new Users ({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail}), 
+        function(err,userito){
+          if (err) console.log(err)
+          else {
+            res.render('home',{tasques : null, usuario:userito});
+          }
+        })
   });
 });
 //Aquí crec que s'hauria d'afegir això:
 //Users.register (new Users ({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail}), req.body.password, function(err,userito))
 //if(err) {console.log (err)}
+// quasi bé. El password no el vols guardar pertant no l'has de guardar... 
+// Ei! on esta el if(err) de la creació?
+// Ep! ara fas un cosa mes... per tant elm res vé mes tard! 
 
 
 
@@ -102,7 +112,7 @@ app.post('/logout', function(req, res) {
 // obrir pagina localhost:3000/home --> home.ejs
 app.get('/home', function(req, res){
 
-Users.find()
+//Users.find()
 });
 
 
@@ -127,20 +137,30 @@ app.post('/transaccio', function(req,res) {
    // console.log(req.body)
 
   });
+//que estas inttentant fer aquúí? que fa aquest get /userTrans i que fa el get /tasktrans
+//el problema es que no pot fer-ho serparadament... ho has de posar en la mateiuxa funciuó Get. 
+// i a mes a mes com ha d'enviar-ho tot junt has de incloure una funció dins de l'altre. 
+// un altre cosa perque busques req.body.nomUsuari... aquí no estan enviant informació. la estas recuperant... he déntendre que vols fer aquí perque despres ho envies a home
+// mira la meva branca per que vegis com es fan aquest tipus de crides. Haueras dádaptar el vocabulari perque no ho he fet encara pero agafa ideas...
+// no sembla que estiguis fent recerca per internet de com es fan les coses iu molt mes facil en el mateix repositori... 
+// 
 
-app.get ('/usertrans', function(req,res) {
-  Users.find({nomUsuari: req.body.nomUsuari}, function(err, userTrans) { 
-    if (err) console.log(err)
-      else {
-    res.render('home', {usuarios: userTrans})}
-});
+// app.get ('/usertrans', function(req,res) {
+//   Users.find({nomUsuari: req.body.nomUsuari}, function(err, userTrans) { 
+//     if (err) console.log(err)
+//       else {
+//     res.render('home', {usuarios: userTrans})}
+// });
 
 
 app.get('/tasktrans', function(req,res){
   Tasques.find({nomTasca: req.body.nomTasca}, function(err, tascaTrans) { 
-    if(err) console.log(err)
-      else {
-        res.render('home', {taskTrans: tascaTrans})}
+    if(err) {
+      console.log(err)
+    } else {
+      res.render('home', {taskTrans: tascaTrans})
+    }
+  });
 
 });
 //Usuari crea una nova tasca per la llista
@@ -156,7 +176,9 @@ app.post('/create', function(req, res) {
     }
   })
 });
-//Aquest botó de create està bé? O la part de new tasques no ho està?
+//Aquest botó de create està bé? O la part de new tasques no ho està? No esta bé
+// Ei! tens examples de com crear nous documents en la base de dades... linea 66 de app.js
+// Si us plau mira examples
 
 
 //Ususari modifica la seva informacio personal
