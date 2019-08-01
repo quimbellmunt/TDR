@@ -13,44 +13,7 @@
 
     <h5><center>APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</center></h5>
  
-    
-
-        <h6>modificació de l'usuari</h6>
-        <form action="/modificarUsuari" method="POST"> 
-            <p>Aquestes són les teves dades actuals:</p>
-           <table>
-               <tr>
-                   <td>Nom:</td>
-                   <td>Cognoms:</td>
-                   <td>Nom d'usuari:</td>
-                   <td>Correu electrònic:</td>
-               </tr>
-               
-               
-               <tr>
-                   <td><%= userito.nomUsuari%></td>
-                   <td><%= userito.cognoms%></td>
-                   <td><%= userito.username%></td>
-                   <td><%= userito.mail%></td>
-               </tr>
-               <tr>Introdueix la teva nova informació:</tr>
-               <tr>
-                   <td><input type="text" name="nomUsuari" placeholder="nom"></td>
-                   <td><input type="text" name="cognoms" placeholder="cognoms"></td>
-                   <td><input type="text" name="username" placeholder="nom usuari "></td>
-                   <td><input type="text" name="mail" placeholder="mail"></td>
-                   <td><input type="password" name="password" placeholder="password"></td>
-               </tr>
-           
-               
-           </table>
-
-
-
-        <button>Canviar</button>
-    </form>
-
-<form action="/inici" method="GET">
+    <form action="/inici" method="GET">
     <button>inici</button>
 </form>
 
@@ -63,10 +26,6 @@
 </form>
 
 <form action="/usuari" method="GET">
-    <button>usuari</button> 
-</form>
-
-<form action="/modificacioUsuari" method="GET">
     <button>modificació de l'usuari</button>
 </form>
 
@@ -85,6 +44,32 @@
 <form action="/eliminacioTasca" method="GET">
     <button>eliminació de la tasca</button>
 </form>
+
+        <h6>modificació de l'usuari</h6>
+        <p>____________________________________________________________________________________________________________________________________________</p>
+        <form action="/modificarUsuari" method="POST"> 
+           <table>
+
+               <tr>Introdueix la teva nova informació:</tr>
+               <tr>
+                   <td>Nom:</td>
+                   <td>Cognoms:</td>
+                   <td>Correu electrònic:</td>
+               </tr>
+               <tr>
+                   <td><input type="text" name="nomUsuari" value= "<%= userito.nomUsuari%>" placeholder="nom"></td>
+                   <td><input type="text" name="cognoms" value="<%= userito.cognoms%>"placeholder="cognoms"></td>
+                   <td><input type="text" name="mail" value="<%= userito.mail%>"placeholder="mail"></td>
+               </tr>
+           
+               
+           </table>
+
+
+
+        <button type="submit">Canviar</button>
+    </form>
+
 
 <form action="/logout" method="POST" >
     <button>logout</button>
