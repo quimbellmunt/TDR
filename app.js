@@ -49,10 +49,9 @@ passport.deserializeUser(Login.deserializeUser());
 
 
 app.get('/', function (req, res) { 
-<<<<<<< HEAD
    console.log(req)
-   if('session' in req) {
-    res.render ('index')
+   if('passport' in req.session) {
+    res.redirect('/home')
    } else {
     res.render('index');
                                  // , {usertrans:null, tasques : null});
@@ -60,56 +59,51 @@ app.get('/', function (req, res) {
 });
 
 
-app.get('/registre', function(req, res) {
-    res.redirect('/');
-=======
- if('passport' in req.session){
-    Users.find({}, function(err,users){
-      if(err){ 
-        console.log(err)
-      }else{
-        Tasques.find({}, function(err,tasques){
-          if(err){
-            console.log(err)
-          } else {
-            Transaccio.find({usuariReceptor:req.session.passport.user}, function(err,transUsuari){
-              if(err){
-                console.log(err)
-              }else{
-                res.render('home', {usuaris:users, tasques:tasques, transaccions:transUsuari})
-              }
-            })
-          }
+// app.get('/registre', function(req, res) {
+//     res.redirect('/');
+//  if('passport' in req.session){
+//     Users.find({}, function(err,users){
+//       if(err){ 
+//         console.log(err)
+//       }else{
+//         Tasques.find({}, function(err,tasques){
+//           if(err){
+//             console.log(err)
+//           } else {
+//             Transaccio.find({usuariReceptor:req.session.passport.user}, function(err,transUsuari){
+//               if(err){
+//                 console.log(err)
+//               }else{
+//                 res.render('home', {usuaris:users, tasques:tasques, transaccions:transUsuari})
+//               }
+//             })
+//           }
 
-        })
-      }
-    })
-  } else {
-    res.redirect('/login')
-  }
-});
+//         })
+//       }
+//     })
+//   } else {
+//     res.redirect('/login')
+//   }
+// });
 
 
 app.get('/register', function(req, res) {
   if('passport' in req.session){
-    res.redirect('home');
+    res.redirect('/home');
   } else {
     res.render('index');
   }
->>>>>>> e4a0f1409dd0fd99fa4e79582f7e398a45edab53
 });
 
 
 app.get('/login', function(req, res) {
-<<<<<<< HEAD
-
     res.redirect('/')
 });
 
 
 app.get('/inici', function(req, res){
   console.log(req)
-=======
   if('passport' in req.session){
     res.redirect('/home');
   } else {
@@ -119,7 +113,6 @@ app.get('/inici', function(req, res){
 
 
 app.get('/home', function(req, res){
->>>>>>> e4a0f1409dd0fd99fa4e79582f7e398a45edab53
   if('passport' in req.session){
     Users.find({}, function(err,users){
       if(err){ 
@@ -146,26 +139,6 @@ app.get('/home', function(req, res){
   }
 });
 
-<<<<<<< HEAD
-app.get('/home', function(req,res) {
-      res.redirect('/inici')
-
-    });
-
-app.get('/actualitzacio', function(req,res) {
-   console.log(req.body)
-      res.redirect('/inici') //Tot i així, aquí falta que es pugui connectar amb la meitat de la pàgina de home 
-    });
-  //Aquest es el boto a on l'usuari demana el nou fitxer per mail
-
-
-
-app.get('/informacio', function(req,res) {
-      res.redirect('/inici') //falta també poder accedir a la meitat per trobar-se primer amb informació 
-    });
-
-app.get('/modificacioUsuari', function(req,res) {
-=======
 app.get('/inici', function(req,res) {
    if('passport' in req.session){
     res.redirect('/home');
@@ -195,7 +168,6 @@ app.get('/actualitzacio', function(req,res) {
 //     });
 // jo li posaria el nom Usuari al controlador per que té mes sentit. Modifciacio usuari te mes sentit com nom per uin POST
 app.get('/usuari', function(req,res) {
->>>>>>> e4a0f1409dd0fd99fa4e79582f7e398a45edab53
   if('passport' in req.session){
     Users.findOne({username: req.session.passport.username}, function(err,user) {
       if(err){
@@ -210,32 +182,6 @@ app.get('/usuari', function(req,res) {
   }
 });
 
-<<<<<<< HEAD
-app.get('/tasca', function(req,res) {
-
-   Tasques.find({}, function(err, tasques) {
-    if(err){ 
-      console.log(err)
-    }else{
-        res.render('tasques',{tasques : tasques}) 
-      }
-});
-
-
-app.get('/creacioTasca', function(req,res) {
- res.redirect('/tasca')//falta
-  });
-      
-});
-
-app.get('/modificacioTasca', function(req,res) {
-      res.redirect('/tasca')  //falta
-    });
-
-app.get('/eliminacioTasca', function(req,res) {
-      res.redirect('/tasca')//falta
-    });
-=======
 // Quim: estic una mica liat... GET modifcacioTasca i Tasca semblent per mi e, mateix... els dos volen obrir la pagina de tasques. 
 // Jo esculliria tasca o millor tasques perque la view es diu tasques. 
 
@@ -258,19 +204,19 @@ app.get('/tasques', function(req,res) {
 // Quim: Aquest controlador hauria de ser POST i no GET
 // app.get('/modificacioTasca', function(req,res) {
 app.post('/modificacioTasca', function(req,res) {
-  res.redirect('/tasques')  //falta
+  //falta tot la logica
+  res.redirect('/tasques')  
 });
 
 // 
 app.post('/creacioTasca', function(req,res) {
   // Quim: aqui no fas find, has de fer register new tasca
-  
   // Tasques.find({},function(err, tasques){
   //   if(err) console.log(err)
   //   res.render('tasques', {tasques : tasques}) 
-  // })
-      
+  // })     
 });
+
 
 //Quim: Aquest controlador POST es igual que creacio Tasca i el dos estan malament doncs millor esborrem un i el fem bé
 // app.post('/create', function(req, res) {
@@ -290,7 +236,6 @@ app.post('/eliminacioTasca', function(req,res) {
   // tasques.findAndDelete
   res.redirect('/tasques')
 });
->>>>>>> e4a0f1409dd0fd99fa4e79582f7e398a45edab53
 
 app.get('/usuari', function(req,res) {
   res.redirect('/modificacioUsuari')
@@ -314,7 +259,6 @@ app.post('/register', function(req, res) {//mirar comentaris
             res.redirect('/home')
           }
         })
-<<<<<<< HEAD
 //Users.register (new Users ({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail}), req.body.password, function(err,userito))
 //if(err) {console.log (err)}
 // Ei! on esta el if(err) de la creació?
@@ -322,15 +266,6 @@ app.post('/register', function(req, res) {//mirar comentaris
   });
 });
 
-
-app.post('/modificaciot', function(req,res) {
-  //Primer de tot, fas Tasques.findOneAndUpdate i poses, sempre d'una d'elles, 
-  //les diferents característiques que poden canviar (ja que no és necessari canviar tot, per tant s'ha de poder aclarir que si no s'ha posat res en l'input del front-end, aleshores vol dir que has de posar per a que et posi la mateixa info que hi havia abans)
-});// Un cop agafat crec que el find one ja s'encarrega d'accedir a la base de dades i el update s'encarrega de canviar-ho a la mateixa base, per tant jo no crec que falti res més a part de fer console.log en el cas de que doni err. 
-=======
-
-
->>>>>>> e4a0f1409dd0fd99fa4e79582f7e398a45edab53
 
 app.post('/transaccio', function(req,res) {
   //(Comentari en ejs) var transaction = new Transaccio ({aquí ha d'agafar tot la info que vol guardar a la base de dades (el usuariOrigen és el mateix que ho realitza)})
@@ -350,24 +285,10 @@ app.post('/transaccio', function(req,res) {
   });
 
 
-<<<<<<< HEAD
-app.post('/create', function(req, res) { //No està bé, modificar
- 
-  console.log(req.body)
-  //var createdTask = new Tasques({nomTasca: req.body.nomTasca, preu: req.body.preu, temps: req.body.temps, descripcio: req.body.descripcio});
-  Tasques.create(createdTask, function(err, createdTask){
-    if (err) console.log(err) 
-    else {
-      console.log('created task', createdTask)
-      res.render('tasques', {tasques : createdTask})
-    }
-  })
-});
 
 
-=======
+
 //Ususari modifica la seva informacio personal
->>>>>>> e4a0f1409dd0fd99fa4e79582f7e398a45edab53
 app.post('/modificarUsuari', function(req,res) {
   
   console.log(req.body)
@@ -488,7 +409,3 @@ app.post('/logout', function(req, res) {
 app.listen(app.get('port'), function(){
   console.log(("Express server listening on port " + app.get('port')))
 }); 
-<<<<<<< HEAD
-
-=======
->>>>>>> e4a0f1409dd0fd99fa4e79582f7e398a45edab53
