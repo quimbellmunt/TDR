@@ -48,15 +48,16 @@ passport.deserializeUser(Login.deserializeUser());
 
 
 
-app.get('/', function (req, res) { 
-   console.log(req)
+app.get('/', function (req, res) {
+    console.log(req.session) 
    if('passport' in req.session) {
-    res.redirect('/home')
+    res.redirect('/inici')
    } else {
     res.render('index');
                                  // , {usertrans:null, tasques : null});
    }    
 });
+
 
 
 // app.get('/registre', function(req, res) {
@@ -90,7 +91,7 @@ app.get('/', function (req, res) {
 
 app.get('/register', function(req, res) {
   if('passport' in req.session){
-    res.redirect('/home');
+    res.redirect('/inici');
   } else {
     res.render('index');
   }
@@ -102,17 +103,8 @@ app.get('/login', function(req, res) {
 });
 
 
+
 app.get('/inici', function(req, res){
-  console.log(req)
-  if('passport' in req.session){
-    res.redirect('/home');
-  } else {
-    res.render('index');
-  }
-});
-
-
-app.get('/home', function(req, res){
   if('passport' in req.session){
     Users.find({}, function(err,users){
       if(err){ 
@@ -139,9 +131,9 @@ app.get('/home', function(req, res){
   }
 });
 
-app.get('/inici', function(req,res) {
+app.get('/home', function(req,res) {
    if('passport' in req.session){
-    res.redirect('/home');
+    res.redirect('/inici');
   } else {
     res.redirect('/login');
   }
@@ -149,10 +141,10 @@ app.get('/inici', function(req,res) {
 
 app.get('/actualitzacio', function(req,res) {
   //Aques é sle boto que envia la paraula clau. 
-  //Un cop acabat la fnuction faras un res.redirect('/home')
+  //Un cop acabat la fnuction faras un res.redirect('/inici')
   if('passport' in req.session){
     // ... .... ... 
-    res.redirect('/home')
+    res.redirect('/inici')
   } else{
     res.redirect('/login');
   }
@@ -169,7 +161,7 @@ app.get('/actualitzacio', function(req,res) {
 // jo li posaria el nom Usuari al controlador per que té mes sentit. Modifciacio usuari te mes sentit com nom per uin POST
 app.get('/usuari', function(req,res) {
   if('passport' in req.session){
-    Users.findOne({username: req.session.passport.username}, function(err,user) {
+    Users.findOne({username: req.session.passport.user}, function(err,user) {
       if(err){
         console.log(err)
       }else{
@@ -237,10 +229,6 @@ app.post('/eliminacioTasca', function(req,res) {
   res.redirect('/tasques')
 });
 
-app.get('/usuari', function(req,res) {
-  res.redirect('/modificacioUsuari')
-}); 
-
 
 app.post('/register', function(req, res) {//mirar comentaris
   console.log(req.body)
@@ -252,11 +240,11 @@ app.post('/register', function(req, res) {//mirar comentaris
       passport.authenticate('local')(req, res, function () {
         // res.render('home',{tasques : null});
       });
-      Users.register (new Users ({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail}), 
+      Users.create(new Users({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail, moneder: 20}), 
         function(err,userito){
           if (err) console.log(err)
           else {
-            res.redirect('/home')
+            res.redirect('/inici')
           }
         })
 //Users.register (new Users ({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail}), req.body.password, function(err,userito))
@@ -280,7 +268,7 @@ app.post('/transaccio', function(req,res) {
     //Podria també passar-se per mail al usuariReceptor però això ja és valor afegit. 
 
    // console.log(req.body)
-   res.redirect('/home')
+   res.redirect('/inici')
 
   });
 
@@ -290,20 +278,19 @@ app.post('/transaccio', function(req,res) {
 
 //Ususari modifica la seva informacio personal
 app.post('/modificarUsuari', function(req,res) {
-  
-  console.log(req.body)
-  Users.findOneAndUpdate({nomUsuari:req.body.nomUsuari, cognoms:req.body.cognoms, username:req.body.username, mail:req.body.mail, password:req.body.password}, 
-    function(err,users) {
+   if('passport' in req.session){
+    console.log(req.body)
+      Users.findOneAndUpdate({nomUsuari:req.body.nomUsuari},{nomUsuari:req.body.nomUsuari, cognoms:req.body.cognoms, username:req.body.username, mail:req.body.mail}, 
+        function(err,users) {
       if(err) {
         console.log(err)
       }else{
-        //ara amb el redirect es molt mes faicl! Tots el post acaben amb res.redirect
-        res.redirect('/modificacioUsuari')
-        // Trans.find({Receptor: user.id}, function(err, tasks){
-        // res.render('usuari', {useritos:users, tasks:tasks});
-        // }); 
-      }    
-    })
+        res.redirect('/usuari')
+         }
+       })
+     } else {
+      res.redirect('/index')
+     }   
 });
 
 app.post('/esborrarTasca', function(req,res) {
@@ -331,7 +318,7 @@ app.post('/tascaCancelada', function(res) {
   //Transaccio.findOneAndDelete(identificadorTrans: req.body.identificadorTrans, function (err, tascancelada)
   //if(err) console.log (err)
   //});
-  res.redirect('/home')
+  res.redirect('/inici')
 });
 
 app.post('/TascaRebutjada', function(res) {
@@ -339,7 +326,7 @@ app.post('/TascaRebutjada', function(res) {
   //var acabada = !false;
   // En el cas de cancelada s'envia mail (The Nodemailer module) a usuariOrigen per dir que s'ha cancelat. 
   // Quim: aixo es part del controlador
-  res.redirect('/home')
+  res.redirect('/inici')
 });
 
 
@@ -380,15 +367,15 @@ app.post('/tascaAcabada', function(res) {
   //   })
 
   //})
-  res.redirect('/home')
+  res.redirect('/inici')
 });
 
 
 
 
 app.post('/login', passport.authenticate('local'), function(req, res) {
-    console.log('aqui')
-    res.redirect('/home');
+    console.log(req.session)
+    res.redirect('/inici');
 });
 
 app.post('/logout', function(req, res) {
