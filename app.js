@@ -49,6 +49,7 @@ passport.deserializeUser(Login.deserializeUser());
 
 
 app.get('/', function (req, res) { 
+<<<<<<< HEAD
    console.log(req)
    if('session' in req) {
     res.render ('index')
@@ -61,30 +62,17 @@ app.get('/', function (req, res) {
 
 app.get('/registre', function(req, res) {
     res.redirect('/');
-});
-
-
-app.get('/login', function(req, res) {
-
-    res.redirect('/')
-});
-
-
-app.get('/inici', function(req, res){
-  console.log(req)
-  if('passport' in req.session){
+=======
+ if('passport' in req.session){
     Users.find({}, function(err,users){
-      console.log('Aqui1')
       if(err){ 
         console.log(err)
       }else{
         Tasques.find({}, function(err,tasques){
-          console.log('Aqui2')
           if(err){
             console.log(err)
           } else {
             Transaccio.find({usuariReceptor:req.session.passport.user}, function(err,transUsuari){
-              console.log('Aqui3')
               if(err){
                 console.log(err)
               }else{
@@ -97,13 +85,68 @@ app.get('/inici', function(req, res){
       }
     })
   } else {
-    res.redirect('index')
+    res.redirect('/login')
   }
-  
-
-//Users.find()
 });
 
+
+app.get('/register', function(req, res) {
+  if('passport' in req.session){
+    res.redirect('home');
+  } else {
+    res.render('index');
+  }
+>>>>>>> e4a0f1409dd0fd99fa4e79582f7e398a45edab53
+});
+
+
+app.get('/login', function(req, res) {
+<<<<<<< HEAD
+
+    res.redirect('/')
+});
+
+
+app.get('/inici', function(req, res){
+  console.log(req)
+=======
+  if('passport' in req.session){
+    res.redirect('/home');
+  } else {
+    res.render('index');
+  }
+});
+
+
+app.get('/home', function(req, res){
+>>>>>>> e4a0f1409dd0fd99fa4e79582f7e398a45edab53
+  if('passport' in req.session){
+    Users.find({}, function(err,users){
+      if(err){ 
+        console.log(err)
+      }else{
+        Tasques.find({}, function(err,tasques){
+          if(err){
+            console.log(err)
+          } else {
+            Transaccio.find({usuariReceptor:req.session.passport.user}, function(err,transUsuari){
+              if(err){
+                console.log(err)
+              }else{
+                res.render('home', {usuaris:users, tasques:tasques, transaccions:transUsuari})
+              }
+            })
+          }
+
+        })
+      }
+    })
+  } else {
+    res.redirect('/login')
+  }
+});
+
+<<<<<<< HEAD
 app.get('/home', function(req,res) {
       res.redirect('/inici')
 
@@ -122,6 +165,37 @@ app.get('/informacio', function(req,res) {
     });
 
 app.get('/modificacioUsuari', function(req,res) {
+=======
+app.get('/inici', function(req,res) {
+   if('passport' in req.session){
+    res.redirect('/home');
+  } else {
+    res.redirect('/login');
+  }
+});
+
+app.get('/actualitzacio', function(req,res) {
+  //Aques é sle boto que envia la paraula clau. 
+  //Un cop acabat la fnuction faras un res.redirect('/home')
+  if('passport' in req.session){
+    // ... .... ... 
+    res.redirect('/home')
+  } else{
+    res.redirect('/login');
+  }
+   //Tot i així, aquí falta que es pugui connectar amb la meitat de la pàgina de home 
+});
+  //Aquest es el boto a on l'usuari demana el nou fitxer per mail
+
+
+//Quim:
+// app.get('/informacio', function(req,res) {
+//       res.render('home') //falta també poder accedir a la meitat per trobar-se primer amb informació 
+//       // AIXÒ QUE VOLS FER ES BASTANT DIFICIL... COMENTO AQUEST CONTROILADOR PER SI TENIM TEMPS.    
+//     });
+// jo li posaria el nom Usuari al controlador per que té mes sentit. Modifciacio usuari te mes sentit com nom per uin POST
+app.get('/usuari', function(req,res) {
+>>>>>>> e4a0f1409dd0fd99fa4e79582f7e398a45edab53
   if('passport' in req.session){
     Users.findOne({username: req.session.passport.username}, function(err,user) {
       if(err){
@@ -136,6 +210,7 @@ app.get('/modificacioUsuari', function(req,res) {
   }
 });
 
+<<<<<<< HEAD
 app.get('/tasca', function(req,res) {
 
    Tasques.find({}, function(err, tasques) {
@@ -160,6 +235,62 @@ app.get('/modificacioTasca', function(req,res) {
 app.get('/eliminacioTasca', function(req,res) {
       res.redirect('/tasca')//falta
     });
+=======
+// Quim: estic una mica liat... GET modifcacioTasca i Tasca semblent per mi e, mateix... els dos volen obrir la pagina de tasques. 
+// Jo esculliria tasca o millor tasques perque la view es diu tasques. 
+
+app.get('/tasques', function(req,res) {
+   if('passport' in req.session){
+    // Aqui has de buscar totes les tasques
+    res.render('tasques', {tasques:tasques})
+   }else{
+    res.redirect('/index')
+   }
+  
+})
+
+//Quim: Aquest controlador crec que ja no el necessitem
+// app.get('/tasca', function(req,res) {
+//   res.render('tasques')
+// })
+
+
+// Quim: Aquest controlador hauria de ser POST i no GET
+// app.get('/modificacioTasca', function(req,res) {
+app.post('/modificacioTasca', function(req,res) {
+  res.redirect('/tasques')  //falta
+});
+
+// 
+app.post('/creacioTasca', function(req,res) {
+  // Quim: aqui no fas find, has de fer register new tasca
+  
+  // Tasques.find({},function(err, tasques){
+  //   if(err) console.log(err)
+  //   res.render('tasques', {tasques : tasques}) 
+  // })
+      
+});
+
+//Quim: Aquest controlador POST es igual que creacio Tasca i el dos estan malament doncs millor esborrem un i el fem bé
+// app.post('/create', function(req, res) {
+//   Tasques.create(createdTask, function(err, createdTask){
+//     if (err) console.log(err) 
+//     else {
+//       console.log('created task', createdTask)
+//       res.render('tasques', {tasques : createdTask})
+//     }
+//   })
+// });
+
+
+// Aquest controlador hauria de ser POST i no GET
+// app.get('/eliminacioTasca', function(req,res) {
+app.post('/eliminacioTasca', function(req,res) {
+  // tasques.findAndDelete
+  res.redirect('/tasques')
+});
+>>>>>>> e4a0f1409dd0fd99fa4e79582f7e398a45edab53
 
 app.get('/usuari', function(req,res) {
   res.redirect('/modificacioUsuari')
@@ -180,9 +311,10 @@ app.post('/register', function(req, res) {//mirar comentaris
         function(err,userito){
           if (err) console.log(err)
           else {
-            res.render('home',{tasques : null, usuario:userito});
+            res.redirect('/home')
           }
         })
+<<<<<<< HEAD
 //Users.register (new Users ({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail}), req.body.password, function(err,userito))
 //if(err) {console.log (err)}
 // Ei! on esta el if(err) de la creació?
@@ -195,6 +327,10 @@ app.post('/modificaciot', function(req,res) {
   //Primer de tot, fas Tasques.findOneAndUpdate i poses, sempre d'una d'elles, 
   //les diferents característiques que poden canviar (ja que no és necessari canviar tot, per tant s'ha de poder aclarir que si no s'ha posat res en l'input del front-end, aleshores vol dir que has de posar per a que et posi la mateixa info que hi havia abans)
 });// Un cop agafat crec que el find one ja s'encarrega d'accedir a la base de dades i el update s'encarrega de canviar-ho a la mateixa base, per tant jo no crec que falti res més a part de fer console.log en el cas de que doni err. 
+=======
+
+
+>>>>>>> e4a0f1409dd0fd99fa4e79582f7e398a45edab53
 
 app.post('/transaccio', function(req,res) {
   //(Comentari en ejs) var transaction = new Transaccio ({aquí ha d'agafar tot la info que vol guardar a la base de dades (el usuariOrigen és el mateix que ho realitza)})
@@ -209,10 +345,12 @@ app.post('/transaccio', function(req,res) {
     //Podria també passar-se per mail al usuariReceptor però això ja és valor afegit. 
 
    // console.log(req.body)
+   res.redirect('/home')
 
   });
 
 
+<<<<<<< HEAD
 app.post('/create', function(req, res) { //No està bé, modificar
  
   console.log(req.body)
@@ -227,6 +365,9 @@ app.post('/create', function(req, res) { //No està bé, modificar
 });
 
 
+=======
+//Ususari modifica la seva informacio personal
+>>>>>>> e4a0f1409dd0fd99fa4e79582f7e398a45edab53
 app.post('/modificarUsuari', function(req,res) {
   
   console.log(req.body)
@@ -234,11 +375,12 @@ app.post('/modificarUsuari', function(req,res) {
     function(err,users) {
       if(err) {
         console.log(err)
-        
       }else{
-        Trans.find({Receptor: user.id}, function(err, tasks){
-        res.render('usuari', {useritos:users, tasks:tasks});
-        }); 
+        //ara amb el redirect es molt mes faicl! Tots el post acaben amb res.redirect
+        res.redirect('/modificacioUsuari')
+        // Trans.find({Receptor: user.id}, function(err, tasks){
+        // res.render('usuari', {useritos:users, tasks:tasks});
+        // }); 
       }    
     })
 });
@@ -249,16 +391,35 @@ app.post('/esborrarTasca', function(req,res) {
     if(err) { 
       console.log(err) 
     } else {
-      Tasques.find({},function(err, tasques){
-        if(err) console.log(err)
-        res.render('tasques',{tasques : tasques}) 
-      })
+      //ara amb el redirect es molt mes faicl! Tots el post acaben amb res.redirect
+      res.redirect('/tasques')
+      // Tasques.find({},function(err, tasques){
+      //   if(err) console.log(err)
+      //   res.render('tasques',{tasques : tasques}) 
+      // })
     }
-  })
-  
-      
+  })   
 });
 
+//Quim: TascaCancelada i TascaRebutjada no fan el mateix?
+
+app.post('/tascaCancelada', function(res) {
+  //var acceptada = false
+  //var acabada = false 
+  //Has de fer que quan es cancel·la una tasca s'ha d'anar de la llista de tasques pendents de la persona, per tant és com si eliminessis la transacció
+  //Transaccio.findOneAndDelete(identificadorTrans: req.body.identificadorTrans, function (err, tascancelada)
+  //if(err) console.log (err)
+  //});
+  res.redirect('/home')
+});
+
+app.post('/TascaRebutjada', function(res) {
+  //req.body.emisor
+  //var acabada = !false;
+  // En el cas de cancelada s'envia mail (The Nodemailer module) a usuariOrigen per dir que s'ha cancelat. 
+  // Quim: aixo es part del controlador
+  res.redirect('/home')
+});
 
 
 app.post('/tascaAcabada', function(res) {
@@ -298,51 +459,36 @@ app.post('/tascaAcabada', function(res) {
   //   })
 
   //})
-  res.render('home')
+  res.redirect('/home')
 });
 
-//tascaCancelada i tascaRebutjada no es el mateix?
 
-app.post('/tascaCancelada', function(res) {
-  //var acceptada = false
-  //var acabada = false 
-  //Has de fer que quan es cancel·la una tasca s'ha d'anar de la llista de tasques pendents de la persona, per tant és com si eliminessis la transacció
-  //Transaccio.findOneAndDelete(identificadorTrans: req.body.identificadorTrans, function (err, tascancelada)
-  //if(err) console.log (err)
-  //});
-  res.render('home')
-});
-
-app.post('/TascaRebutjada', function(res) {
-  //req.body.emisor
-  //var acabada = !false;
-  // En el cas de cancelada s'envia mail (The Nodemailer module) a usuariOrigen per dir que s'ha cancelat. 
-  // Quim: aixo es part del controlador
-  res.render('home')
-});
 
 
 app.post('/login', passport.authenticate('local'), function(req, res) {
     console.log('aqui')
-    res.redirect('home');
+    res.redirect('/home');
 });
 
 app.post('/logout', function(req, res) {
     req.logout();
-    res.render('index');
+    res.redirect('/index');
 });
 
-
-app.post('/descarrega', function(req,res) {
-  // La descarrega, és a dir, en el que entra la blockchain el que interessa primer és agafar tot el que hi hagi a la base de dades i hagi hagut abans, per tant, tots els canvis.
-  //Suposo que pel que ja existeeix seria alguna cosa com Tasques.find({}), Users.find i tota la pesca (potser només cal fer Block.find perquè no sé que és del tot). Això es reuneix en un fitxer que s'ha d'encriptar i va variant cada vegada que passa alguna cosa a la web.
-  //(Crec que per això serveix el model de block que ha aparegut per aquí, no estic del tot segura).
-  //Aleshores aquí, després d'aconseguir posar tota la info en el document, el que s'ha de fer és enviar el mail i per això serveix el The Nodemailer module. 
-  //(A més a més, m'he d'enrecordat que a dalt del botó, al front-end he de fer un get pel nom de la última versió).  
-  });
+//Quim: POST Descarrega fa elm mateix que actualizació? Aleshores amb un botonet GET ja fem. 
+// app.post('/descarrega', function(req,res) {
+//   // La descarrega, és a dir, en el que entra la blockchain el que interessa primer és agafar tot el que hi hagi a la base de dades i hagi hagut abans, per tant, tots els canvis.
+//   //Suposo que pel que ja existeeix seria alguna cosa com Tasques.find({}), Users.find i tota la pesca (potser només cal fer Block.find perquè no sé que és del tot). Això es reuneix en un fitxer que s'ha d'encriptar i va variant cada vegada que passa alguna cosa a la web.
+//   //(Crec que per això serveix el model de block que ha aparegut per aquí, no estic del tot segura).
+//   //Aleshores aquí, després d'aconseguir posar tota la info en el document, el que s'ha de fer és enviar el mail i per això serveix el The Nodemailer module. 
+//   //(A més a més, m'he d'enrecordat que a dalt del botó, al front-end he de fer un get pel nom de la última versió).  
+//   });
 
 
 app.listen(app.get('port'), function(){
   console.log(("Express server listening on port " + app.get('port')))
 }); 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e4a0f1409dd0fd99fa4e79582f7e398a45edab53
