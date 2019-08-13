@@ -280,7 +280,7 @@ app.post('/transaccio', function(req,res) {
 app.post('/modificarUsuari', function(req,res) {
    if('passport' in req.session){
     console.log(req.body)
-      Users.findOneAndUpdate({nomUsuari:req.body.nomUsuari},{nomUsuari:req.body.nomUsuari, cognoms:req.body.cognoms, username:req.body.username, mail:req.body.mail}, 
+      Users.findOneAndUpdate({username:req.body.username},{nomUsuari:req.body.nomUsuari, cognoms:req.body.cognoms, username:req.body.username, mail:req.body.mail}, 
         function(err,users) {
       if(err) {
         console.log(err)
