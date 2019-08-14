@@ -44,7 +44,7 @@
 	<h3>creació de la tasca</h3>
 	<p>____________________________________________________________________________________________________________________________________</p>
 
-	<form action="create" method="POST"> 
+	<form action="/creacioTasca" method="POST"> 
 		<p>Nom de la tasca:</p>
 			<input type="text" name="nomTasca" placeholder="nom de la tasca">
 		<p>Valor monetari:</p>
@@ -65,10 +65,10 @@
 					<% if (tasques.length >0) { %> 
 					<% tasques.forEach(tasca => {%>
 					<tr>
-					<td><%= tasca.nomTasca %></li>
-					<td><%= tasca.preu %></li>
-					<td><%= tasca.temps %></li>
-					<td><%= tasca.descripcio %></li>
+					<td><%= tasca.nomTasca %></td>
+					<td><%= tasca.preu %></td>
+					<td><%= tasca.temps %></td>
+					<td><%= tasca.descripcio %></td>
 					
 					</tr>
 					<% }); %>

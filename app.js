@@ -321,13 +321,6 @@ app.post('/tascaCancelada', function(res) {
   res.redirect('/inici')
 });
 
-app.post('/TascaRebutjada', function(res) {
-  //req.body.emisor
-  //var acabada = !false;
-  // En el cas de cancelada s'envia mail (The Nodemailer module) a usuariOrigen per dir que s'ha cancelat. 
-  // Quim: aixo es part del controlador
-  res.redirect('/inici')
-});
 
 
 app.post('/tascaAcabada', function(res) {
