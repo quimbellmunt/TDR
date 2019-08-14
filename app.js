@@ -178,30 +178,58 @@ app.get('/usuari', function(req,res) {
 // Jo esculliria tasca o millor tasques perque la view es diu tasques. 
 
 app.get('/tasques', function(req,res) {
-   if('passport' in req.session){
-    // Aqui has de buscar totes les tasques
-    res.render('tasques', {tasques:tasques})
-   }else{
-    res.redirect('/index')
-   }
-  
-})
+  if('passport' in req.session){
+    res.redirect('/tasques');
+  } else {
+    res.render('index');
+  }
+});
 
+app.get('/creacioTasca', function(req, res) {
+  if('passport' in req.session){
+    res.redirect('/tasques');
+  } else {
+    res.render('index');
+  }
+});
 //Quim: Aquest controlador crec que ja no el necessitem
 // app.get('/tasca', function(req,res) {
 //   res.render('tasques')
 // })
-
-
-// Quim: Aquest controlador hauria de ser POST i no GET
-// app.get('/modificacioTasca', function(req,res) {
-app.post('/modificacioTasca', function(req,res) {
-  //falta tot la logica
-  res.redirect('/tasques')  
+app.get('/modificacioTasca', function(req, res) {
+  if('passport' in req.session){
+    res.redirect('/tasques');
+  } else {
+    res.render('index');
+  }
 });
 
+app.get('/eliminacioTasca', function(req, res) {
+  if('passport' in req.session){
+    res.redirect('/tasques');
+  } else {
+    res.render('index');
+  }
+});
+// Quim: Aquest controlador hauria de ser POST i no GET
+// app.get('/modificacioTasca', function(req,res) {
+app.post('/modificarTasca', function(req,res) {
+
+
+});
+  
+
 // 
-app.post('/creacioTasca', function(req,res) {
+app.post('/crearTasca', function(req,res) {
+  console.log(req.body)
+  Tasques.create(new Tasques({nomTasca:req.body.nomTasca, preu:req.body.preu, temps:req.body.temps, descripcio:req.body.descripcio}),
+    function(err,tasques){
+      if (err){
+        console.log(err)
+      }
+      else {
+        res.redirect('/tasques')
+      }})
   // Quim: aqui no fas find, has de fer register new tasca
   // Tasques.find({},function(err, tasques){
   //   if(err) console.log(err)
@@ -221,13 +249,6 @@ app.post('/creacioTasca', function(req,res) {
 //   })
 // });
 
-
-// Aquest controlador hauria de ser POST i no GET
-// app.get('/eliminacioTasca', function(req,res) {
-app.post('/eliminacioTasca', function(req,res) {
-  // tasques.findAndDelete
-  res.redirect('/tasques')
-});
 
 
 app.post('/register', function(req, res) {//mirar comentaris
