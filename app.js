@@ -54,39 +54,10 @@ app.get('/', function (req, res) {
     res.redirect('/inici')
    } else {
     res.render('index');
-                                 // , {usertrans:null, tasques : null});
    }    
 });
 
 
-
-// app.get('/registre', function(req, res) {
-//     res.redirect('/');
-//  if('passport' in req.session){
-//     Users.find({}, function(err,users){
-//       if(err){ 
-//         console.log(err)
-//       }else{
-//         Tasques.find({}, function(err,tasques){
-//           if(err){
-//             console.log(err)
-//           } else {
-//             Transaccio.find({usuariReceptor:req.session.passport.user}, function(err,transUsuari){
-//               if(err){
-//                 console.log(err)
-//               }else{
-//                 res.render('home', {usuaris:users, tasques:tasques, transaccions:transUsuari})
-//               }
-//             })
-//           }
-
-//         })
-//       }
-//     })
-//   } else {
-//     res.redirect('/login')
-//   }
-// });
 
 
 app.get('/register', function(req, res) {
@@ -103,7 +74,6 @@ app.get('/login', function(req, res) {
 });
 
 
-
 app.get('/inici', function(req, res){
   if('passport' in req.session){
     Users.find({}, function(err,users){
@@ -115,10 +85,11 @@ app.get('/inici', function(req, res){
             console.log(err)
           } else {
             Transaccio.find({usuariReceptor:req.session.passport.user}, function(err,transUsuari){
+              console.log(transUsuari)
               if(err){
                 console.log(err)
               }else{
-                res.render('home', {usuaris:users, tasques:tasques, transaccions:transUsuari})
+                res.render('home', {usuaris:users, tasques:tasques, transaccions:transUsuari, emisor:req.session.passport.user})
               }
             })
           }
@@ -140,25 +111,17 @@ app.get('/home', function(req,res) {
 });
 
 app.get('/actualitzacio', function(req,res) {
-  //Aques é sle boto que envia la paraula clau. 
-  //Un cop acabat la fnuction faras un res.redirect('/inici')
+
   if('passport' in req.session){
-    // ... .... ... 
     res.redirect('/inici')
   } else{
     res.redirect('/login');
   }
-   //Tot i així, aquí falta que es pugui connectar amb la meitat de la pàgina de home 
+
 });
-  //Aquest es el boto a on l'usuari demana el nou fitxer per mail
 
 
-//Quim:
-// app.get('/informacio', function(req,res) {
-//       res.render('home') //falta també poder accedir a la meitat per trobar-se primer amb informació 
-//       // AIXÒ QUE VOLS FER ES BASTANT DIFICIL... COMENTO AQUEST CONTROILADOR PER SI TENIM TEMPS.    
-//     });
-// jo li posaria el nom Usuari al controlador per que té mes sentit. Modifciacio usuari te mes sentit com nom per uin POST
+
 app.get('/usuari', function(req,res) {
   if('passport' in req.session){
     Users.findOne({username: req.session.passport.user}, function(err,user) {
@@ -178,41 +141,19 @@ app.get('/usuari', function(req,res) {
 // Jo esculliria tasca o millor tasques perque la view es diu tasques. 
 
 app.get('/tasques', function(req,res) {
+
   if('passport' in req.session){
-    res.redirect('/tasques');
+    Tasques.find({},function(err, tasks){
+      // console.log(tasks)
+      if(err) console.log(err)
+      res.render('tasques',{tasques:tasks}); 
+    })
   } else {
     res.render('index');
   }
 });
 
-app.get('/creacioTasca', function(req, res) {
-  if('passport' in req.session){
-    res.redirect('/tasques');
-  } else {
-    res.render('index');
-  }
-});
-//Quim: Aquest controlador crec que ja no el necessitem
-// app.get('/tasca', function(req,res) {
-//   res.render('tasques')
-// })
-app.get('/modificacioTasca', function(req, res) {
-  if('passport' in req.session){
-    res.redirect('/tasques');
-  } else {
-    res.render('index');
-  }
-});
 
-app.get('/eliminacioTasca', function(req, res) {
-  if('passport' in req.session){
-    res.redirect('/tasques');
-  } else {
-    res.render('index');
-  }
-});
-// Quim: Aquest controlador hauria de ser POST i no GET
-// app.get('/modificacioTasca', function(req,res) {
 app.post('/modificarTasca', function(req,res) {
 if('passport' in req.session){
     console.log(req.body)
@@ -231,7 +172,6 @@ function(err,tasques){
 });
   
 
-// 
 app.post('/crearTasca', function(req,res) {
   console.log(req.body)
   Tasques.create(new Tasques({nomTasca:req.body.nomTasca, preu:req.body.preu, temps:req.body.temps, descripcio:req.body.descripcio}),
@@ -249,22 +189,7 @@ app.post('/crearTasca', function(req,res) {
   // })     
 });
 
-
-//Quim: Aquest controlador POST es igual que creacio Tasca i el dos estan malament doncs millor esborrem un i el fem bé
-// app.post('/create', function(req, res) {
-//   Tasques.create(createdTask, function(err, createdTask){
-//     if (err) console.log(err) 
-//     else {
-//       console.log('created task', createdTask)
-//       res.render('tasques', {tasques : createdTask})
-//     }
-//   })
-// });
-
-
-
 app.post('/register', function(req, res) {//mirar comentaris
-  console.log(req.body)
   Login.register(new Login({ username : req.body.username }), req.body.password, function(err, user) {
       if (err) {
           console.log(err)
@@ -277,7 +202,7 @@ app.post('/register', function(req, res) {//mirar comentaris
         function(err,userito){
           if (err) console.log(err)
           else {
-            res.redirect('/inici')
+            res.redirect('/home')
           }
         })
 //Users.register (new Users ({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail}), req.body.password, function(err,userito))
@@ -289,21 +214,31 @@ app.post('/register', function(req, res) {//mirar comentaris
 
 
 app.post('/transaccio', function(req,res) {
-  //(Comentari en ejs) var transaction = new Transaccio ({aquí ha d'agafar tot la info que vol guardar a la base de dades (el usuariOrigen és el mateix que ho realitza)})
-  //Transaccio.create(transaction, function(err,transaction) {
-  // if (err) console.log(err)
-  //else{
-    //console.log('transaction',transaction)
-    //res.render('home')
-    //A la vegada, aquesta transacció quan es crea ha d'apareixer a les tasques pendents (s'hauria de fer que al posar transaccions a tasques pendents, a part de posar length >0, també s'hauria de posar la condició de que tu fossis usuariReceptor) d'una persona i que aquesta ho pugui acceptar o acabar. 
-    //Si s'accepta o s'acaba, és nova informació que es tindrà de la transaccio, però s'haurà de fer com si fos una nova perquè per defecte, a la primera, el tipus hauria de ser enviada. 
-    //(D'aquesta manera es queda registrat tot el que passa) 
-    //Podria també passar-se per mail al usuariReceptor però això ja és valor afegit. 
+console.log(req.body)
+ if('passport' in req.session){
+  console.log(req.body)
+  Tasques.findOne({nomTasca: req.body.tasca}, function(err, tasca){
+    if(err) console.log(err)
+    else {
+      Transaccio.create(new Transaccio ({usuariOrigen:req.body.emisor, 
+        usuariReceptor:req.body.receptor, 
+        tasca:req.body.tasca, 
+        preu:tasca.preu,
+        rebutjada:false,
+        acabada:false
 
-   // console.log(req.body)
-   res.redirect('/inici')
-
-  });
+      }), function(err, transCreate){
+        if(err){
+          console.log(err)
+        }else{
+          res.redirect('/inici')
+        }
+      })
+    }
+  })
+  
+ }
+});
 
 
 
@@ -326,8 +261,8 @@ app.post('/modificarUsuari', function(req,res) {
      }   
 });
 
-app.post('/esborrarTasca', function(req,res) {
-  console.log(req.body)
+app.post('/esborrarTasca', function(req, res) {
+
   Tasques.findOneAndDelete({nomTasca:req.body.nomTasca}, function(err, tascaEsborrada){
     if(err) { 
       console.log(err) 
@@ -344,56 +279,71 @@ app.post('/esborrarTasca', function(req,res) {
 
 //Quim: TascaCancelada i TascaRebutjada no fan el mateix?
 
-app.post('/tascaCancelada', function(res) {
-  //var acceptada = false
-  //var acabada = false 
-  //Has de fer que quan es cancel·la una tasca s'ha d'anar de la llista de tasques pendents de la persona, per tant és com si eliminessis la transacció
-  //Transaccio.findOneAndDelete(identificadorTrans: req.body.identificadorTrans, function (err, tascancelada)
-  //if(err) console.log (err)
-  //});
-  res.redirect('/inici')
+app.post('/TascaRebutjada', function(req, res) {
+  console.log(req.body)
+Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.body.receptor, tasca:req.body.tasca}, 
+  function(err,transBye){
+    if(err){
+      console.log(err)
+    }else{
+      res.redirect('/inici')
+    }
+  })
+
+
 });
 
 
 
-app.post('/tascaAcabada', function(res) {
+app.post('/tascaAcabada', function(req, res) {
 
-  // aqui has mirar les informacions que t'arriben del fron end a req.body.
-  // hauries de rebre algo semblant a req.body.emisor, req.body.receptor, req.body.tasca i requ.body.preu
-  // var emisorTasca = req.body.emisor
-  // var receptorTasca = req.body.receptor
-  // var dinersReceptor= req.body.dinersReceptor
-  // var dinersEmisor = req.body.dinersEmisor
-  // var nomTasca = req.body.tasca
-  // var preuTasca = req.body.preu
-  // aqui interactues amb 3 models, dues vegades amb Usuari i una vegada amb trasaccions
-  // Trans.create(new Trans({tipus:'tasca Acabada', usuariOrigen: emisorTasca, }), function(err, tascaEliminada){
-  //   if(err) {
-    
-  //     console.log(err)
-  //   } else {
-  //     console.log('Transacció afegida')
-  //   }
-  // }); 
-  //   aqui has de sumar la pasta el que ha fet la tasca i restarli el que va encomanar-la
-  //   Usuari.findOneAndUpdate({nom:receptorTasca},{},function(err, done){
-  //   Users.findOneAndUpdate({nom:emisorTasca}, {cartera:dinersEmisor -  preuTasca}, 
-  //     function(err, update){
-  // console.log(err)
-  //   } else {
-  //     console.log('Usuari actualitzat')
-  //   }
-  //   })
-  //   Users.findOneAndUpdate({nom:receptorTasca}, {cartera:dinersReceptor +  preuTasca}, 
-  //     function(err, update){
-  // console.log(err)
-  //   } else {
-  //     console.log('Usuari actualitzat')
-  //   }
-  //   })
+Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.body.receptor, tasca:req.body.tasca}, 
+  function(err,transBye){
+    if(err){
+      console.log(err)
+    }else{
+      Users.findOne({username:req.body.receptor},
+      function(err, userReceptor) {
+      if (err) {
+        console.log(err)
+      }
+      else {
+        console.log(userReceptor)
+        var newmoneder = transBye.preu + userReceptor.moneder
+        console.log(newmoneder)
+      Users.findOneAndUpdate(userReceptor,{moneder:newmoneder},function(err, ok){
+          if(err) {
+            console.log('Error')
+          } else {
+            console.log('Diners afegits al receptor')
+          }
+        })
+        
+      }     
+    });
+      Users.findOne({username:req.body.emisor},
+      function(err, userOrigen) {
+      if (err) {
+        console.log(err)
+      }
+      else {
+        console.log(userOrigen)
+        var newmoneder = userOrigen.moneder - transBye.preu
+        console.log(newmoneder)
+        Users.findOneAndUpdate(userOrigen,{moneder:newmoneder},function(err, ok){
+          if(err) {
+            console.log('Error')
+          } else {
+            console.log('Diners afegits al receptor')
+          }
+        })
+        
+      }     
+    });
+      res.redirect('/inici')
+    }
+  })
 
-  //})
-  res.redirect('/inici')
 });
 
 
@@ -406,7 +356,7 @@ app.post('/login', passport.authenticate('local'), function(req, res) {
 
 app.post('/logout', function(req, res) {
     req.logout();
-    res.redirect('/index');
+    res.render('index');
 });
 
 //Quim: POST Descarrega fa elm mateix que actualizació? Aleshores amb un botonet GET ja fem. 
