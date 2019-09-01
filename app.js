@@ -103,6 +103,7 @@ app.get('/inici', function(req, res){
 });
 
 app.get('/home', function(req,res) {
+  console.log(req.session)
    if('passport' in req.session){
     res.redirect('/inici');
   } else {
@@ -189,28 +190,7 @@ app.post('/crearTasca', function(req,res) {
   // })     
 });
 
-app.post('/register', function(req, res) {//mirar comentaris
-  Login.register(new Login({ username : req.body.username }), req.body.password, function(err, user) {
-      if (err) {
-          console.log(err)
-          return res.render('index');
-      }
-      passport.authenticate('local')(req, res, function () {
-        // res.render('home',{tasques : null});
-      });
-      Users.create(new Users({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail, moneder: 20}), 
-        function(err,userito){
-          if (err) console.log(err)
-          else {
-            res.redirect('/home')
-          }
-        })
-//Users.register (new Users ({ nomUsuari: req.body.nomUsuari, cognoms: req.body.cognoms, username: req.body.username, mail: req.body.mail}), req.body.password, function(err,userito))
-//if(err) {console.log (err)}
-// Ei! on esta el if(err) de la creació?
-// Ep! ara fas un cosa mes... per tant elm res vé mes tard! 
-  });
-});
+
 
 
 app.post('/transaccio', function(req,res) {
@@ -248,7 +228,12 @@ console.log(req.body)
 app.post('/modificarUsuari', function(req,res) {
    if('passport' in req.session){
     console.log(req.body)
-      Users.findOneAndUpdate({username:req.body.username},{nomUsuari:req.body.nomUsuari, cognoms:req.body.cognoms, username:req.body.username, mail:req.body.mail}, 
+      Users.findOneAndUpdate(
+        {username:req.body.username},
+        {nomUsuari:req.body.nomUsuari, 
+          cognoms:req.body.cognoms, 
+          username:req.body.username, 
+          mail:req.body.mail}, 
         function(err,users) {
       if(err) {
         console.log(err)
@@ -352,6 +337,31 @@ Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.bo
 app.post('/login', passport.authenticate('local'), function(req, res) {
     console.log(req.session)
     res.redirect('/inici');
+});
+
+app.post('/register', function(req, res) {
+  Login.register(new Login({ username : req.body.username }), req.body.password, function(err, user) {
+      if (err) {
+          console.log(err)
+          return res.render('index');
+      }
+      
+      Users.create(new Users({ 
+        nomUsuari: req.body.nomUsuari, 
+        cognoms: req.body.cognoms, 
+        username: req.body.username, 
+        mail: req.body.mail, 
+        moneder: 20}), 
+        function(err,userito){
+          if (err) console.log(err)
+          else {
+            passport.authenticate('local')(req, res, function () {
+              res.redirect('/home')
+          });
+            
+          }
+        })
+  });
 });
 
 app.post('/logout', function(req, res) {
