@@ -140,14 +140,18 @@ app.get('/tasques', function(req,res) {
 
 app.post('/modificarTasca', function(req,res) {
 if('passport' in req.session){
-    console.log(req.body)
-Tasques.findOneAndUpdate({nomTasca:eq.body.nomTasca},{nomTasca:req.body.nomTasca, preu:req.body.preu, temps:req.body.temps, descripcio:req.body.descripcio},
+   console.log(req.body)
+Tasques.findOneAndUpdate(
+  {nomTasca:req.body.nomTasca},
+  {nomTasca:req.body.nomTasca, 
+    preu:req.body.preu, 
+    temps:req.body.temps, 
+    descripcio:req.body.descripcio},
 function(err,tasques){
   if (err) {
     console.log (err)
   }else{
     res.redirect('/tasques')
-
   }
  })
 } else {
