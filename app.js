@@ -102,14 +102,7 @@ app.get('/inici', function(req, res){
   }
 });
 
-app.get('/home', function(req,res) {
-  console.log(req.session)
-   if('passport' in req.session){
-    res.redirect('/inici');
-  } else {
-    res.redirect('/login');
-  }
-});
+
 
 app.get('/actualitzacio', function(req,res) {
 
@@ -356,7 +349,7 @@ app.post('/register', function(req, res) {
           if (err) console.log(err)
           else {
             passport.authenticate('local')(req, res, function () {
-              res.redirect('/home')
+              res.redirect('/inici')
           });
             
           }
