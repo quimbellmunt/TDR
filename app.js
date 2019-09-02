@@ -104,16 +104,6 @@ app.get('/inici', function(req, res){
 
 
 
-app.get('/actualitzacio', function(req,res) {
-
-  if('passport' in req.session){
-    res.redirect('/inici')
-  } else{
-    res.redirect('/login');
-  }
-
-});
-
 
 
 app.get('/usuari', function(req,res) {

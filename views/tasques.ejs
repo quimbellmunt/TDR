@@ -10,113 +10,91 @@
 <body>
 <h5><center>APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</center></h5>
 	
-<form action="/inici" method="GET">
+	<form action="/inici" method="GET">
     <button>inici</button>
 </form>
 
-<form action="/actualitzacio" method="GET">
-    <button>actualització</button>
-</form>
+<p>actualització</p>
 
-<form action="/informacio" method="GET">
-    <button>informació</button>
-</form>
+<p>informació</p>
 
 <form action="/usuari" method="GET">
     <button>usuari</button>
 </form>
 
+<p>modificació de l'usuari</p>
+
 <form action="/tasques" method="GET">
     <button>tasca</button>
 </form>
 
-<form action="/creacioTasca" method="GET">
-    <button>creació de la tasca</button>
-</form>
+<p>creació de la tasca</p>
+<p>modificació de la tasca</p>
+<p>eliminació de la tasca</p>
 
-<form action="/modificacioTasca" method="GET">
-    <button>modificació de la tasca</button>
-</form>
-
-<form action="/eliminacioTasca" method="GET">
-    <button>eliminació de la tasca</button>
-</form>
 	<h3>creació de la tasca</h3>
 	<p>____________________________________________________________________________________________________________________________________</p>
 
 	<form action="/crearTasca" method="POST"> 
-		<p>Nom de la tasca:</p>
-			<input type="text" name="nomTasca" placeholder="nom de la tasca">
-		<p>Valor monetari:</p>
-			<input type="text" name="preu" placeholder="valor monetari">
-		<p>Temps requerit:</p>
-			<input type="text" name="temps" placeholder="temps requerit">
-		<p>Descripció de la tasca:</p>
-			<input type="text" name="descripcio" placeholder="descripció de la tasca">
-		<button>Crear</button>
+		<table>
+
+		<tr>
+			<td>Nom de la tasca:</td>
+			<td>Valor monetari:</td>
+			<td>Temps requerit:</td>
+			<td>Descripció de la tasca:</td>
+		</tr>
+		<tr>
+			<td><input type="text" name="nomTasca" placeholder="nom de la tasca"></td>
+		
+			<td><input type="text" name="preu" placeholder="valor monetari"></td>
+		
+			<td><input type="text" name="temps" placeholder="temps requerit"></td>
+		
+			<td><input type="text" name="descripcio" placeholder="descripció de la tasca"></td>
+		<td><button>Crear</button>
+		</tr>
+		</table>
 	</form>
 
 
-	<h3>modificació de la tasca</h3>
+	<h3>modificació i eliminació de la tasca</h3>
 	<p>____________________________________________________________________________________________________________________________________</p>
-		<p>Seleccionar la tasca:</p>
+		<p>Selecciona i introdueix què vols canviar:</p>
 	<table class="table">
-		
-					<% if (tasques.length >0) { %> 
-					<% tasques.forEach(tasca => {%>
+		<% if (tasques.length > 0) { %> 
+				<% tasques.forEach(tasca => {%>
 					<tr>
-					<td><%= tasca.nomTasca %></td>
-					<td><%= tasca.preu %></td>
-					<td><%= tasca.temps %></td>
-					<td><%= tasca.descripcio %></td>
-					
+						<td>Nom:</td>
+						<td>Valor monetari:</td>
+						<td>Temps requerit:</td>
+						<td>Descripció de la tasca:</td>
 					</tr>
+					<tr>
+						<td><input type="text" name="nomTasca" value= "<%= tasca.nomTasca%>"></td>
+						<td><input type="text" name="preu" value="<%= tasca.preu%>"></td>
+						<td><input type="text" name="temps" value="<%= tasca.temps%>"></td>
+						<td><input type="text" name="descripcio" value="<%= tasca.descripcio%>"></td>
+						<td>
+							<form action="/modificarTasca" method="POST">
+								<button>Canviar</button>
+							</form>
+						</td>
+						<td>
+							<form action="/esborrarTasca" method="POST">
+							<BUTTON name="nomTasca" value="<%= tasca.nomTasca %>" >Esborrar</BUTTON>
+							</form>
+						</td>
+					</tr>
+
 					<% }); %>
 		<% } %>
-
 		
 	</table>
 	<!-- Fer connexió entre tasca escollida i els següents inputs-->
 
-		
-	<form action="/modificarTasca" method="POST">
-			<p>Dades de la teva tasca seleccionada:</p> <!--No en tinc ni idea de com fer perquè tota la informació surti de la tasca seleccionada. Entenc que és una cosa que s'ha de fer a app.js amb el botó, però no sé com. -->
-				<p>Nom:</p>
-					 <input type="text" name="nom">
-				<p>Valor monetari:</p>
-					 <input type="text" name="preu">
-				<p>Temps requerit:</p>
-					 <input type="text" name="temps">
-				<p>Descripció de la tasca:</p>
-					 <input type="text" name="descripcio">
-		<button>Canviar</button>
-	</form>
-
-
-	<h3>eliminació de la tasca</h3>
-	<p>____________________________________________________________________________________________________________________________________</p>
-		<p>Seleccionar la tasca:</p>
-<table>
-		
-					<% if (tasques.length > 0) { %> 
-				<% tasques.forEach(tasca => {%>
-				<tr>
-					<td><%= tasca.nomTasca %></td>
-					<td><%= tasca.preu %></td>
-					<td><%= tasca.temps %></td>
-					<td><%= tasca.descripcio %></td>
-					<td>
-						<form action="/esborrarTasca" method="POST">
-							<BUTTON name="nomTasca" value="<%= tasca.nomTasca %>" >Esborrar</BUTTON>
-						</form>
-					</td>
-				</tr>
-					<% }); %>
-		<% } %>
-
-		
-	</table>
-
+	
+					
 	<!-- fer que es pugui seleccionar una fila i eliminar aquella-->
 		
 
