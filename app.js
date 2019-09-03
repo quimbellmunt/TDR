@@ -89,7 +89,13 @@ app.get('/inici', function(req, res){
               if(err){
                 console.log(err)
               }else{
-                res.render('home', {usuaris:users, tasques:tasques, transaccions:transUsuari, emisor:req.session.passport.user})
+                Users.findOne({username:req.session.passport.user}, function(err,userito){
+                  if (err){
+                   console.log(err)
+                   }else{
+                    res.render('home', {usuaris:users, tasques:tasques, transaccions:transUsuari, emisor:req.session.passport.user, userito:userito})
+                   }})
+                
               }
             })
           }
