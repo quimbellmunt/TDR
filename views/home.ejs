@@ -10,7 +10,7 @@
 </head>
 <body>
 <div  class="p-3 mb-2 bg-primary text-white fixed-top">
-    <h5><center>APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</center></h5>
+    <h5 align="center">APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</h5>
  </div>
 <div>
   <hr>
@@ -51,145 +51,140 @@
       <td>
         <p class="text-primary">eliminació de la tasca</p>
       </td>
+      <td>
+        <form action="/logout" method="POST">
+          <button>Sortir</button>
+         </form>
+      </td>
     </tr>
   </table>
 </div>
-<h4>Benvingut/da a la meva pàgina web</h4>
+<div class="titol">
+  <h4 align="center">Benvingut/da a la meva pàgina web</h4>
 </div>
-	<h6>Estàs preparat/da per l'intercanvi?</h6>
 
-	<!-- Buscaras el preu de la transaccion a partir del seu i en el model tasques… recuperes el valor. (FindOne{nomtransaccion:req.body.nomtransaccion}, function(err, transaccion){
-})
-Les seguents funcions han d'anar dintre d'aquest 
-Modificar usuari emisor en la posició cartera. usuari.cartera = usuari.cartera - transaccion.preu. (findOneAndUpdate{nomUsuari:req.body.emisor})
-Modificar usuari receptor en la posició cartera. usuari.cartera = usuari.cartera + transaccion.preu. (findOneAndUpdate({nomUsuari:req.body.receptor}))
--->
+<div class= "info">
+  <h5 align="center">Instruccions per a fer un bon ús de l'aplicació:</h5>
+  <p>1. Creeu una transaccion (pressioneu el títol "Creació de la transaccion" a l'esquerra).</p>
+  <p>2. Comproveu que teniu la última versió descarregada ("Actualització" a l'esquerra).</p>
+  <p>3. Torneu a la pàgina d'inici.</p>
+  <p>4. Seleccioneu un usuari per enviar la transaccion que han de fer, juntament amb el pagament.</p>
+  <p>5. Confieu que facin la transaccion.</p>
+</div>
+
+<div class = "accions">
+  <h5 align="center">Estàs preparat/da per l'intercanvi?</h5>
+  <div class="transaccio">
+
+  </div>
+    <table class="table_transaccions">
+      <tr>
+        <td>Receptor</td>
+        <td>Emisor</td>
+        <td>Tasca</td>
+        <td>Codi</td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <form action="/transaccio" method="POST">
+          <td>
+            <fieldset class="scheduler-border">
+              <select name="emisor" id = "emisor">
+                <option name="emisor" value = "<%= emisor %>"><%= emisor %></option>
+              </select>
+            </fieldset>
+          </td>
+          <td>
+            <fieldset class="scheduler-border">
+              <select name="receptor" id = "receptor">
+                <% if (usuaris) { %>
+                  <% usuaris.forEach(user => { %>
+                    <ul>
+                      <option name="receptor" value = "<%= user.username %>"><%= user.username %></option>
+                    </ul>
+                  <% }); %>
+                <% } %>
+              </select>
+            </fieldset>
+          </td>
+          <td>
+            <fieldset class="scheduler-border">
+              <select name="tasca" id = "tasca">
+                <% if (tasques) { %>
+                <% tasques.forEach(tasca => { %>
+                  <ul>
+                    <option  name="tasca" value = "<%= tasca.nomTasca %>"><%= tasca.nomTasca %></option>
+                    <insert name="preu" value = "<%= tasca.preu %>"><%= tasca.preu %></insert>
+                  </ul>
+                <% }); %>
+                <% } %>
+              </select>
+            </fieldset>
+          </td>
+          <td>
+            <fieldset>
+              <input type="text" name="hash"  placeholder="Indica el teu Hash privat" size="70"></input>
+            </fieldset>
+          </td>
+          <td>
+            <button class="btn btn-primary">Crea La transacció</button>
+          </td>
+        </form>
+      </tr>
+    </table>
 
 
-<!-- <p>Transaccions</p> -->
+
+  <div>
+    <h5 align="center">Tasques Assignades</h5>
+    <table class="table">
+    	<tr>
+    			<td>emisor</td>
+    			<td>tasca</td>
+    			<td></td>
+    			<td></td>
+    		</tr>
 
 
-<table class="table" width="100%">
-  <tr>
-    <td>
-<form action="/transaccio" method="POST">
-   <fieldset class="scheduler-border">
-      <h4>Emisor</h4>
-        <select name="emisor" id = "emisor">
-          <option name="emisor" value = "<%= emisor %>"><%= emisor %></option>
-         </select>
-   </fieldset>
- </td>
- <td>
-   <fieldset class="scheduler-border">
-      <h4>Receptor</h4>
-        <select name="receptor" id = "receptor">
-        <% if (usuaris) { %>
-          <ul>
-            <% usuaris.forEach(user => { %>
-            <option name="receptor" value = "<%= user.username %>"><%= user.username %></option>
-            <% }); %>
-          <ul>
-          <% } %>
-         </select>
-   </fieldset>
-   </td>
- <td>
-   <fieldset class="scheduler-border">
-      <h4>Tasques</h4>
+    		<tr>
+    		<% if (transaccions) { %>
+    		  	<% transaccions.forEach(transaccion => { %> 	
+    		  	<td><%= transaccion.usuariOrigen.toUpperCase() %></td>
+    		  	<td><%= transaccion.tasca %></td>
+    			<td>
+    		  	<form action="/tascaRebutjada" method="POST">
+    		  		<input name="emisor" value="<%=transaccion.usuariOrigen%>" style="display:none">
+    				<input name="receptor" value="<%=transaccion.usuariReceptor%>" style="display:none">
+    				<input name="tasca" value="<%=transaccion.tasca%>" style="display:none">
+    				<button class="btn btn-danger" >Rebutjar</button>
+    				</form>
+    			</td>
+    			<td>
+    		  	<form action="/tascaAcabada" method="POST">
+    		  		<input name="emisor" value="<%=transaccion.usuariOrigen%>" style="display:none">
+    				<input name="receptor" value="<%=transaccion.usuariReceptor%>" style="display:none">
+    				<input name="tasca" value="<%=transaccion.tasca%>" style="display:none">
+    				<button class="btn btn-success" >Acabada</button>
+    				</form>
+    			</td>                 
+    	  		<% }); %>
+    		<% } %>
+    	</tr>
+    </table>
+  </div>
+
+  <div >
+    <h5 align="center">Actualització</h5>
+      <p>Si vols continuar intercanviant les tasques de manera segura, descarrega't la última versió:</p>
       
-        <select name="tasca" id = "tasca">
-        <% if (tasques) { %>
-          <ul>
-            <% tasques.forEach(tasca => { %>
-            <option  name="tasca" value = "<%= tasca.nomTasca %>"><%= tasca.nomTasca %></option>
-            <insert name="preu" value = "<%= tasca.preu %>"><%= tasca.preu %></insert>
-            <% }); %>
-          </ul>
-          <% } %>
-         </select>
-   </fieldset>
-   </td>
- <td>
-   <fieldset>
-      <h4>Hash</h4>
-      <input type="text" name="hash"  placeholder="Indica el teu Hash privat" size="70"></input>
-    </fieldset>
-   
-   </td>
- <td>
-  <h4></h4>
-   <button class="btn btn-primary">Crea La transacció</button>
- </td>
-</tr>
-</table>
-
-</form>
-
-<h5>Tasques Assignades</h5>
-
-<table class="table">
-	<tr>
-			<td>emisor</td>
-			<td>tasca</td>
-			<td></td>
-			<td></td>
-		</tr>
-
-
-		<tr>
-		<% if (transaccions) { %>
-		  	<% transaccions.forEach(transaccion => { %> 	
-		  	<td><%= transaccion.usuariOrigen.toUpperCase() %></td>
-		  	<td><%= transaccion.tasca %></td>
-			<td>
-		  	<form action="/tascaRebutjada" method="POST">
-		  		<input name="emisor" value="<%=transaccion.usuariOrigen%>" style="display:none">
-				<input name="receptor" value="<%=transaccion.usuariReceptor%>" style="display:none">
-				<input name="tasca" value="<%=transaccion.tasca%>" style="display:none">
-				<button class="btn btn-danger" >Rebutjar</button>
-				</form>
-			</td>
-			<td>
-		  	<form action="/tascaAcabada" method="POST">
-		  		<input name="emisor" value="<%=transaccion.usuariOrigen%>" style="display:none">
-				<input name="receptor" value="<%=transaccion.usuariReceptor%>" style="display:none">
-				<input name="tasca" value="<%=transaccion.tasca%>" style="display:none">
-				<button class="btn btn-success" >Acabada</button>
-				</form>
-			</td>                 
-	  		<% }); %>
-		<% } %>
-	</tr>
-</table>
+    <form action="/descarrega" method="POST">
+      <button align="center">Descarregar</button> 
+    </form>
+  </div>
+  </div>
 </div>
 
-
-	<h3>actualització</h3>
-	<h3>________________________________________________________________________________________________________</h3>
-
-		<p>Si vols continuar intercanviant les tasques de manera segura, descarrega't la última versió:</p>
-
-
-
-
-		<form action="/descarrega" method="POST">
-			<button>Descarregar</button> 
-		</form>
-<!--(Aquest botó ha de'estar lligat a The Nodemailer module. S'ha de fer a app.js tot o també aquí s'ha de posar alguna cosa?)-->
-
-
-
-<h4><center>Instruccions per a fer un bon ús de l'aplicació:</center></h4>
-	<p>1. Creeu una transaccion (pressioneu el títol "Creació de la transaccion" a l'esquerra).</p>
-	<p>2. Comproveu que teniu la última versió descarregada ("Actualització" a l'esquerra).</p>
-	<p>3. Torneu a la pàgina d'inici.</p>
-	<p>4. Seleccioneu un usuari per enviar la transaccion que han de fer, juntament amb el pagament.</p>
-	<p>5. Confieu que facin la transaccion.</p>
- 
- <form action="/logout" method="POST">
- 	<button>Sortir</button>
- </form>
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
