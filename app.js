@@ -281,11 +281,10 @@ Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.bo
       }
       else {
         console.log(userReceptor)
-        var newmoneder = transBye.preu + userReceptor.moneder
-        console.log(newmoneder)
-      Users.findOneAndUpdate(userReceptor,{moneder:newmoneder},function(err, ok){
+        var newMonederReceptor = transBye.preu + userReceptor.moneder
+      Users.findOneAndUpdate(userReceptor,{moneder:newMonederReceptor},function(err, ok){
           if(err) {
-            console.log('Error')
+            console.log(err)
           } else {
             console.log('Diners afegits al receptor')
           }
@@ -300,11 +299,10 @@ Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.bo
       }
       else {
         console.log(userOrigen)
-        var newmoneder = userOrigen.moneder - transBye.preu
-        console.log(newmoneder)
-        Users.findOneAndUpdate(userOrigen,{moneder:newmoneder},function(err, ok){
+        var newMonederEmisor = userOrigen.moneder - transBye.preu
+        Users.findOneAndUpdate(userOrigen,{moneder:newMonederEmisor},function(err, ok){
           if(err) {
-            console.log('Error')
+            console.log(err)
           } else {
             console.log('Diners afegits al receptor')
           }

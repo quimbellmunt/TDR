@@ -27,3 +27,31 @@ html {
 	width:55%;
 	margin-left:5%
 }
+
+.registre{
+	float:left;
+	width:55%;
+	margin-top: 10%;
+	margin-left:5%;
+}
+
+.login{
+	float:left;
+	width:35%;
+    margin-top: 10%;
+    margin-left:5%;
+
+}
+
+.title{
+	background: url('http://www.nationalcompass.net/wp-content/uploads/2017/06/Integrated-Circuit.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  color: white;
+
+}
