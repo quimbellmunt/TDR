@@ -38,6 +38,7 @@ const Login = require('./models/login');
 const Tasques = require('./models/tasques');
 const Transaccio = require('./models/transaccions');
 const Users = require('./models/users');
+const Block = require('./models/block');
 
 
 passport.use(new LocalStrategy(Login.authenticate()));
@@ -143,6 +144,15 @@ app.get('/tasques', function(req,res) {
   }
 });
 
+app.get('/blockchain', function(req,res){
+
+  if('passport' in req.session) {
+    res.render('blockchain')
+  }else{
+    res.render('index')
+  }
+});
+
 
 app.post('/modificarTasca', function(req,res) {
 if('passport' in req.session){
@@ -157,12 +167,28 @@ function(err,tasques){
   if (err) {
     console.log (err)
   }else{
+
     res.redirect('/tasques')
   }
  })
 } else {
    res.redirect('/index')
-}   
+}
+Block.create(new Transaccio(
+  {tipus:'ModificacioTasca',
+  emisor:req.passport.session.user,
+  receptor: null,
+  tasca:{'modificaTasca', }, // aquí he de canviar això, afegir info tasca antiga, tasca nova
+  preu:req.body.preu, //falta que sigui el nou però no se segur si newreu funciona
+  acceptada:false,
+  acabada: false
+}, function(err, add){
+  if(err){
+    console.log(err)
+  }else{
+    res.render('home')
+  }
+}))  
 });
   
 
@@ -176,11 +202,21 @@ app.post('/crearTasca', function(req,res) {
       else {
         res.redirect('/tasques')
       }})
-  // Quim: aqui no fas find, has de fer register new tasca
-  // Tasques.find({},function(err, tasques){
-  //   if(err) console.log(err)
-  //   res.render('tasques', {tasques : tasques}) 
-  // })     
+ Block.create(new Transaccio(
+  {tipus:'CreacioTasca',
+  emisor:req.passport.session.user,
+  receptor: null,
+  tasca:'creaTasca' //afegir dades tasca
+  preu:req.body.preu, 
+  acceptada:false,
+  acabada: false},
+  function(err, add){
+  if(err){
+    console.log(err)
+  }else{
+    res.render('home')
+  }
+}))  
 });
 
 
@@ -211,7 +247,23 @@ console.log(req.body)
   })
   
  }
+ Block.create(new Block(
+  {tipus:'Trans',
+  emisor:req.passport.session.user,
+  receptor: req.body.receptor,
+  tasca: req.body.tasca,
+  preu:req.body.tasca.preu, 
+  acceptada:false,
+  acabada: false
+}, function(err, add){
+  if(err){
+    console.log(err)
+  }else{
+    res.render('home')
+  }
+}))  
 });
+
 
 
 
@@ -237,7 +289,24 @@ app.post('/modificarUsuari', function(req,res) {
      } else {
       res.redirect('/index')
      }   
+ Block.create(new Transaccio(
+  {tipus:'ModificacioUsuari',
+  emisor:req.passport.session.user,
+  receptor: null,
+  tasca: 'modificaUsuari' ,
+  preu:null, 
+  acceptada:false,
+  acabada: false
+}, function(err, add){
+  if(err){
+    console.log(err)
+  }else{
+    res.render('home')
+  }
+}))  
 });
+
+
 
 app.post('/esborrarTasca', function(req, res) {
 
@@ -253,7 +322,24 @@ app.post('/esborrarTasca', function(req, res) {
       // })
     }
   })   
+ Block.create(new Transaccio(
+  {tipus:'EliminacioTasca',
+  emisor:req.passport.session.user,
+  receptor: null,
+  tasca: req.body.tasca,
+  preu:req.body.tasca.preu, //crec que malament
+  acceptada:false,
+  acabada: false
+}, function(err, add){
+  if(err){
+    console.log(err)
+  }else{
+    res.render('home')
+  }
+}))  
 });
+
+
 
 //Quim: TascaCancelada i TascaRebutjada no fan el mateix?
 
@@ -268,8 +354,24 @@ Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.bo
     }
   })
 
-
+ Block.create(new Transaccio(
+  {tipus:'TascaRebutjada',
+  emisor:req.passport.session.user,
+  receptor: req.body.receptor,
+  tasca: req.body.tasca,
+  preu:req.body.tasca.preu, 
+  acceptada:false,
+  acabada: true
+}, function(err, add){
+  if(err){
+    console.log(err)
+  }else{
+    res.render('home')
+  }
+}))  
 });
+
+
 
 
 
@@ -318,8 +420,22 @@ Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.bo
     }
   })
 
+ Block.create(new Transaccio(
+  {tipus:'tascaAcabada',
+  emisor:req.passport.session.user,
+  receptor: req.body.receptor,
+  tasca: req.body.tasca,
+  preu:req.body.tasca.preu, 
+  acceptada:true,
+  acabada: true
+}, function(err, add){
+  if(err){
+    console.log(err)
+  }else{
+    res.render('home')
+  }
+}))  
 });
-
 
 
 
