@@ -60,28 +60,26 @@
         <h3>modificació de l'usuari</h3>
         <p>____________________________________________________________________________________________________________________________________________</p>
         <form action="/modificarUsuari" method="POST"> 
-           <table>
+           <table class="table" width="100%">
 
                <tr>Introdueix la teva nova informació:</tr>
                <tr>
+                   <td>Nom d'usuari:</td>
                    <td>Nom:</td>
                    <td>Cognoms:</td>
-                   <td>Nom d'usuari:</td>
                    <td>Correu electrònic:</td>
+                   <td></td>
                </tr>
                <tr>
+                <td><input type="text" name="username" value="<%= userito.username%>" placeholder="username" disabled=disabled></td>
                    <td><input type="text" name="nomUsuari" value= "<%= userito.nomUsuari%>" placeholder="nom"></td>
                    <td><input type="text" name="cognoms" value="<%= userito.cognoms%>"placeholder="cognoms"></td>
-                   <td><input type="text" name="username" value="<%= userito.username%>" placeholder="username"></td>
-                   <td><input type="text" name="mail" value="<%= userito.mail%>"placeholder="mail"></td>
+                   <td><input type="text" name="mail" size="50" value="<%= userito.mail%>"placeholder="mail"></td>
+                   <td><button type="submit">Canviar</button></td>
                </tr>
            
                
            </table>
-
-
-
-        <button type="submit">Canviar</button>
     </form>
 
 
