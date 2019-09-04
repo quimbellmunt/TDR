@@ -234,7 +234,7 @@ console.log(req.body)
     emisor:req.session.passport.user,
     receptor: req.body.receptor,
     tasca: req.body.tasca,
-    preu:req.body.tasca.preu, 
+    preu:req.body.preu, 
     acceptada:false,
     acabada: false
   }, function(err, add){
@@ -251,9 +251,6 @@ console.log(req.body)
 
 
 
-
-
-//Ususari modifica la seva informacio personal
 app.post('/modificarUsuari', function(req,res) {
  if('passport' in req.session){
   console.log(req.body)
@@ -308,7 +305,7 @@ if('passport' in req.session){
   emisor:req.session.passport.user,
   receptor: null,
   tasca: req.body.tasca,
-  preu:req.body.tasca.preu,
+  preu:req.body.preu,
   acceptada:false,
   acabada: false
   }, function(err, add){
@@ -342,7 +339,7 @@ app.post('/TascaRebutjada', function(req, res) {
     emisor:req.session.passport.user,
     receptor: req.body.receptor,
     tasca: req.body.tasca,
-    preu:req.body.tasca.preu, 
+    preu:req.body.preu, 
     acceptada:false,
     acabada: true
     }, function(err, add){
@@ -401,7 +398,7 @@ app.post('/tascaAcabada', function(req, res) {
       emisor:req.session.passport.user,
       receptor: req.body.receptor,
       tasca: req.body.tasca,
-      preu:req.body.tasca.preu, 
+      preu:req.body.preu, 
       acceptada:true,
       acabada: true
       }, function(err, add){
@@ -469,6 +466,16 @@ app.post('/logout', function(req, res) {
     res.render('index');
 });
 
+
+app.post('/descarrega', function(req,res){
+  Block.findOne({tipus:'Trans', emisor:req.session.passport.user}, function(err,hash){
+    if(err){
+      console.log(err)
+    }else{
+      console.log('Funciona')
+    }
+  }).limit(10) 
+});
 //Quim: POST Descarrega fa elm mateix que actualizació? Aleshores amb un botonet GET ja fem. 
 // app.post('/descarrega', function(req,res) {
 //   // La descarrega, és a dir, en el que entra la blockchain el que interessa primer és agafar tot el que hi hagi a la base de dades i hagi hagut abans, per tant, tots els canvis.
