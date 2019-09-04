@@ -209,7 +209,7 @@ app.post('/modificaUsuari', function(req, res){
       }
     })
   }
-  Block.create(new Trans(
+  Block.create(new Block(
     {
       tipus:'ModificacioUsuari', 
       emisor:req.session.passport.user,
@@ -298,7 +298,7 @@ app.post('/modificaTasca', function(req, res){
         res.redirect('/tasques')
       }
     })
-    Block.create(new Trans(
+    Block.create(new Block(
       {
         tipus:'modificaTasca', 
         emisor:req.session.passport.user,
@@ -347,7 +347,7 @@ app.post('/creacioTrans', function(req, res){
         })    
       }
     });
-    Block.create(new Trans(
+    Block.create(new Block(
       {
         tipus:'transaccio', 
         emisor:req.body.emisor,
@@ -421,7 +421,7 @@ app.post('/finlaitzacioTasca', function(req, res){
             res.redirect('/home')    
         }        
     })
-    Block.create(new Trans(
+    Block.create(new Block(
       {
         tipus:'transaccio', 
         emisor:req.body.emisor,
@@ -469,7 +469,7 @@ app.post('/acceptacioTasca', function(req, res){
       //   }     
       // });   
     })
-    Block.create(new Trans(
+    Block.create(new Block(
       {
         tipus:'transaccio', 
       emisor:req.body.emisor,
@@ -515,15 +515,15 @@ app.post('/rebuigTasca', function(req, res){
       //   }     
       // });   
     })
-    Block.create(new Trans(
+    Block.create(new Block(
       {
-        tipus:'rebuigTasca', 
+      tipus:'rebuigTasca', 
       emisor:req.body.emisor,
       receptor:req.body.receptor, 
       tasca: 'rebuigTasca', 
       preu: null, 
       acceptada:false, 
-      acabada:false
+      acabada:true
       }),
     function(err, add) {
       if(err){
@@ -550,15 +550,15 @@ app.post('/eliminaTasca', function(req, res){
         res.redirect('/tasques')
       }
     })
-    Block.create(new Trans(
+    Block.create(new Block(
       {
-        tipus:'transaccio', 
+      tipus:'Eliminacio Tasca', 
       emisor:req.body.emisor,
       receptor:req.body.receptor, 
       tasca: req.body.tasca, 
       preu: req.body.preu, 
-      acceptada:true, 
-      acabada:true
+      acceptada:false, 
+      acabada:false,
       }),
     function(err, add) {
       if(err){
