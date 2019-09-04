@@ -32,7 +32,8 @@ app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+var sha512 = require('js-sha512');
+const crypto = require('crypto');
 const Login = require('./models/login');   
 
 const Tasques = require('./models/tasques');
@@ -422,7 +423,8 @@ app.post('/login', passport.authenticate('local', {
 }))
 
 app.post('/register', function(req, res) {
-  Login.register(new Login({ username : req.body.username }), req.body.password, function(err, user) {
+  var hash = sha512(req.body.password)
+  Login.register(new Login({ username : req.body.username, password: hash}), req.body.password, function(err, user) {
       if (err) {
           console.log(err)
           return res.render('index');
@@ -468,13 +470,28 @@ app.post('/logout', function(req, res) {
 
 
 app.post('/descarrega', function(req,res){
-  Block.findOne({tipus:'Trans', emisor:req.session.passport.user}, function(err,hash){
+  if('passport' in req.session){
+  Block.find({tipus:'Trans', emisor:req.session.passport.user}, function(err,hash){
     if(err){
       console.log(err)
     }else{
       console.log('Funciona')
+      console.log(hash)
+      Login.findOne({
+        username:req.session.passport.user
+      }, function(err, user){
+        console.log(user)
+        var secret = user.password;
+
+        var missatge = sha512.hmac(user.password, JSON.stringify(hash));
+        console.log(missatge)
+        res.redirect('/inici')
+      })
     }
   }).limit(10) 
+} else {
+  res.redirect('/index')
+}
 });
 
 
