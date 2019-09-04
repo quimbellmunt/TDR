@@ -38,6 +38,7 @@ const Login = require('./models/login');
 const Tasques = require('./models/tasques');
 const Transaccio = require('./models/transaccions');
 const Users = require('./models/users');
+const Block = require('./models/block');
 
 
 passport.use(new LocalStrategy(Login.authenticate()));
@@ -85,7 +86,6 @@ app.get('/inici', function(req, res){
             console.log(err)
           } else {
             Transaccio.find({usuariReceptor:req.session.passport.user}, function(err,transUsuari){
-              console.log(transUsuari)
               if(err){
                 console.log(err)
               }else{
@@ -94,12 +94,11 @@ app.get('/inici', function(req, res){
                    console.log(err)
                    }else{
                     res.render('home', {usuaris:users, tasques:tasques, transaccions:transUsuari, emisor:req.session.passport.user, userito:userito})
-                   }})
-                
+                   }
+                })
               }
             })
           }
-
         })
       }
     })
@@ -107,10 +106,6 @@ app.get('/inici', function(req, res){
     res.redirect('/login')
   }
 });
-
-
-
-
 
 app.get('/usuari', function(req,res) {
   if('passport' in req.session){
@@ -127,11 +122,7 @@ app.get('/usuari', function(req,res) {
   }
 });
 
-// Quim: estic una mica liat... GET modifcacioTasca i Tasca semblent per mi e, mateix... els dos volen obrir la pagina de tasques. 
-// Jo esculliria tasca o millor tasques perque la view es diu tasques. 
-
 app.get('/tasques', function(req,res) {
-
   if('passport' in req.session){
     Tasques.find({},function(err, tasks){
       // console.log(tasks)
@@ -143,53 +134,82 @@ app.get('/tasques', function(req,res) {
   }
 });
 
+app.get('/blockchain', function(req,res){
+  if('passport' in req.session) {
+    res.render('blockchain')
+  }else{
+    res.render('index')
+  }
+});
+
 
 app.post('/modificarTasca', function(req,res) {
 if('passport' in req.session){
-   console.log(req.body)
-Tasques.findOneAndUpdate(
-  {nomTasca:req.body.nomTasca},
-  {nomTasca:req.body.nomTasca, 
-    preu:req.body.preu, 
-    temps:req.body.temps, 
-    descripcio:req.body.descripcio},
-function(err,tasques){
-  if (err) {
-    console.log (err)
-  }else{
-    res.redirect('/tasques')
-  }
- })
+  Tasques.findOneAndUpdate(
+    {nomTasca:req.body.nomTasca},
+    {nomTasca:req.body.nomTasca, 
+      preu:req.body.preu, 
+      temps:req.body.temps, 
+      descripcio:req.body.descripcio},
+  function(err,tasques){
+    if (err) {
+      console.log (err)
+    }else{
+
+      res.redirect('/tasques')
+    }
+   })
+  Block.create(new Block(
+  {tipus:'ModificacioTasca',
+  emisor:req.session.passport.user,
+  receptor: null,
+  tasca:req.body.nomTasca, // aquí he de canviar això, afegir info tasca antiga, tasca nova
+  preu:req.body.preu, //falta que sigui el nou però no se segur si newreu funciona
+  acceptada:false,
+  acabada: false
+  }, function(err, add){
+    if(err){
+      console.log(err)
+    }else{
+      console.log('Activitat registrada')
+    }
+  }))  
 } else {
    res.redirect('/index')
-}   
+}
+
 });
   
-
 app.post('/crearTasca', function(req,res) {
   console.log(req.body)
   Tasques.create(new Tasques({nomTasca:req.body.nomTasca, preu:req.body.preu, temps:req.body.temps, descripcio:req.body.descripcio}),
-    function(err,tasques){
-      if (err){
-        console.log(err)
-      }
-      else {
-        res.redirect('/tasques')
-      }})
-  // Quim: aqui no fas find, has de fer register new tasca
-  // Tasques.find({},function(err, tasques){
-  //   if(err) console.log(err)
-  //   res.render('tasques', {tasques : tasques}) 
-  // })     
+  function(err,tasques){
+    if (err){
+      console.log(err)
+    }
+    else {
+      res.redirect('/tasques')
+    }})
+  Block.create(new Block(
+    {tipus:'CreacioTasca',
+    emisor:req.session.passport.user,
+    receptor: null,
+    tasca:req.body.nomTasca, //afegir dades tasca
+    preu:req.body.preu, 
+    acceptada:false,
+    acabada: false},
+  function(err, add){
+    if(err){
+      console.log(err)
+    }else{
+      console.log('Activitat registrada')
+    }
+  }))  
 });
-
-
-
 
 app.post('/transaccio', function(req,res) {
 console.log(req.body)
  if('passport' in req.session){
-  console.log(req.body)
   Tasques.findOne({nomTasca: req.body.tasca}, function(err, tasca){
     if(err) console.log(err)
     else {
@@ -209,9 +229,25 @@ console.log(req.body)
       })
     }
   })
-  
- }
+  Block.create(new Block(
+    {tipus:'Trans',
+    emisor:req.session.passport.user,
+    receptor: req.body.receptor,
+    tasca: req.body.tasca,
+    preu:req.body.tasca.preu, 
+    acceptada:false,
+    acabada: false
+  }, function(err, add){
+    if(err){
+      console.log(err)
+    }else{
+      console.log('Activitat registrada')
+    }
+  }))  
+}
+ 
 });
+
 
 
 
@@ -219,114 +255,174 @@ console.log(req.body)
 
 //Ususari modifica la seva informacio personal
 app.post('/modificarUsuari', function(req,res) {
-   if('passport' in req.session){
-    console.log(req.body)
-      Users.findOneAndUpdate(
-        {username:req.body.username},
-        {nomUsuari:req.body.nomUsuari, 
-          cognoms:req.body.cognoms, 
-          username:req.body.username, 
-          mail:req.body.mail}, 
-        function(err,users) {
-      if(err) {
-        console.log(err)
-      }else{
-        res.redirect('/usuari')
-         }
-       })
-     } else {
-      res.redirect('/index')
-     }   
+ if('passport' in req.session){
+  console.log(req.body)
+  Users.findOneAndUpdate(
+    {username:req.body.username},
+    {nomUsuari:req.body.nomUsuari, 
+      cognoms:req.body.cognoms, 
+      username:req.body.username, 
+      mail:req.body.mail}, 
+  function(err,users) {
+    if(err) {
+      console.log(err)
+    }else{
+      res.redirect('/usuari')
+    }
+  })
+  Block.create(new Block(
+  {tipus:'ModificacioUsuari',
+  emisor:req.session.passport.user,
+  receptor: null,
+  tasca: 'modificaUsuari' ,
+  preu:null, 
+  acceptada:false,
+  acabada: false
+  }, function(err, add){
+    if(err){
+      console.log(err)
+    }else{
+      console.log('Activitat registrada')
+    }
+  })) 
+ } else {
+  res.redirect('/index')
+ }    
 });
+
+
 
 app.post('/esborrarTasca', function(req, res) {
-
-  Tasques.findOneAndDelete({nomTasca:req.body.nomTasca}, function(err, tascaEsborrada){
+if('passport' in req.session){
+  Tasques.findOneAndDelete(
+    {nomTasca:req.body.nomTasca}, 
+  function(err, tascaEsborrada){
     if(err) { 
       console.log(err) 
-    } else {
-      //ara amb el redirect es molt mes faicl! Tots el post acaben amb res.redirect
+    } else { 
       res.redirect('/tasques')
-      // Tasques.find({},function(err, tasques){
-      //   if(err) console.log(err)
-      //   res.render('tasques',{tasques : tasques}) 
-      // })
     }
   })   
+ Block.create(new Block(
+  {tipus:'EliminacioTasca',
+  emisor:req.session.passport.user,
+  receptor: null,
+  tasca: req.body.tasca,
+  preu:req.body.tasca.preu,
+  acceptada:false,
+  acabada: false
+  }, function(err, add){
+    if(err){
+      console.log(err)
+    }else{
+      console.log('Activitat registrada')
+    }
+  })) 
+  } else {
+    res.redirect('/index')
+  }     
 });
-
-//Quim: TascaCancelada i TascaRebutjada no fan el mateix?
 
 app.post('/TascaRebutjada', function(req, res) {
-  console.log(req.body)
-Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.body.receptor, tasca:req.body.tasca}, 
-  function(err,transBye){
-    if(err){
-      console.log(err)
-    }else{
-      res.redirect('/inici')
-    }
-  })
-
-
+  if('passport' in req.session){
+    console.log(req.body)
+    Transaccio.findOneAndDelete(
+    {usuariOrigen:req.body.emisor, 
+    usuariReceptor:req.body.receptor, 
+    tasca:req.body.tasca}, 
+    function(err,transBye){
+      if(err){
+        console.log(err)
+      }else{
+        res.redirect('/inici')
+      }
+    })
+   Block.create(new Block(
+    {tipus:'TascaRebutjada',
+    emisor:req.session.passport.user,
+    receptor: req.body.receptor,
+    tasca: req.body.tasca,
+    preu:req.body.tasca.preu, 
+    acceptada:false,
+    acabada: true
+    }, function(err, add){
+      if(err){
+        console.log(err)
+      }else{
+        console.log('Activitat registrada')
+      }
+    }))  
+ } else {
+    res.redirect('/index')
+  } 
 });
-
-
 
 app.post('/tascaAcabada', function(req, res) {
-
-Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.body.receptor, tasca:req.body.tasca}, 
-  function(err,transBye){
-    if(err){
-      console.log(err)
-    }else{
-      Users.findOne({username:req.body.receptor},
-      function(err, userReceptor) {
-      if (err) {
+  if('passport' in req.session){
+    Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.body.receptor, tasca:req.body.tasca}, 
+    function(err,transBye){
+      if(err){
         console.log(err)
-      }
-      else {
-        var newMonederReceptor = transBye.preu + userReceptor.moneder
-      Users.findOneAndUpdate({username: userReceptor.username}, {moneder:newMonederReceptor},function(err, ok){
-          if(err) {
-            console.log('error')
-          } else {
-            console.log('Diners afegits al receptor')
-          }
-        })
-        
-      }     
-    });
-      Users.findOne({username:req.body.emisor},
-      function(err, userOrigen) {
-      if (err) {
-        console.log(err)
-      }
-      else {
-        var newMonederEmisor = userOrigen.moneder - transBye.preu
-        Users.findOneAndUpdate({username: userOrigen.username},{ moneder:newMonederEmisor},function(err, ok){
-          if(err) {
+      }else{
+        Users.findOne({username:req.body.receptor},
+        function(err, userReceptor) {
+          if (err) {
             console.log(err)
           } else {
-            console.log('Diners retinguts al emisor al receptor')
-          }
-        })
-        
-      }     
-    });
-      res.redirect('/inici')
-    }
-  })
-
+            var newMonederReceptor = transBye.preu + userReceptor.moneder
+            Users.findOneAndUpdate({username: userReceptor.username}, {moneder:newMonederReceptor},function(err, ok){
+              if(err) {
+                console.log('error')
+              } else {
+                console.log('Diners afegits al receptor')
+              }
+            })
+          }      
+        });
+        Users.findOne({username:req.body.emisor},
+        function(err, userOrigen) {
+          if (err) {
+            console.log(err)
+          } else {
+            var newMonederEmisor = userOrigen.moneder - transBye.preu
+            Users.findOneAndUpdate({username: userOrigen.username},{ moneder:newMonederEmisor},function(err, ok){
+              if(err) {
+                console.log(err)
+              } else {
+                console.log('Diners retinguts al emisor al receptor')
+              }
+            })
+          }     
+        });
+        res.redirect('/inici')
+      }
+      Block.create(new Block(
+      {tipus:'tascaAcabada',
+      emisor:req.session.passport.user,
+      receptor: req.body.receptor,
+      tasca: req.body.tasca,
+      preu:req.body.tasca.preu, 
+      acceptada:true,
+      acabada: true
+      }, function(err, add){
+        if(err){
+          console.log(err)
+        }else{
+          console.log('Activitat registrada')
+        }
+      }))  
+    })
+  } else {
+    res.redirect('/index')
+  } 
 });
 
 
 
-
-app.post('/login', passport.authenticate('local'), function(req, res) {
-    console.log(req.session)
-    res.redirect('/inici');
-});
+app.post('/login', passport.authenticate('local', { 
+  successRedirect: '/inici',
+  failureRedirect: '/'
+}))
 
 app.post('/register', function(req, res) {
   Login.register(new Login({ username : req.body.username }), req.body.password, function(err, user) {
@@ -351,6 +447,21 @@ app.post('/register', function(req, res) {
           }
         })
   });
+  Block.create(new Block(
+  {tipus:'registreUsuari',
+  emisor:req.body.nomUsuari,
+  receptor: null,
+  tasca: null,
+  preu:null, 
+  acceptada:false,
+  acabada: false
+  }, function(err, add){
+    if(err){
+      console.log(err)
+    }else{
+      console.log('Activitat registrada')
+    }
+  }))  
 });
 
 app.post('/logout', function(req, res) {
