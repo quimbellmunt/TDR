@@ -471,7 +471,7 @@ app.post('/acceptacioTasca', function(req, res){
     })
     Block.create(new Block(
       {
-        tipus:'transaccio', 
+      tipus:'transaccio', 
       emisor:req.body.emisor,
       receptor:req.body.receptor, 
       tasca: req.body.tasca, 
