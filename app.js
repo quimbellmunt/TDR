@@ -32,6 +32,7 @@ app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+const nodemailer = require('nodemailer');
 var sha512 = require('js-sha512');
 const crypto = require('crypto');
 const Login = require('./models/login');   
@@ -482,9 +483,37 @@ app.post('/descarrega', function(req,res){
       }, function(err, user){
         console.log(user)
         var secret = user.password;
-
         var missatge = sha512.hmac(user.password, JSON.stringify(hash));
+
+        Users.findOne({username:req.session.passport.user}, function(err,user){
+            if(err){
+              console.log(err)
+            }else{
+               var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                user: 'andreatdr19@gmail.com',
+                pass: 'NodemailerTDR19'
+           }
+        });
+                const mailOptions = {
+                  from: 'andreatdr19@gmail.com', 
+                  to: user.mail ,
+                  subject: 'Nou hash privat', 
+                  html: missatge,
+                  };
+                  console.log(mailOptions)
+                  transporter.sendMail(mailOptions, function (err, content) {
+                    if(err){
+                    console.log(err)
+                     }else{
+                    console.log(content);}
+                });
+                   }
+                  })
+       
         console.log(missatge)
+
         res.redirect('/inici')
       })
     }
