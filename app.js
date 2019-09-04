@@ -476,14 +476,6 @@ app.post('/descarrega', function(req,res){
     }
   }).limit(10) 
 });
-//Quim: POST Descarrega fa elm mateix que actualizació? Aleshores amb un botonet GET ja fem. 
-// app.post('/descarrega', function(req,res) {
-//   // La descarrega, és a dir, en el que entra la blockchain el que interessa primer és agafar tot el que hi hagi a la base de dades i hagi hagut abans, per tant, tots els canvis.
-//   //Suposo que pel que ja existeeix seria alguna cosa com Tasques.find({}), Users.find i tota la pesca (potser només cal fer Block.find perquè no sé que és del tot). Això es reuneix en un fitxer que s'ha d'encriptar i va variant cada vegada que passa alguna cosa a la web.
-//   //(Crec que per això serveix el model de block que ha aparegut per aquí, no estic del tot segura).
-//   //Aleshores aquí, després d'aconseguir posar tota la info en el document, el que s'ha de fer és enviar el mail i per això serveix el The Nodemailer module. 
-//   //(A més a més, m'he d'enrecordat que a dalt del botó, al front-end he de fer un get pel nom de la última versió).  
-//   });
 
 
 app.listen(app.get('port'), function(){

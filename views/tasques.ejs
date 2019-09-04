@@ -102,12 +102,12 @@
 						<td>Descripció de la tasca:</td>
 					</tr>
 					<tr>
+							<form action="/modificarTasca" method="POST">
 						<td><input type="text" name="nomTasca" value= "<%= tasca.nomTasca%>"></td>
 						<td><input type="text" name="preu" value="<%= tasca.preu%>"></td>
 						<td><input type="text" name="temps" value="<%= tasca.temps%>"></td>
 						<td><input type="text" name="descripcio" value="<%= tasca.descripcio%>"></td>
 						<td>
-							<form action="/modificarTasca" method="POST">
 								<button>Canviar</button>
 							</form>
 						</td>
