@@ -86,7 +86,6 @@ app.get('/inici', function(req, res){
             console.log(err)
           } else {
             Transaccio.find({usuariReceptor:req.session.passport.user}, function(err,transUsuari){
-              console.log(transUsuari)
               if(err){
                 console.log(err)
               }else{
@@ -95,12 +94,11 @@ app.get('/inici', function(req, res){
                    console.log(err)
                    }else{
                     res.render('home', {usuaris:users, tasques:tasques, transaccions:transUsuari, emisor:req.session.passport.user, userito:userito})
-                   }})
-                
+                   }
+                })
               }
             })
           }
-
         })
       }
     })
@@ -257,25 +255,22 @@ console.log(req.body)
 
 //Ususari modifica la seva informacio personal
 app.post('/modificarUsuari', function(req,res) {
-   if('passport' in req.session){
-    console.log(req.body)
-      Users.findOneAndUpdate(
-        {username:req.body.username},
-        {nomUsuari:req.body.nomUsuari, 
-          cognoms:req.body.cognoms, 
-          username:req.body.username, 
-          mail:req.body.mail}, 
-        function(err,users) {
-      if(err) {
-        console.log(err)
-      }else{
-        res.redirect('/usuari')
-         }
-       })
-     } else {
-      res.redirect('/index')
-     }   
- Block.create(new Block(
+ if('passport' in req.session){
+  console.log(req.body)
+  Users.findOneAndUpdate(
+    {username:req.body.username},
+    {nomUsuari:req.body.nomUsuari, 
+      cognoms:req.body.cognoms, 
+      username:req.body.username, 
+      mail:req.body.mail}, 
+  function(err,users) {
+    if(err) {
+      console.log(err)
+    }else{
+      res.redirect('/usuari')
+    }
+  })
+  Block.create(new Block(
   {tipus:'ModificacioUsuari',
   emisor:req.session.passport.user,
   receptor: null,
@@ -283,29 +278,29 @@ app.post('/modificarUsuari', function(req,res) {
   preu:null, 
   acceptada:false,
   acabada: false
-}, function(err, add){
-  if(err){
-    console.log(err)
-  }else{
-    console.log('Activitat registrada')
-  }
-}))  
+  }, function(err, add){
+    if(err){
+      console.log(err)
+    }else{
+      console.log('Activitat registrada')
+    }
+  })) 
+ } else {
+  res.redirect('/index')
+ }    
 });
 
 
 
 app.post('/esborrarTasca', function(req, res) {
-
-  Tasques.findOneAndDelete({nomTasca:req.body.nomTasca}, function(err, tascaEsborrada){
+if('passport' in req.session){
+  Tasques.findOneAndDelete(
+    {nomTasca:req.body.nomTasca}, 
+  function(err, tascaEsborrada){
     if(err) { 
       console.log(err) 
-    } else {
-      //ara amb el redirect es molt mes faicl! Tots el post acaben amb res.redirect
+    } else { 
       res.redirect('/tasques')
-      // Tasques.find({},function(err, tasques){
-      //   if(err) console.log(err)
-      //   res.render('tasques',{tasques : tasques}) 
-      // })
     }
   })   
  Block.create(new Block(
@@ -313,122 +308,121 @@ app.post('/esborrarTasca', function(req, res) {
   emisor:req.session.passport.user,
   receptor: null,
   tasca: req.body.tasca,
-  preu:req.body.tasca.preu, //crec que malament
+  preu:req.body.tasca.preu,
   acceptada:false,
   acabada: false
-}, function(err, add){
-  if(err){
-    console.log(err)
-  }else{
-    console.log('Activitat registrada')
-  }
-}))  
-});
-
-
-
-//Quim: TascaCancelada i TascaRebutjada no fan el mateix?
-
-app.post('/TascaRebutjada', function(req, res) {
-  console.log(req.body)
-Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.body.receptor, tasca:req.body.tasca}, 
-  function(err,transBye){
-    if(err){
-      console.log(err)
-    }else{
-      res.redirect('/inici')
-    }
-  })
-
- Block.create(new Block(
-  {tipus:'TascaRebutjada',
-  emisor:req.session.passport.user,
-  receptor: req.body.receptor,
-  tasca: req.body.tasca,
-  preu:req.body.tasca.preu, 
-  acceptada:false,
-  acabada: true
-}, function(err, add){
-  if(err){
-    console.log(err)
-  }else{
-    console.log('Activitat registrada')
-  }
-}))  
-});
-
-
-
-
-
-app.post('/tascaAcabada', function(req, res) {
-console.log(req.session)
-Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.body.receptor, tasca:req.body.tasca}, 
-  function(err,transBye){
-    if(err){
-      console.log(err)
-    }else{
-      Users.findOne({username:req.body.receptor},
-      function(err, userReceptor) {
-      if (err) {
-        console.log(err)
-      }
-      else {
-        var newMonederReceptor = transBye.preu + userReceptor.moneder
-      Users.findOneAndUpdate({username: userReceptor.username}, {moneder:newMonederReceptor},function(err, ok){
-          if(err) {
-            console.log('error')
-          } else {
-            console.log('Diners afegits al receptor')
-          }
-        })
-        
-      }     
-    });
-      Users.findOne({username:req.body.emisor},
-      function(err, userOrigen) {
-      if (err) {
-        console.log(err)
-      }
-      else {
-        var newMonederEmisor = userOrigen.moneder - transBye.preu
-        Users.findOneAndUpdate({username: userOrigen.username},{ moneder:newMonederEmisor},function(err, ok){
-          if(err) {
-            console.log(err)
-          } else {
-            console.log('Diners retinguts al emisor al receptor')
-          }
-        })
-        
-      }     
-    });
-      res.redirect('/inici')
-    }
-  })
-
- Block.create(new Block(
-  {tipus:'tascaAcabada',
-  emisor:req.session.passport.user,
-  receptor: req.body.receptor,
-  tasca: req.body.tasca,
-  preu:req.body.tasca.preu, 
-  acceptada:true,
-  acabada: true
   }, function(err, add){
     if(err){
       console.log(err)
     }else{
       console.log('Activitat registrada')
     }
-  }))  
+  })) 
+  } else {
+    res.redirect('/index')
+  }     
+});
+
+app.post('/TascaRebutjada', function(req, res) {
+  if('passport' in req.session){
+    console.log(req.body)
+    Transaccio.findOneAndDelete(
+    {usuariOrigen:req.body.emisor, 
+    usuariReceptor:req.body.receptor, 
+    tasca:req.body.tasca}, 
+    function(err,transBye){
+      if(err){
+        console.log(err)
+      }else{
+        res.redirect('/inici')
+      }
+    })
+   Block.create(new Block(
+    {tipus:'TascaRebutjada',
+    emisor:req.session.passport.user,
+    receptor: req.body.receptor,
+    tasca: req.body.tasca,
+    preu:req.body.tasca.preu, 
+    acceptada:false,
+    acabada: true
+    }, function(err, add){
+      if(err){
+        console.log(err)
+      }else{
+        console.log('Activitat registrada')
+      }
+    }))  
+ } else {
+    res.redirect('/index')
+  } 
+});
+
+app.post('/tascaAcabada', function(req, res) {
+  if('passport' in req.session){
+    Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.body.receptor, tasca:req.body.tasca}, 
+    function(err,transBye){
+      if(err){
+        console.log(err)
+      }else{
+        Users.findOne({username:req.body.receptor},
+        function(err, userReceptor) {
+          if (err) {
+            console.log(err)
+          } else {
+            var newMonederReceptor = transBye.preu + userReceptor.moneder
+            Users.findOneAndUpdate({username: userReceptor.username}, {moneder:newMonederReceptor},function(err, ok){
+              if(err) {
+                console.log('error')
+              } else {
+                console.log('Diners afegits al receptor')
+              }
+            })
+          }      
+        });
+        Users.findOne({username:req.body.emisor},
+        function(err, userOrigen) {
+          if (err) {
+            console.log(err)
+          } else {
+            var newMonederEmisor = userOrigen.moneder - transBye.preu
+            Users.findOneAndUpdate({username: userOrigen.username},{ moneder:newMonederEmisor},function(err, ok){
+              if(err) {
+                console.log(err)
+              } else {
+                console.log('Diners retinguts al emisor al receptor')
+              }
+            })
+          }     
+        });
+        res.redirect('/inici')
+      }
+      Block.create(new Block(
+      {tipus:'tascaAcabada',
+      emisor:req.session.passport.user,
+      receptor: req.body.receptor,
+      tasca: req.body.tasca,
+      preu:req.body.tasca.preu, 
+      acceptada:true,
+      acabada: true
+      }, function(err, add){
+        if(err){
+          console.log(err)
+        }else{
+          console.log('Activitat registrada')
+        }
+      }))  
+    })
+  } else {
+    res.redirect('/index')
+  } 
 });
 
 
 
-app.post('/login', passport.authenticate('local'), function(req, res) {
-    console.log(req.session)
-    res.redirect('/inici');
-});
+app.post('/login', passport.authenticate('local', { 
+  successRedirect: '/inici',
+  failureRedirect: '/'
+}))
 
 app.post('/register', function(req, res) {
   Login.register(new Login({ username : req.body.username }), req.body.password, function(err, user) {
