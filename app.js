@@ -174,11 +174,11 @@ function(err,tasques){
 } else {
    res.redirect('/index')
 }
-Block.create(new Transaccio(
+Block.create(new Block(
   {tipus:'ModificacioTasca',
-  emisor:req.passport.session.user,
+  emisor:req.session.passport.user,
   receptor: null,
-  tasca:{'modificaTasca', }, // aquí he de canviar això, afegir info tasca antiga, tasca nova
+  tasca:req.body.nomTasca, // aquí he de canviar això, afegir info tasca antiga, tasca nova
   preu:req.body.preu, //falta que sigui el nou però no se segur si newreu funciona
   acceptada:false,
   acabada: false
@@ -204,9 +204,9 @@ app.post('/crearTasca', function(req,res) {
       }})
  Block.create(new Transaccio(
   {tipus:'CreacioTasca',
-  emisor:req.passport.session.user,
+  emisor:req.session.passport.user,
   receptor: null,
-  tasca:'creaTasca' //afegir dades tasca
+  tasca:req.body.nomTasca, //afegir dades tasca
   preu:req.body.preu, 
   acceptada:false,
   acabada: false},
@@ -249,7 +249,7 @@ console.log(req.body)
  }
  Block.create(new Block(
   {tipus:'Trans',
-  emisor:req.passport.session.user,
+  emisor:req.session.passport.user,
   receptor: req.body.receptor,
   tasca: req.body.tasca,
   preu:req.body.tasca.preu, 
@@ -289,9 +289,9 @@ app.post('/modificarUsuari', function(req,res) {
      } else {
       res.redirect('/index')
      }   
- Block.create(new Transaccio(
+ Block.create(new Block(
   {tipus:'ModificacioUsuari',
-  emisor:req.passport.session.user,
+  emisor:req.session.passport.user,
   receptor: null,
   tasca: 'modificaUsuari' ,
   preu:null, 
@@ -322,9 +322,9 @@ app.post('/esborrarTasca', function(req, res) {
       // })
     }
   })   
- Block.create(new Transaccio(
+ Block.create(new Block(
   {tipus:'EliminacioTasca',
-  emisor:req.passport.session.user,
+  emisor:req.session.passport.user,
   receptor: null,
   tasca: req.body.tasca,
   preu:req.body.tasca.preu, //crec que malament
@@ -354,9 +354,9 @@ Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.bo
     }
   })
 
- Block.create(new Transaccio(
+ Block.create(new Block(
   {tipus:'TascaRebutjada',
-  emisor:req.passport.session.user,
+  emisor:req.session.passport.user,
   receptor: req.body.receptor,
   tasca: req.body.tasca,
   preu:req.body.tasca.preu, 
@@ -376,7 +376,7 @@ Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.bo
 
 
 app.post('/tascaAcabada', function(req, res) {
-
+console.log(req.session)
 Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.body.receptor, tasca:req.body.tasca}, 
   function(err,transBye){
     if(err){
@@ -420,21 +420,21 @@ Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.bo
     }
   })
 
- Block.create(new Transaccio(
+ Block.create(new Block(
   {tipus:'tascaAcabada',
-  emisor:req.passport.session.user,
+  emisor:req.session.passport.user,
   receptor: req.body.receptor,
   tasca: req.body.tasca,
   preu:req.body.tasca.preu, 
   acceptada:true,
   acabada: true
-}, function(err, add){
-  if(err){
-    console.log(err)
-  }else{
-    res.render('home')
-  }
-}))  
+  }, function(err, add){
+    if(err){
+      console.log(err)
+    }else{
+      res.render('home')
+    }
+  }))  
 });
 
 
@@ -467,6 +467,21 @@ app.post('/register', function(req, res) {
           }
         })
   });
+  Block.create(new Block(
+  {tipus:'registreUsuari',
+  emisor:req.body.nomUsuari,
+  receptor: null,
+  tasca: null,
+  preu:null, 
+  acceptada:false,
+  acabada: false
+  }, function(err, add){
+    if(err){
+      console.log(err)
+    }else{
+      res.render('home')
+    }
+  }))  
 });
 
 app.post('/logout', function(req, res) {
