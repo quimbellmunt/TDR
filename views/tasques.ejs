@@ -93,17 +93,18 @@
 	<p>____________________________________________________________________________________________________________________________________</p>
 		<p>Selecciona i introdueix què vols canviar:</p>
 	<table class="table" width="100%">
-		<% if (tasques.length > 0) { %> 
-				<% tasques.forEach(tasca => {%>
-					<tr>
+		<tr>
 						<td>Nom:</td>
 						<td>Valor monetari:</td>
 						<td>Temps requerit:</td>
 						<td>Descripció de la tasca:</td>
 					</tr>
+		<% if (tasques.length > 0) { %> 
+				<% tasques.forEach(tasca => {%>
+					
 					<tr>
 							<form action="/modificarTasca" method="POST">
-						<td><input type="text" name="nomTasca" value= "<%= tasca.nomTasca%>"></td>
+						<td><input type="text" name="nomTasca" value= "<%= tasca.nomTasca%>" readonly></td>
 						<td><input type="text" name="preu" value="<%= tasca.preu%>"></td>
 						<td><input type="text" name="temps" value="<%= tasca.temps%>"></td>
 						<td><input type="text" name="descripcio" value="<%= tasca.descripcio%>"></td>
