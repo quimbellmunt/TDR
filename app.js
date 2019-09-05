@@ -476,45 +476,42 @@ app.post('/descarrega', function(req,res){
     if(err){
       console.log(err)
     }else{
-      console.log('Funciona')
-      console.log(hash)
       Login.findOne({
         username:req.session.passport.user
       }, function(err, user){
-        console.log(user)
         var secret = user.password;
         var missatge = sha512.hmac(user.password, JSON.stringify(hash));
-
         Users.findOne({username:req.session.passport.user}, function(err,user){
-            if(err){
+          if(err){
+            console.log(err)
+          }else{
+              console.log(missatge)
+             var transporter = nodemailer.createTransport({
+              service: 'gmail',
+              auth: {
+              user: 'andreatdr19@gmail.com',
+              pass: 'NodemailerTDR19'
+              }
+            });
+             console.log(user.mail)
+          var mailOptions = {
+            from: 'andreatdr19@gmail.com', 
+            to: user.mail ,
+            subject: 'Nou hash privat', 
+            html: missatge,
+            };
+            transporter.sendMail(mailOptions, function (err, content) {
+              console.log(content)
+              if(err){
               console.log(err)
-            }else{
-               var transporter = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                user: 'andreatdr19@gmail.com',
-                pass: 'NodemailerTDR19'
-           }
-        });
-                const mailOptions = {
-                  from: 'andreatdr19@gmail.com', 
-                  to: user.mail ,
-                  subject: 'Nou hash privat', 
-                  html: missatge,
-                  };
-                  console.log(mailOptions)
-                  transporter.sendMail(mailOptions, function (err, content) {
-                    if(err){
-                    console.log(err)
-                     }else{
-                    console.log(content);}
-                });
-                   }
-                  })
-       
-        console.log(missatge)
+               }else{
+              console.log(content);
+              }
+            });
+            res.redirect('/inici')
+          }
+        })
 
-        res.redirect('/inici')
       })
     }
   }).limit(10) 
