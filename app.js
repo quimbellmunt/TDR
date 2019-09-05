@@ -210,25 +210,22 @@ app.post('/crearTasca', function(req,res) {
 });
 
 app.post('/transaccio', function(req,res) {
-console.log(req.body)
  if('passport' in req.session){
-  Tasques.findOne({nomTasca: req.body.tasca}, function(err, tasca){
-    if(err) console.log(err)
-    else {
-      Transaccio.create(new Transaccio ({usuariOrigen:req.body.emisor, 
-        usuariReceptor:req.body.receptor, 
-        tasca:req.body.tasca, 
-        preu:tasca.preu,
-        rebutjada:false,
-        acabada:false
+  var tascaPreu = JSON.parse(req.body.tasca)
+  tascaAssignada = tascaPreu.tasca
+  preuAssignat = tascaPreu.preu
+  Transaccio.create(new Transaccio ({usuariOrigen:req.body.emisor, 
+    usuariReceptor:req.body.receptor, 
+    tasca:tascaAssignada, 
+    preu:preuAssignat,
+    rebutjada:false,
+    acabada:false
 
-      }), function(err, transCreate){
-        if(err){
-          console.log(err)
-        }else{
-          res.redirect('/inici')
-        }
-      })
+  }), function(err, transCreate){
+    if(err){
+      console.log(err)
+    }else{
+      res.redirect('/inici')
     }
   })
   Block.create(new Block(
@@ -365,6 +362,7 @@ app.post('/tascaAcabada', function(req, res) {
       }else{
         Users.findOne({username:req.body.receptor},
         function(err, userReceptor) {
+          console.log(userReceptor)
           if (err) {
             console.log(err)
           } else {
@@ -374,43 +372,45 @@ app.post('/tascaAcabada', function(req, res) {
                 console.log('error')
               } else {
                 console.log('Diners afegits al receptor')
+                Users.findOne({username:req.body.emisor},
+                function(err, userOrigen) {
+                  console.log(userOrigen)
+                  if (err) {
+                    console.log(err)
+                  } else {
+                    var newMonederEmisor = userOrigen.moneder - transBye.preu
+                    Users.findOneAndUpdate({username: userOrigen.username},{ moneder:newMonederEmisor},function(err, ok){
+                      if(err) {
+                        console.log(err)
+                      } else {
+                        console.log('Diners retinguts al emisor')
+                      }
+                    })
+                  }     
+                });
+                res.redirect('/inici')
               }
             })
-          }      
-        });
-        Users.findOne({username:req.body.emisor},
-        function(err, userOrigen) {
-          if (err) {
-            console.log(err)
-          } else {
-            var newMonederEmisor = userOrigen.moneder - transBye.preu
-            Users.findOneAndUpdate({username: userOrigen.username},{ moneder:newMonederEmisor},function(err, ok){
-              if(err) {
-                console.log(err)
-              } else {
-                console.log('Diners retinguts al emisor al receptor')
-              }
-            })
-          }     
-        });
-        res.redirect('/inici')
+          }
+        })
+      }      
+    });
+    
+    Block.create(new Block(
+    {tipus:'tascaAcabada',
+    emisor:req.session.passport.user,
+    receptor: req.body.receptor,
+    tasca: req.body.tasca,
+    preu:req.body.preu, 
+    acceptada:true,
+    acabada: true
+    }, function(err, add){
+      if(err){
+        console.log(err)
+      }else{
+        console.log('Activitat registrada')
       }
-      Block.create(new Block(
-      {tipus:'tascaAcabada',
-      emisor:req.session.passport.user,
-      receptor: req.body.receptor,
-      tasca: req.body.tasca,
-      preu:req.body.preu, 
-      acceptada:true,
-      acabada: true
-      }, function(err, add){
-        if(err){
-          console.log(err)
-        }else{
-          console.log('Activitat registrada')
-        }
-      }))  
-    })
+    }))  
   } else {
     res.redirect('/index')
   } 
