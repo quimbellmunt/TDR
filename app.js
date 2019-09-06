@@ -184,11 +184,12 @@ if('passport' in req.session){
     }
   }))  
 } else {
-   res.redirect('/index')
+   res.redirect('/index') 
 }
 
 });
   
+//iniciar
 app.post('/crearTasca', function(req,res) {
   console.log(req.body)
   Tasques.create(new Tasques({nomTasca:req.body.nomTasca, preu:req.body.preu, temps:req.body.temps, descripcio:req.body.descripcio}),
