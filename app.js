@@ -231,50 +231,54 @@ app.post('/transaccio', function(req,res) {
         var secret = user.password;
         var missatge = sha512.hmac(user.password, JSON.stringify(hash));       
          console.log('missatge', missatge)
-      })
-    }
-  }).limit(10)
-  console.log('Funciona2')
-  const inputH= req.body.hash
-  if(inputH === missatge){
-    var tascaPreu = JSON.parse(req.body.tasca)
-    tascaAssignada = tascaPreu.tasca
-    preuAssignat = tascaPreu.preu
-    Transaccio.create(new Transaccio ({usuariOrigen:req.body.emisor, 
-      usuariReceptor:req.body.receptor, 
-      tasca:tascaAssignada, 
-      preu:preuAssignat,
-      rebutjada:false,
-      acabada:false
+        console.log('Funciona2')
+        var inputH= req.body.hash
+          console.log(inputH)
+        if(inputH.replace(' ','') === missatge.replace(' ','')){
+          var tascaPreu = JSON.parse(req.body.tasca)
+          tascaAssignada = tascaPreu.tasca
+          preuAssignat = tascaPreu.preu
+          Transaccio.create(new Transaccio (
+            {usuariOrigen:req.body.emisor, 
+            usuariReceptor:req.body.receptor, 
+            tasca:tascaAssignada, 
+            preu:preuAssignat,
+            rebutjada:false,
+            acabada:false
+
+            }), function(err, transCreate){
+            if(err){
+              console.log(err)
+            }else{
+              res.redirect('/inici')
+            }
+          })
+          Block.create(new Block(
+            {tipus:'Trans',
+            emisor:req.session.passport.user,
+            receptor: req.body.receptor,
+            tasca: req.body.tasca,
+            preu:req.body.preu, 
+            acceptada:false,
+            acabada: false
+          }, function(err, add){
+          if(err){
+            console.log(err)
+          }else{
+            console.log('Activitat registrada')
+          }
+          }))  
+        }else{
+          console.log('Hash dolent')
+          res.redirect('/actualitzat')    
+         }
+})
+}
+}).limit(10)
   
-    }), function(err, transCreate){
-      if(err){
-        console.log(err)
-      }else{
-        res.redirect('/inici')
-      }
-    })
-    Block.create(new Block(
-      {tipus:'Trans',
-      emisor:req.session.passport.user,
-      receptor: req.body.receptor,
-      tasca: req.body.tasca,
-      preu:req.body.preu, 
-      acceptada:false,
-      acabada: false
-    }, function(err, add){
-      if(err){
-        console.log(err)
-      }else{
-        console.log('Activitat registrada')
-      }
-    }))  
-  }
-  }else{
-    console.log('Hash dolent')
-    res.redirect('/actualitzat')
-  }
- 
+ }else{
+  res.redirect('/index')
+ }
 });
 
 
