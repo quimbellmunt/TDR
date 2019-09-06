@@ -111,19 +111,19 @@
               <select name="tasca" id = "tasca">
                 <% if (tasques) { %>
                 <% tasques.forEach(tasca => { %>
-                    <option value = '{"tasca":"<%= tasca.nomTasca %>", "preu":"<%= tasca.preu %>"}'><%= tasca.nomTasca.toUpperCase() %></option>
-                     <!-- <option value = "{tasca:<%= tasca.nomTasca %>, preu:<%= tasca.preu %>"><%= tasca.nomTasca.toUpperCase() %></option> -->
-                   <!--  <input id="preu" name="preu" value = "<%= tasca.preu %>" style="display:none"><%= tasca.preu %></input> -->
+                    <option value = '{"tasca":"<%= tasca.nomTasca %>", "preu":"<%= tasca.preu %>"}'><%= tasca.nomTasca%></option>
                 <% }); %>
                 <% } %>
               </select>
           </td>
+            <form action="/transaccio"  method="POST">
+              <td>
+                  <input type="text" name="hash"  placeholder="Indica el teu Hash privat" size="70"></input> <!-- recordatori: ni required ni pattern s'han de posar perquè no serveixen de res-->
+                </td>
+              </td>
+              <button class="btn btn-primary">Crea La transacció</button>
           <td>
-              <input type="text" name="missatge"  placeholder="Indica el teu Hash privat" size="70"></input> <!-- recordatori: ni required ni pattern s'han de posar perquè no serveixen de res-->
-          </td>
-          <td>
-            <button class="btn btn-primary">Crea La transacció</button>
-          </td>
+            </form>
         </form>
       </tr>
     </table>
@@ -196,8 +196,6 @@
     }
 
 
-
-    //var x = document.forms["transacció"]["preu"].value;
   
     
 }
