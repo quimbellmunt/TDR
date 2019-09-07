@@ -30,16 +30,20 @@ html {
 
 .registre{
 	float:left;
-	width:55%;
-	margin-top: 10%;
-	margin-left:5%;
+	width:30%;
+	margin-top: -20%;
+	margin-left: 18%;
+  background-color: #84cae8;
+  text-align: center;
 }
 
 .login{
 	float:left;
-	width:35%;
+	width:30%;
     margin-top: 10%;
-    margin-left:5%;
+    margin-left: 60%;
+    background-color: #84cae8;
+    text-align: center;
 
 }
 
