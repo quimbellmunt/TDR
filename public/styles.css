@@ -100,7 +100,7 @@ html {
 .menu{
    background-color: #3988dc;
    width: 17%;
-   height: 675px;
+   height: 685px;
    border-radius: 5px;
    align-items: center;
 }
@@ -117,10 +117,14 @@ html {
 
 .usuari{
    background-color: #84cae8;
- margin-top: -25%;
- margin-left: 15%;
+ margin-top: -40%;
+ margin-left: 22%;
  width: 1000px;
- height: 290px;
+ height: 500px;
  border-radius: 10px;
  text-indent: 20px;
+}
+
+.tr{
+  text-indent: 40px;
 }
