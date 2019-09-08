@@ -9,11 +9,12 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
-<body>
+<body class="index">
    
 <!-- <div  class="bg-primary text-white fixed-top"> -->
-  <div  class="title">
-    <h5 align="center">APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</h5>
+  <div  class="titolIndex">
+    <br>
+    <h5 align="center"><strong>APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</strong></h5>
     <h3 align="center">Andrea Bellmunt Fuentes</h3>
 </div>
 <!-- <div class="texto-encima">
@@ -30,35 +31,36 @@
      <img src="http://www.nationalcompass.net/wp-content/uploads/2017/06/Integrated-Circuit.jpg" alt="Snow" style="width:50%; opacity:0.4; height: :10px"> -->
 
  <div class ="login">
-
-  <h5>Usuaris enregistrats</h5>
+<br>
+  <h5><strong>Usuaris enregistrats </strong></h5>
   <form action="/login" method="POST">
     <h6>Nom d'usuari</h6>
-      <input type="text" name="username" placeholder="Username">
+      <input type="text" name="username" placeholder="Username"class="formcontrol">
     <h6>Contrasenya</h6>
-      <input type="password" name="password" placeholder="Password">
+      <input type="password" name="password" placeholder="Password" class="formcontrol">
     </br>
-    </br>
-    <button>Accedir</button>
+    <br>
+    <button class="btn btn-primary">Accedir</button>
   </form> 
 </div>
 
 <div class="registre">
-   <h5> Registre </h5>
+  <br>
+   <h5><strong> Registre </strong></h5>
   <form action="/register" method="POST">
     <h6>Nom d'usuari</h6>
-      <input type="text" name="username" placeholder="Username" required="required">
-    <h5>Nom</h5>
-      <input type="text" name="nomUsuari" placeholder="Nom" required="required">
-    <h5>Cognoms</h5>
-      <input type="text" name="cognoms" placeholder="Cognoms" required="required">
-    <h5>Correu electrònic</h5>
-      <input type="email" name="mail" placeholder="Mail" required="required">
-    <h5>Contrasenya</h5>
-      <input type="password" name="password" placeholder="Password" required="required">
+      <input type="text" name="username" placeholder="Username" required="required" class="formControl">
+    <h6>Nom</h6>
+      <input type="text" name="nomUsuari" placeholder="Nom" required="required" class="formControl">
+    <h6>Cognoms</h6>
+      <input type="text" name="cognoms" placeholder="Cognoms" required="required" class="formControl">
+    <h6>Correu electrònic</h6>
+      <input type="email" name="mail" placeholder="Mail" required="required" class="formControl">
+    <h6>Contrasenya</h6>
+      <input type="password" name="password" placeholder="Password" required="required" class="formControl">
       </br>
-      </br>
-    <button>Registrar</button>
+      <br>
+    <button class="btn btn-primary">Registrar</button>
   </form> 
 </div>
 
