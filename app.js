@@ -102,7 +102,7 @@ app.get('/inici', function(req, res){
                   if (err){
                    console.log(err)
                    }else{
-                    res.render('home', {usuaris:users, tasques:tasques, transaccions:transUsuari, emisor:req.session.passport.user, userito:userito})
+                    res.render('home', {usuaris:users, tasques:tasques, transaccions:transUsuari, emissor:req.session.passport.user, userito:userito})
                    }
                 })
               }
@@ -145,7 +145,13 @@ app.get('/tasques', function(req,res) {
 
 app.get('/blockchain', function(req,res){
   if('passport' in req.session) {
-    res.render('blockchain')
+    Block.find({emissor:req.session.passport.user}, function(err,block){
+      if(err){
+        console.log(err)
+      }else{
+        res.render('blockchain', {accions:block})
+      }
+    })
   }else{
     res.render('index')
   }
@@ -170,10 +176,10 @@ if('passport' in req.session){
    })
   Block.create(new Block(
   {tipus:'ModificacioTasca',
-  emisor:req.session.passport.user,
+  emissor:req.session.passport.user,
   receptor: null,
-  tasca:req.body.nomTasca, // aquí he de canviar això, afegir info tasca antiga, tasca nova
-  preu:req.body.preu, //falta que sigui el nou però no se segur si newreu funciona
+  tasca:req.body.nomTasca,
+  preu:req.body.preu, 
   acceptada:false,
   acabada: false
   }, function(err, add){
@@ -201,9 +207,9 @@ app.post('/crearTasca', function(req,res) {
     }})
   Block.create(new Block(
     {tipus:'CreacioTasca',
-    emisor:req.session.passport.user,
+    emissor:req.session.passport.user,
     receptor: null,
-    tasca:req.body.nomTasca, //afegir dades tasca
+    tasca:req.body.nomTasca, 
     preu:req.body.preu, 
     acceptada:false,
     acabada: false},
@@ -239,7 +245,7 @@ app.post('/transaccio', function(req,res) {
           tascaAssignada = tascaPreu.tasca
           preuAssignat = tascaPreu.preu
           Transaccio.create(new Transaccio (
-            {usuariOrigen:req.body.emisor, 
+            {usuariOrigen:req.body.emissor, 
             usuariReceptor:req.body.receptor, 
             tasca:tascaAssignada, 
             preu:preuAssignat,
@@ -255,7 +261,7 @@ app.post('/transaccio', function(req,res) {
           })
           Block.create(new Block(
             {tipus:'Trans',
-            emisor:req.session.passport.user,
+            emissor:req.session.passport.user,
             receptor: req.body.receptor,
             tasca: req.body.tasca,
             preu:req.body.preu, 
@@ -302,9 +308,9 @@ app.post('/modificarUsuari', function(req,res) {
   })
   Block.create(new Block(
   {tipus:'ModificacioUsuari',
-  emisor:req.session.passport.user,
+  emissor:req.session.passport.user,
   receptor: null,
-  tasca: 'modificaUsuari' ,
+  tasca: null ,
   preu:null, 
   acceptada:false,
   acabada: false
@@ -335,7 +341,7 @@ if('passport' in req.session){
   })   
  Block.create(new Block(
   {tipus:'EliminacioTasca',
-  emisor:req.session.passport.user,
+  emissor:req.session.passport.user,
   receptor: null,
   tasca: req.body.tasca,
   preu:req.body.preu,
@@ -357,7 +363,7 @@ app.post('/TascaRebutjada', function(req, res) {
   if('passport' in req.session){
     console.log(req.body)
     Transaccio.findOneAndDelete(
-    {usuariOrigen:req.body.emisor, 
+    {usuariOrigen:req.body.emissor, 
     usuariReceptor:req.body.receptor, 
     tasca:req.body.tasca}, 
     function(err,transBye){
@@ -369,7 +375,7 @@ app.post('/TascaRebutjada', function(req, res) {
     })
    Block.create(new Block(
     {tipus:'TascaRebutjada',
-    emisor:req.session.passport.user,
+    emissor:req.session.passport.user,
     receptor: req.body.receptor,
     tasca: req.body.tasca,
     preu:req.body.preu, 
@@ -389,7 +395,7 @@ app.post('/TascaRebutjada', function(req, res) {
 
 app.post('/tascaAcabada', function(req, res) {
   if('passport' in req.session){
-    Transaccio.findOneAndDelete({usuariOrigen:req.body.emisor, usuariReceptor:req.body.receptor, tasca:req.body.tasca}, 
+    Transaccio.findOneAndDelete({usuariOrigen:req.body.emissor, usuariReceptor:req.body.receptor, tasca:req.body.tasca}, 
     function(err,transBye){
       if(err){
         console.log(err)
@@ -406,18 +412,18 @@ app.post('/tascaAcabada', function(req, res) {
                 console.log('error')
               } else {
                 console.log('Diners afegits al receptor')
-                Users.findOne({username:req.body.emisor},
+                Users.findOne({username:req.body.emissor},
                 function(err, userOrigen) {
                   console.log(userOrigen)
                   if (err) {
                     console.log(err)
                   } else {
-                    var newMonederEmisor = userOrigen.moneder - transBye.preu
-                    Users.findOneAndUpdate({username: userOrigen.username},{ moneder:newMonederEmisor},function(err, ok){
+                    var newMonederemissor = userOrigen.moneder - transBye.preu
+                    Users.findOneAndUpdate({username: userOrigen.username},{ moneder:newMonederemissor},function(err, ok){
                       if(err) {
                         console.log(err)
                       } else {
-                        console.log('Diners retinguts al emisor')
+                        console.log('Diners retinguts al emissor')
                       }
                     })
                   }     
@@ -432,7 +438,7 @@ app.post('/tascaAcabada', function(req, res) {
     
     Block.create(new Block(
     {tipus:'tascaAcabada',
-    emisor:req.session.passport.user,
+    emissor:req.session.passport.user,
     receptor: req.body.receptor,
     tasca: req.body.tasca,
     preu:req.body.preu, 
@@ -483,7 +489,7 @@ app.post('/register', function(req, res) {
   });
   Block.create(new Block(
   {tipus:'registreUsuari',
-  emisor:req.body.nomUsuari,
+  emissor:req.body.nomUsuari,
   receptor: null,
   tasca: null,
   preu:null, 

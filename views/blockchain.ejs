@@ -11,7 +11,7 @@
     <h5 align="center">APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</h5>
     <h3 align="center">Andrea Bellmunt Fuentes</h3>
 </div>
-<div class="menu">
+<div class="menuci">
   <hr>
   <hr>
   <hr>
@@ -64,6 +64,44 @@
          </form>
       </tr>
   </table>
+</div>
+<div class="blockchain">
+   <br>
+<h2><strong><ins>la teva activitat________________________________________</ins></strong></h2>
+<table  align="center">
+  <tr>
+    <td><h6>
+      Tipus:
+    </h6>
+    </td>
+    <td><h6>Tasca implicada:</h6>
+    </td>
+    <td>
+      <h6>      Acceptada:</h6>
+    </td>
+    <td>
+     <h6> Acabada:</h6>
+    </td>
+  </tr>
+  <% if (accions) { %>
+            <% accions.forEach(accio => { %> 
+  <tr>
+    <td>
+      <%= accio.tipus%>
+    </td>
+    <td>
+      <%= accio.tasca%>
+    </td>
+    <td>
+      <%=accio.acceptada%>
+    </td>
+    <td>
+      <%=accio.acabada%>
+    </td>
+  </tr>
+              <% }); %>
+        <% } %>
+</table>
 </div>
 
 

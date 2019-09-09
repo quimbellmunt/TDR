@@ -7,7 +7,7 @@ const Block = new mongoose.Schema({
  
 transId: Number,
 tipus: String, //(transacció, creació de tasca, elimincació de tasca)
-emisor:String, //(Nom o Id del usuari que crea transacció)
+emissor:String, //(Nom o Id del usuari que crea transacció)
 receptor: String, //(Nom o Id del usuari que rep transacció)
 tasca:String, //(Nom o Id del usuari que rep transacció)
 preu: Number,
