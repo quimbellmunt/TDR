@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="styles.css">
   <link href="bootstrap.css" rel="stylesheet" type="text/css">
 </head>
-<body>
+<body class="cadenaBlocs">
 <div  class="title">
     <h5 align="center">APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</h5>
     <h3 align="center">Andrea Bellmunt Fuentes</h3>
@@ -69,23 +69,23 @@
    <br>
 <h2><strong><ins>la teva activitat________________________________________</ins></strong></h2>
 <table  align="center">
-  <tr>
+  <tr align="center">
     <td><h6>
-      Tipus:
+     <strong>Tipus</strong> 
     </h6>
     </td>
-    <td><h6>Tasca implicada:</h6>
+    <td><h6><strong>Tasca implicada</strong></h6>
     </td>
     <td>
-      <h6>      Acceptada:</h6>
+      <h6><strong>Acceptada</strong> </h6>
     </td>
     <td>
-     <h6> Acabada:</h6>
+     <h6> <strong>Acabada</strong></h6>
     </td>
   </tr>
   <% if (accions) { %>
             <% accions.forEach(accio => { %> 
-  <tr>
+  <tr align="center">
     <td>
       <%= accio.tipus%>
     </td>

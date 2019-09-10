@@ -190,7 +190,7 @@ if('passport' in req.session){
     }
   }))  
 } else {
-   res.redirect('/index') 
+   res.redirect('/') 
 }
 
 });
@@ -283,7 +283,7 @@ app.post('/transaccio', function(req,res) {
 }).limit(10)
   
  }else{
-  res.redirect('/index')
+  res.redirect('/')
  }
 });
 
@@ -322,7 +322,7 @@ app.post('/modificarUsuari', function(req,res) {
     }
   })) 
  } else {
-  res.redirect('/index')
+  res.redirect('/')
  }    
 });
 
@@ -355,7 +355,7 @@ if('passport' in req.session){
     }
   })) 
   } else {
-    res.redirect('/index')
+    res.redirect('/')
   }     
 });
 
@@ -389,7 +389,7 @@ app.post('/TascaRebutjada', function(req, res) {
       }
     }))  
  } else {
-    res.redirect('/index')
+    res.redirect('/')
   } 
 });
 
@@ -452,7 +452,7 @@ app.post('/tascaAcabada', function(req, res) {
       }
     }))  
   } else {
-    res.redirect('/index')
+    res.redirect('/')
   } 
 });
 
@@ -559,7 +559,7 @@ app.post('/descarrega', function(req,res){
     }
   }).limit(10) 
 } else {
-  res.redirect('/index')
+  res.redirect('/')
 }
 });
 

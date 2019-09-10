@@ -59,6 +59,8 @@ html {
   background-size: cover;
   -o-background-size: cover;
   color: white;
+  position: fixed;
+  width: 100%;
 
 }
 
@@ -120,31 +122,29 @@ html {
 }
 
 .menu{
-   background-color: #3988dc;
-   width: 17%;
-   height: 685px;
+  background-color: #3988dc;
+    grid-column: 1/2;
+    grid-row: 1/10;
    border-radius: 5px;
-   align-items: center;
+   align-items: center; 
 }
 
 .actualitzat{
  background-color: #3988dc;
- margin-top: 14%;
- margin-left: 15%;
- width: 1000px;
- height: 290px;
+grid-column: 2/2;
+    grid-row: 2/20;
  border-radius: 10px;
  text-indent: 20px;
+ margin-right: 70px;
 }
 
 .usuari{
    background-color: #84cae8;
- margin-top: -40%;
- margin-left: 22%;
- width: 1000px;
- height: 500px;
+grid-column: 2/3;
+    grid-row: 2/30;
  border-radius: 10px;
  text-indent: 20px;
+ margin-bottom: 20px;
 }
 
 .tr{
@@ -152,41 +152,43 @@ html {
 }
 
 .creacioTasca{
-    background-color: #84cae8;
- margin-top: -37%;
- margin-left: 22%;
- width: 1000px;
- height: 489px;
+     background-color: #84cae8;
+grid-column: 2/3;
+  grid-row:2/10;
  border-radius: 10px;
  text-indent: 20px;
 }
 
 .modieli{
       background-color: #84cae8;
- margin-top: 4%;
- margin-left: 2%;
- width: 1300px;
- height: 1000px;
+grid-column: 1/3;
+    grid-row: 11/auto;
+ border-radius: 10px;
+ text-indent: 20px;
+ margin-left: 50px;
+ margin-bottom: 30px;
+}
+
+.blockchain{
+     background-color: #84cae8;
+grid-column: 2/3;
+grid-row: 2/auto;
  border-radius: 10px;
  text-indent: 20px;
 }
 
 .titol{
  background-color: #84cae8;
- margin-top: -56%;
- margin-left: 22%;
- width: 1000px;
- height: 50px;
+grid-column:2/4;
+grid-row: 3/4;
  border-radius: 10px;
  text-indent: 20px; 
 }
 
 .info{
    background-color: #84cae8;
- margin-top: 3%;
- margin-left: 20%;
- width: 1050px;
- height: 550px;
+grid-column: 2/4;
+grid-row: 6/10;
  text-indent: 15px;
  border-radius: 10px; 
  text-align: justify;
@@ -194,50 +196,82 @@ html {
 
 .transaccio{
      background-color: #84cae8;
- margin-top: 5%;
- margin-left: 4%;
- width: 1250px;
- height: 1000px;
+grid-column: 1/4;
+grid-row: 10/19;
  border-radius: 10px;
  text-indent: 20px; 
+ margin: 125px;
 }
 
 .actualitzacio{
       background-color: #84cae8;
- margin-top: 5%;
- margin-left: 4%;
- width: 1250px;
- height: 230px;
+grid-column:1/4;
+grid-row: 19/34;
  border-radius: 10px;
  text-indent: 20px; 
+  margin-left: 125px;
+  margin-right: 125px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .benvinguda{
      background-color: #84cae8;
- margin-top: 1%;
- margin-left: 22%;
- width: 1000px;
- height: 100px;
+grid-column: 2/4;
+grid-row: 4/6;
  border-radius: 10px;
  text-indent: 20px; 
 }
 
 .menuci{
     background-color: #3988dc;
-   width: 17%;
-   height: 860px;
+    grid-column: 1/2;
+    grid-row: 1/10;
    border-radius: 5px;
    align-items: center; 
 }
 
-.blockchain{
-     background-color: #84cae8;
- margin-top: -57%;
- margin-left: 22%;
- width: 1000px;
- height: 1900px;
- border-radius: 10px;
- text-indent: 20px;
+
+
+.cadenaBlocs{
+  display: grid;
+  grid-template-columns: 210px 1000px 200px;
+  grid-template-rows:  100px 120px 180px;
+  grid-column-gap: 100px;
+  grid-row-gap: 50px;
+
 }
 
+.home{
+  display: grid;
+  grid-template-columns: 200px 600px 300px;
+  grid-template-rows: 30px 50px 50px 50px 50px 50px 30px 30px;
+  grid-column-gap: 100px;
+  grid-row-gap: 20px;
+}
+
+.actuali{
+   display: grid;
+  grid-template-columns: 0px;
+  grid-template-rows:  180px;
+  grid-column-gap: 100px;
+  grid-row-gap: 20px;
+}
+
+.userito{
+  display: grid;
+  grid-template-columns: 210px 1000px 200px;
+  grid-template-rows:  150px 180px;
+  grid-column-gap: 100px;
+
+}
+
+
+.tasques{
+   display: grid;
+  grid-template-columns: 210px 1000px 200px;
+  grid-template-rows:  150px 180px;
+  grid-column-gap: 100px;
+  grid-row-gap: 50px;
+}
 
