@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 var autoIncrement = require('mongoose-auto-increment');
+var ItemSchema= new Schema({
+	name: { type:String, required: true, trim: true}
+},
+{
+	timestamps:true
+});
 
 
 const Block = new mongoose.Schema({

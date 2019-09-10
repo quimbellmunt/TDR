@@ -1,4 +1,10 @@
 const mongoose = require('mongoose');
+var ItemSchema= new Schema({
+	name: { type:String, required: true, trim: true}
+},
+{
+	timestamps:true
+});
 // var autoIncrement = require('mongoose-auto-increment');
 
 const Tasques = new mongoose.Schema({
