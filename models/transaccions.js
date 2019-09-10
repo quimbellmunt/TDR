@@ -1,10 +1,4 @@
 const mongoose = require('mongoose');
-var ItemSchema= new Schema({
-	name: { type:String, required: true, trim: true}
-},
-{
-	timestamps:true
-});
 // var autoIncrement = require('mongoose-auto-increment');
 
 const Transaccio = new mongoose.Schema({
@@ -16,6 +10,9 @@ const Transaccio = new mongoose.Schema({
 	rebutjada: Boolean,
 	acabada: Boolean,
 	identificadorTrans: Number
+},
+{
+	timestamps:true
 });
 
 
