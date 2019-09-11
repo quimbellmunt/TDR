@@ -127,6 +127,7 @@ html {
     grid-row: 1/10;
    border-radius: 5px;
    align-items: center; 
+   text-align: center;
 }
 
 .actualitzat{
@@ -229,6 +230,7 @@ grid-row: 4/6;
     grid-row: 1/10;
    border-radius: 5px;
    align-items: center; 
+   text-align: center;
 }
 
 
