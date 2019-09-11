@@ -197,7 +197,7 @@ grid-row: 6/10;
 
 .transaccio{
      background-color: #84cae8;
-grid-column: 1/4;
+grid-column: 1/5;
 grid-row: 10/19;
  border-radius: 10px;
  text-indent: 20px; 
@@ -206,7 +206,7 @@ grid-row: 10/19;
 
 .actualitzacio{
       background-color: #84cae8;
-grid-column:1/4;
+grid-column:1/5;
 grid-row: 19/34;
  border-radius: 10px;
  text-indent: 20px; 
