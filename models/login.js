@@ -5,6 +5,9 @@ var autoIncrement = require('mongoose-auto-increment');
 const Login = new mongoose.Schema({
  username: String,
  password: String,
+},
+{
+	timestamps:true
 });
 
 // User.plugin(passportLocalMongoose); 

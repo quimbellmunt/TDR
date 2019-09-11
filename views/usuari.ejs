@@ -2,97 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>tasca</title>
+  <title>usuari</title>
   <link rel="stylesheet" href="styles.css">
   <link href="bootstrap.css" rel="stylesheet" type="text/css">
 </head>
-<body>
+<body class="userito">
 <div  class="title">
     <h5 align="center">APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</h5>
     <h3 align="center">Andrea Bellmunt Fuentes</h3>
 </div>
-<div>
+<div class="menu">
   <hr>
   <hr>
   <hr>
   <table class="table" width="100%">
-    <tr>
-      <td>
-        <form action="/inici" method="GET">
-          <button>inici</button>
+    <br>
+      <tr>
+       <form action="/inici" method="GET">
+           <button class="btn btn-outline-light">inici</button>
         </form>
-      </td>
-      <td>
-        <p class="text-primary">actualització</p>
-      </td>
-      <td>
-        <p class="text-primary">informació</p>
-      </td>
-      <td>
+
+      </tr>
+      <tr>
+        <p class="text-white">actualització</p>
+      </tr>
+      <tr>
+        <p class="text-white">informació</p>
+      </tr>
+      <tr>
         <form action="/usuari" method="GET">
-          <button>usuari</button>
+          <button class="btn btn-outline-light">usuari</button>
         </form>
-      </td>
-      <td>
-        <p class="text-primary">modificació de l'usuari</p>
-      </td>
-      <td>
+      </tr>
+      <tr>
+        <p class="text-white">modificació de l'usuari</p>
+      </tr>
+      <tr>
         <form action="/tasques" method="GET">
-          <button>tasca</button>
+          <button class="btn btn-outline-light">tasca</button>
         </form>
-      </td>
-      <td>
-        <p class="text-primary">creació de la tasca</p>
-      </td>
-      <td>
-         <p class="text-primary">modificació de la tasca</p>
-      </td>
-      <td>
-        <p class="text-primary">eliminació de la tasca</p>
-      </td>
-      <td>
+      </tr>
+      <tr>
+        <p class="text-white">creació de la tasca</p>
+      </tr>
+      <tr>
+         <p class="text-white">modificació de la tasca</p>
+      </tr>
+      <tr>
+        <p class="text-white">eliminació de la tasca</p>
+      </tr>
+      <tr>
          <form action="/blockchain" method="GET">
-          <button>blockchain</button>
+          <button class="btn btn-outline-light">blockchain</button>
         </form>
-      </td>
-      <td>
+      </tr>
+      <br>
+      <br>
+      <tr>
         <form action="/logout" method="POST">
-          <button>sortir</button>
+          <button class="btn btn-outline-light">sortir</button>
          </form>
-      </td>
-    </tr>
+      </tr>
   </table>
 </div>
-
-        <h3>modificació de l'usuari</h3>
-        <p>____________________________________________________________________________________________________________________________________________</p>
+<div class="usuari">
+  <br>
+<h2><strong><ins>modificació de l'usuari_______________________________</ins></strong></h2>
         <form action="/modificarUsuari" method="POST"> 
            <table class="table" width="100%">
 
-               <tr>Introdueix la teva nova informació:</tr>
-               <tr>
+               <tr><h5>Introdueix la teva nova informació:</h5></tr>
+               <tr class="tr">
                    <td>Nom d'usuari:</td>
                    <td>Nom:</td>
-                   <td>Cognoms:</td>
+               </tr>
+               <tr align="center">
+                <td><input type="text" name="username" value="<%= userito.username%>" placeholder="username" readonly class="formControl"></td>
+                   <td><input type="text" name="nomUsuari" value= "<%= userito.nomUsuari%>" placeholder="nom" class="formControl"></td>
+               </tr>
+               <tr class="tr">
+                    <td>Cognoms:</td>
                    <td>Correu electrònic:</td>
                    <td></td>
                </tr>
-               <tr>
-                <td><input type="text" name="username" value="<%= userito.username%>" placeholder="username" disabled=disabled></td>
-                   <td><input type="text" name="nomUsuari" value= "<%= userito.nomUsuari%>" placeholder="nom"></td>
-                   <td><input type="text" name="cognoms" value="<%= userito.cognoms%>"placeholder="cognoms"></td>
-                   <td><input type="text" name="mail" size="50" value="<%= userito.mail%>"placeholder="mail"></td>
-                   <td><button type="submit">Canviar</button></td>
+               <tr align="center">
+                  <td><input type="text" name="cognoms" value="<%= userito.cognoms%>"placeholder="cognoms" class="formControl"></td>
+                   <td><input type="text" name="mail" size="50" value="<%= userito.mail%>"placeholder="mail" class="formControl"></td>
                </tr>
+
+          
            
                
            </table>
+
+              <center><button class="btn btn-light btn-lg" type="submit">Canviar</button></center>  
     </form>
 
-
-<form action="/logout" method="POST" >
-    <button>Sortir</button>
-</form>
+</div>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="bootstrap.js" type="text/javascript"></script>
 </body>
