@@ -69,11 +69,11 @@
   <h4 align="center">Benvingut/da a la meva pàgina web</h4>
 </div>
 <div class="benvinguda" align="justify">
-  <h5>Aquí podràs observar i interaccionar amb la meva part pràctica del Treball de Recerca, que consisteix en un crear un sistema d'intercanvi de criptomonedes entre dos usuaris amb les que es poden pagar un seguit de tasques. </h5>
+  <h5>Aquí podràs observar i interaccionar amb la meva part pràctica del Treball de Recerca, que consisteix en crear un sistema d'intercanvi de criptomonedes entre dos usuaris amb les que es poden pagar un seguit de tasques. </h5>
 </div>
 <div class= "info" align="justify">
 <br>
-    <h2><strong><ins>informació_____________________________________________</ins></strong></h2>
+    <h2><center><strong><ins>informació</ins></strong></center></h2>
     <h6>1.  Per tal de pagar un servei,  dirigeix-te al formulari que hi ha sota d’aquesta informació. </h6>
     <h6>2.  En aquest formulari podràs escollir quina tasca vols pagar i a qui. </h6>
     <h6>3.  Si la tasca que vols encarregar no s’ha definit prèviament, ho podràs fer a través del botó “tasca” que tens al menú de l’esquerra. </h6>
@@ -91,7 +91,7 @@
   <br>
   <h5 align="center">Estàs preparat/da per l'intercanvi?</h5>
 
-    <p><center> Actualment tens <%= userito.moneder %> criptotdr</center></p>
+    <p><center> Actualment tens <strong class="text-danger"> <%= userito.moneder %></strong> criptotdr</center></p>
     <table class="table_transaccions" align="center">
       <tr>
         <td>Emissor</td>
@@ -178,7 +178,7 @@
 
   <div class="actualitzacio">
 <br>
-    <h2><strong><ins>actualització______________________________________________</ins></strong></h2>
+    <h2><center><strong><ins>actualització</ins></strong></center></h2>
       <p>Si vols continuar intercanviant les tasques de manera segura, descarrega't la última versió del teu Hash privat, que t'arribarà per mail:</p>
       <center>
     <form action="/descarrega" method="POST">
