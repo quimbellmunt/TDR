@@ -10,6 +10,9 @@ const Transaccio = new mongoose.Schema({
 	rebutjada: Boolean,
 	acabada: Boolean,
 	identificadorTrans: Number
+},
+{
+	timestamps:true
 });
 
 

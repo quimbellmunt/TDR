@@ -6,62 +6,102 @@
   <link rel="stylesheet" href="styles.css">
   <link href="bootstrap.css" rel="stylesheet" type="text/css">
 </head>
-<body>
+<body class="cadenaBlocs">
 <div  class="title">
     <h5 align="center">APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</h5>
     <h3 align="center">Andrea Bellmunt Fuentes</h3>
 </div>
-<div>
+<div class="menuci">
   <hr>
   <hr>
   <hr>
   <table class="table" width="100%">
-    <tr>
-      <td>
-        <form action="/inici" method="GET">
-          <button>inici</button>
+    <br>
+      <tr>
+       <form action="/inici" method="GET">
+           <button class="btn btn-outline-light">inici</button>
         </form>
-      </td>
-      <td>
-        <p class="text-primary">actualització</p>
-      </td>
-      <td>
-        <p class="text-primary">informació</p>
-      </td>
-      <td>
+
+      </tr>
+      <tr>
+        <p class="text-white">actualització</p>
+      </tr>
+      <tr>
+        <p class="text-white">informació</p>
+      </tr>
+      <tr>
         <form action="/usuari" method="GET">
-          <button>usuari</button>
+          <button class="btn btn-outline-light">usuari</button>
         </form>
-      </td>
-      <td>
-        <p class="text-primary">modificació de l'usuari</p>
-      </td>
-      <td>
+      </tr>
+      <tr>
+        <p class="text-white">modificació de l'usuari</p>
+      </tr>
+      <tr>
         <form action="/tasques" method="GET">
-          <button>tasca</button>
+          <button class="btn btn-outline-light">tasca</button>
         </form>
-      </td>
-      <td>
-        <p class="text-primary">creació de la tasca</p>
-      </td>
-      <td>
-         <p class="text-primary">modificació de la tasca</p>
-      </td>
-      <td>
-        <p class="text-primary">eliminació de la tasca</p>
-      </td>
-      <td>
+      </tr>
+      <tr>
+        <p class="text-white">creació de la tasca</p>
+      </tr>
+      <tr>
+         <p class="text-white">modificació de la tasca</p>
+      </tr>
+      <tr>
+        <p class="text-white">eliminació de la tasca</p>
+      </tr>
+      <tr>
          <form action="/blockchain" method="GET">
-          <button>blockchain</button>
+          <button class="btn btn-outline-light">blockchain</button>
         </form>
-      </td>
-      <td>
+      </tr>
+      <br>
+      <br>
+      <tr>
         <form action="/logout" method="POST">
-          <button>sortir</button>
+          <button class="btn btn-outline-light">sortir</button>
          </form>
-      </td>
-    </tr>
+      </tr>
   </table>
+</div>
+<div class="blockchain">
+   <br>
+<h2><strong><ins>la teva activitat________________________________________</ins></strong></h2>
+<table  align="center">
+  <tr align="center">
+    <td><h6>
+     <strong>Tipus</strong> 
+    </h6>
+    </td>
+    <td><h6><strong>Tasca implicada</strong></h6>
+    </td>
+    <td>
+      <h6><strong>Acceptada</strong> </h6>
+    </td>
+    <td>
+     <h6> <strong>Acabada</strong></h6>
+    </td>
+  </tr>
+  <% if (accions) { %>
+            <% accions.forEach(accio => { %> 
+  <tr align="center">
+    <td>
+      <%= accio.tipus%>
+    </td>
+    <td>
+      <%= accio.tasca%>
+    </td>
+    <td>
+      <%=accio.acceptada%>
+    </td>
+    <td>
+      <%=accio.acabada%>
+    </td>
+  </tr>
+              <% }); %>
+        <% } %>
+</table>
 </div>
 
 

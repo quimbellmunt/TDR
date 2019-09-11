@@ -4,15 +4,17 @@ var autoIncrement = require('mongoose-auto-increment');
 
 
 const Block = new mongoose.Schema({
- 
 transId: Number,
 tipus: String, //(transacció, creació de tasca, elimincació de tasca)
-emisor:String, //(Nom o Id del usuari que crea transacció)
+emissor:String, //(Nom o Id del usuari que crea transacció)
 receptor: String, //(Nom o Id del usuari que rep transacció)
 tasca:String, //(Nom o Id del usuari que rep transacció)
 preu: Number,
 acceptada: Boolean,  //(True → Done, False → To be Done)
 acabada: Boolean
+},
+{
+	timestamps:true
 });
 
 //Trans.plugin(passportLocalMongoose);

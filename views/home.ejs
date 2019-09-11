@@ -6,100 +6,109 @@
   <link rel="stylesheet" href="styles.css">
   <link href="bootstrap.css" rel="stylesheet" type="text/css">
 </head>
-<body>
+<body class="home">
 <div  class="title">
     <h5 align="center">APLICACIÓ DE LA BLOCKCHAIN A LES CRIPTOMONEDES</h5>
     <h3 align="center">Andrea Bellmunt Fuentes</h3>
 </div>
-<div>
+<div class="menuci">
   <hr>
   <hr>
   <hr>
   <table class="table" width="100%">
-    <tr>
-      <td>
-        <form action="/inici" method="GET">
-          <button>inici</button>
+    <br>
+      <tr>
+       <form action="/inici" method="GET">
+           <button class="btn btn-outline-light">inici</button>
         </form>
-      </td>
-      <td>
-        <p class="text-primary">actualització</p>
-      </td>
-      <td>
-        <p class="text-primary">informació</p>
-      </td>
-      <td>
+
+      </tr>
+      <tr>
+        <p class="text-white">actualització</p>
+      </tr>
+      <tr>
+        <p class="text-white">informació</p>
+      </tr>
+      <tr>
         <form action="/usuari" method="GET">
-          <button>usuari</button>
+          <button class="btn btn-outline-light">usuari</button>
         </form>
-      </td>
-      <td>
-        <p class="text-primary">modificació de l'usuari</p>
-      </td>
-      <td>
+      </tr>
+      <tr>
+        <p class="text-white">modificació de l'usuari</p>
+      </tr>
+      <tr>
         <form action="/tasques" method="GET">
-          <button>tasca</button>
+          <button class="btn btn-outline-light">tasca</button>
         </form>
-      </td>
-      <td>
-        <p class="text-primary">creació de la tasca</p>
-      </td>
-      <td>
-         <p class="text-primary">modificació de la tasca</p>
-      </td>
-      <td>
-        <p class="text-primary">eliminació de la tasca</p>
-      </td>
-      <td>
+      </tr>
+      <tr>
+        <p class="text-white">creació de la tasca</p>
+      </tr>
+      <tr>
+         <p class="text-white">modificació de la tasca</p>
+      </tr>
+      <tr>
+        <p class="text-white">eliminació de la tasca</p>
+      </tr>
+      <tr>
          <form action="/blockchain" method="GET">
-          <button>blockchain</button>
+          <button class="btn btn-outline-light">blockchain</button>
         </form>
-      </td>
-      <td>
+      </tr>
+      <br>
+      <br>
+      <tr>
         <form action="/logout" method="POST">
-          <button>sortir</button>
+          <button class="btn btn-outline-light">sortir</button>
          </form>
-      </td>
-    </tr>
+      </tr>
   </table>
 </div>
 <div class="titol">
   <h4 align="center">Benvingut/da a la meva pàgina web</h4>
 </div>
+<div class="benvinguda" align="justify">
+  <h5>Aquí podràs observar i interaccionar amb la meva part pràctica del Treball de Recerca, que consisteix en un crear un sistema d'intercanvi de criptomonedes entre dos usuaris amb les que es poden pagar un seguit de tasques. </h5>
+</div>
+<div class= "info" align="justify">
+<br>
+    <h2><strong><ins>informació_____________________________________________</ins></strong></h2>
+    <h6>1.  Per tal de pagar un servei,  dirigeix-te al formulari que hi ha sota d’aquesta informació. </h6>
+    <h6>2.  En aquest formulari podràs escollir quina tasca vols pagar i a qui. </h6>
+    <h6>3.  Si la tasca que vols encarregar no s’ha definit prèviament, ho podràs fer a través del botó “tasca” que tens al menú de l’esquerra. </h6>
+    <h6>4.  Per definir una tasca hauràs d’atribuir-li un nom, un valor (en criptotdr, la meva moneda), el temps estimat en fer-la i una descripció. </h6>
+    <h6>5.  A més a més, per fer la transacció també necessitaràs un codi concret, anomenat “Hash”, que es pot aconseguir anant al final de la pàgina “inici” (a "actualització").</h6>
+    <h6>6.  Aquest “Hash” és un codi encriptat que varia depenent de les darreres transaccions realitzades entre tots els usuaris. </h6>
+    <h6>7.  Finalment, només cal pressionar el botó “Crear la transacció” i esperar que el receptor l’accepti o rebutgi. </h6>
+    <h6>8.  Pots visualitzar les teves tasques assignades com a receptor sota el formulari de transaccions. </h6>
+    <h6>9.  De forma general, es poden modificar certes dades personals vinculades al teu usuari (amb el botó “usuari”) o consultar la teva activitat en la web ( amb el botó “blockchain”). </h6>
 
-<div class= "info">
-  <h5 align="center">Instruccions per a fer un bon ús de l'aplicació:</h5>
-  <p>1. Creeu una transaccion (pressioneu el títol "Creació de la transaccion" a l'esquerra).</p>
-  <p>2. Comproveu que teniu la última versió descarregada ("Actualització" a l'esquerra).</p>
-  <p>3. Torneu a la pàgina d'inici.</p>
-  <p>4. Seleccioneu un usuari per enviar la transaccion que han de fer, juntament amb el pagament.</p>
-  <p>5. Confieu que facin la transacció.</p>
+
 </div>
 
-<div class = "accions">
+<div class = "transaccio">
+  <br>
   <h5 align="center">Estàs preparat/da per l'intercanvi?</h5>
-  <div class="transaccio">
 
-  </div>
-    <p> Actualment tens <%= userito.moneder %> criptotdr</p>
-    <table class="table_transaccions">
+    <p><center> Actualment tens <%= userito.moneder %> criptotdr</center></p>
+    <table class="table_transaccions" align="center">
       <tr>
+        <td>Emissor</td>
         <td>Receptor</td>
-        <td>Emisor</td>
         <td>Tasca</td>
-        <td>Codi</td>
+        <td>Hash</td>
         <td></td>
       </tr>
-
       <tr>
         <form id="transaccio" name="transaccio" action="/transaccio" onsubmit="return validacio();" method="POST">
           <td>
-              <select name="emisor" id = "emisor">
-                <option name="emisor" value = "<%= emisor %>"><%= emisor.toUpperCase() %></option>
+              <select name="emissor" id = "emissor" class="formControl2">
+                <option name="emissor" value = "<%= emissor %>"><%= emissor.toUpperCase() %></option>
               </select>
           </td>
           <td>
-              <select name="receptor" id = "receptor">
+              <select name="receptor" id = "receptor" class="formControl2">
                 <% if (usuaris) { %>
                   <% usuaris.forEach(user => { %>
                       <option name="receptor" value = "<%= user.username %>"><%= user.username.toUpperCase() %></option>
@@ -108,7 +117,7 @@
               </select>
           </td>
           <td>
-              <select name="tasca" id = "tasca">
+              <select name="tasca" id = "tasca" class="formNumber">
                 <% if (tasques) { %>
                 <% tasques.forEach(tasca => { %>
                     <option value = '{"tasca":"<%= tasca.nomTasca %>", "preu":"<%= tasca.preu %>"}'><%= tasca.nomTasca%></option>
@@ -118,30 +127,27 @@
           </td>
             <form action="/transaccio"  method="POST">
               <td>
-                  <input type="text" name="hash"  placeholder="Indica el teu Hash privat" size="70"></input> <!-- recordatori: ni required ni pattern s'han de posar perquè no serveixen de res-->
+                  <input type="text" name="hash"  placeholder="Indica el teu Hash privat" size="70" class="formControl3"></input> <!-- recordatori: ni required ni pattern s'han de posar perquè no serveixen de res-->
                 </td>
-              </td>
-              <button class="btn btn-primary">Crea La transacció</button>
-          <td>
+              <td>
+              <button class="btn btn-primary">Crear la transacció</button>
+          </td>
             </form>
         </form>
       </tr>
     </table>
+    <br>
+    <br>
 
-
-
-  <div>
     <h5 align="center">Tasques Assignades</h5>
     <table class="table">
     	<tr>
-    			<td>emisor</td>
-    			<td>tasca</td>
+    			<td><h6>emissor</h6></td>
+    			<td><h6>tasca</h6></td>
     			<td></td>
     			<td></td>
     		</tr>
 
-
-    		
     		<% if (transaccions) { %>
     		  	<% transaccions.forEach(transaccion => { %> 
             	<tr>
@@ -149,7 +155,7 @@
     		  	<td><%= transaccion.tasca.toUpperCase() %></td>
     			<td>
     		  	<form action="/tascaRebutjada" method="POST">
-    		  		<input name="emisor" value="<%=transaccion.usuariOrigen%>" style="display:none">
+    		  		<input name="emissor" value="<%=transaccion.usuariOrigen%>" style="display:none">
     				<input name="receptor" value="<%=transaccion.usuariReceptor%>" style="display:none">
     				<input name="tasca" value="<%=transaccion.tasca%>" style="display:none">
     				<button class="btn btn-danger" >Rebutjar</button>
@@ -157,7 +163,7 @@
     			</td>
     			<td>
     		  	<form action="/tascaAcabada" method="POST">
-    		  		<input name="emisor" value="<%=transaccion.usuariOrigen%>" style="display:none">
+    		  		<input name="emissor" value="<%=transaccion.usuariOrigen%>" style="display:none">
     				<input name="receptor" value="<%=transaccion.usuariReceptor%>" style="display:none">
     				<input name="tasca" value="<%=transaccion.tasca%>" style="display:none">
     				<button class="btn btn-success" >Acabada</button>
@@ -170,15 +176,15 @@
     </table>
   </div>
 
-  <div >
-    <h5 align="center">Actualització</h5>
-      <p>Si vols continuar intercanviant les tasques de manera segura, descarrega't la última versió de la blockchain, que t'arribarà per mail:</p>
-      
+  <div class="actualitzacio">
+<br>
+    <h2><strong><ins>actualització______________________________________________</ins></strong></h2>
+      <p>Si vols continuar intercanviant les tasques de manera segura, descarrega't la última versió del teu Hash privat, que t'arribarà per mail:</p>
+      <center>
     <form action="/descarrega" method="POST">
-      <button align="center">Descarregar</button> 
+      <button class="btn btn-light">Descarregar</button> 
+      </center>
     </form>
-  </div>
-  </div>
 </div>
 
 
