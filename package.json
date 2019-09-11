@@ -1,10 +1,10 @@
 {
-  "name": "crud-express-mongo",
+  "name": "TdR-Andrea-Bellmunt-Fuentes",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "sudo node app.js",
     "dev": "nodemon app.js"
   },
   "author": "",
