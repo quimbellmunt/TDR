@@ -224,7 +224,7 @@ app.post('/crearTasca', function(req,res) {
 
 app.post('/transaccio', function(req,res) {
  if('passport' in req.session){
-  Block.find({tipus:'Trans'}, function(err,hash){
+  Block.find({tipus:'Trans'}, {sort:'-createdAt'},function(err,hash){
     if(err){
       console.log(err)
     }else{
@@ -512,7 +512,7 @@ app.post('/logout', function(req, res) {
 
 app.post('/descarrega', function(req,res){
   if('passport' in req.session){
-  Block.find({tipus:'Trans'}, function(err,hash){
+  Block.find({tipus:'Trans'}, {sort:'-createdAt'}, function(err,hash){
     if(err){
       console.log(err)
     }else{
