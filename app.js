@@ -15,7 +15,7 @@ var LocalStrategy = require('passport-local').Strategy;
 app.use(express.static(__dirname + '/public'));
 
 var app = express();
-app.set('port', process.env.PORT || 1337);
+app.set('port', process.env.PORT || 80);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.set('view options', { layout: false });
