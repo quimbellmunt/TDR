@@ -54,7 +54,7 @@ passport.deserializeUser(Login.deserializeUser());
 app.get('/', function (req, res) {
     console.log(req.session) 
    if('passport' in req.session) {
-    res.redirect('/inici')
+    res.redirect('/')
    } else {
     res.render('index');
    }    
