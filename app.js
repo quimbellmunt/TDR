@@ -224,22 +224,17 @@ app.post('/crearTasca', function(req,res) {
 
 app.post('/transaccio', function(req,res) {
  if('passport' in req.session){
-  Block.find({tipus:'Trans'}, {sort:'-createdAt'},function(err,hash){
+  Block.find({tipus:'Trans'},null, {sort:'-createdAt'},function(err,hash){
     if(err){
       console.log(err)
     }else{
-      console.log('Funciona1')
-      console.log(hash)
       Login.findOne({
         username:req.session.passport.user
       }, function(err, user){
-        console.log(user)
         var secret = user.password;
         var missatge = sha512.hmac(user.password, JSON.stringify(hash));       
          console.log('missatge', missatge)
-        console.log('Funciona2')
         var inputH= req.body.hash
-          console.log(inputH)
         if(inputH.replace(' ','') === missatge.replace(' ','')){
           var tascaPreu = JSON.parse(req.body.tasca)
           tascaAssignada = tascaPreu.tasca
@@ -512,7 +507,7 @@ app.post('/logout', function(req, res) {
 
 app.post('/descarrega', function(req,res){
   if('passport' in req.session){
-  Block.find({tipus:'Trans'}, {sort:'-createdAt'}, function(err,hash){
+  Block.find({tipus:'Trans'},null, {sort:'-createdAt'}, function(err,hash){
     if(err){
       console.log(err)
     }else{
